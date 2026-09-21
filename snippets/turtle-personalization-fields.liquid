@@ -2,7 +2,8 @@
   Renders customer personalization inputs imported by turtle-admin.
 
   Source: product.metafields.turtle.etsy_personalization (JSON)
-    { "version": 1, "questions": [ { "name", "label", "type", "instructions", "required", "max_length", "options"? } ] }
+    { "version": 1, "questions": [ { "name", "label", "type", "instructions", "required", "max_length", "options"?, "max_size_mb"? } ] }
+  type: text (default, textarea) | select/dropdown (needs options) | any type containing image/photo/file/upload (photo upload)
 
   Each answer is submitted as a line item property keyed by the question "name",
   so it shows in cart, checkout and on the order. Must be rendered inside the product form.
@@ -24,6 +25,10 @@
         assign field_label = question.label | default: question.name
         assign field_type = question.type | downcase
         assign use_select = false
+        assign use_upload = false
+        if field_type contains 'image' or field_type contains 'photo' or field_type contains 'file' or field_type contains 'upload'
+          assign use_upload = true
+        endif
         if field_type == 'select' or field_type == 'dropdown'
           if question.options.size > 0
             assign use_select = true
@@ -36,7 +41,29 @@
           {%- if question.required %} <span class="turtle-personalization__required" aria-hidden="true">*</span>{% endif -%}
         </label>
 
-        {%- if use_select -%}
+        {%- if use_upload -%}
+          {%- comment -%}
+            Native Shopify line item file upload: the form posts multipart FormData, Shopify stores
+            the file on its CDN and the property value becomes the file URL on cart/order.
+          {%- endcomment -%}
+          <div class="turtle-personalization__upload">
+            <input
+              type="file"
+              id="{{ field_id }}"
+              class="turtle-personalization__file"
+              name="properties[{{ property_name | escape }}]"
+              accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+              data-turtle-personalization
+              data-max-mb="{{ question.max_size_mb | default: 10 }}"
+              {% if question.required %}required aria-required="true"{% endif %}
+            >
+            <img class="turtle-personalization__preview" alt="" hidden>
+          </div>
+          <small class="turtle-personalization__hint caption">
+            {%- if question.instructions != blank -%}{{ question.instructions | escape }} · {% endif -%}
+            JPG, PNG, WEBP or HEIC, max {{ question.max_size_mb | default: 10 }}MB
+          </small>
+        {%- elsif use_select -%}
           <div class="select">
             <select
               id="{{ field_id }}"

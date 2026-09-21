@@ -4042,3 +4042,26 @@ media-gallery .slider-buttons--overlay {
 .turtle-personalization [aria-invalid='true'] {
   border-color: #d72c0d;
 }
+.turtle-personalization__file {
+  display: block;
+  width: 100%;
+  padding: 1.2rem;
+  font: inherit;
+  font-size: 1.4rem;
+  border: 1px dashed rgba(var(--color-foreground), 0.35);
+  border-radius: var(--inputs-radius);
+  background: rgba(var(--color-foreground), 0.03);
+  cursor: pointer;
+}
+.turtle-personalization__file[aria-invalid='true'] {
+  border-color: #d72c0d;
+}
+.turtle-personalization__preview {
+  display: block;
+  margin-top: 0.8rem;
+  max-width: 12rem;
+  max-height: 12rem;
+  object-fit: contain;
+  border-radius: 0.8rem;
+  border: 1px solid rgba(var(--color-foreground), 0.12);
+}

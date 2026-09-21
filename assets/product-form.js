@@ -11,6 +11,9 @@ if (!customElements.get('product-form')) {
         this.form.addEventListener('input', (event) => {
           if (event.target.matches('[data-turtle-personalization]')) event.target.removeAttribute('aria-invalid');
         });
+        this.form.addEventListener('change', (event) => {
+          if (event.target.matches('.turtle-personalization__file')) this.onPersonalizationFileChange(event.target);
+        });
         this.cart = document.querySelector('cart-notification') || document.querySelector('cart-drawer');
         this.submitButton = this.querySelector('[type="submit"]');
         this.submitButtonText = this.submitButton.querySelector('span');
@@ -40,6 +43,33 @@ if (!customElements.get('product-form')) {
         firstInvalid.focus({ preventScroll: true });
         firstInvalid.reportValidity();
         return false;
+      }
+
+      // Customer photo upload: reject wrong type / oversize files before they hit /cart/add, and show a preview.
+      onPersonalizationFileChange(input) {
+        const file = input.files[0];
+        const preview = input.parentElement.querySelector('.turtle-personalization__preview');
+        const maxBytes = parseFloat(input.dataset.maxMb || '10') * 1024 * 1024;
+        let error = '';
+        if (file && !/^image\//.test(file.type) && !/\.(heic|heif)$/i.test(file.name)) error = 'Please upload an image file.';
+        else if (file && file.size > maxBytes) error = `Image is too large (max ${input.dataset.maxMb || 10}MB).`;
+
+        if (preview.src) URL.revokeObjectURL(preview.src);
+        preview.hidden = true;
+        preview.removeAttribute('src');
+        if (error) {
+          input.value = '';
+          input.setAttribute('aria-invalid', true);
+          input.setCustomValidity(error);
+          input.reportValidity();
+          input.setCustomValidity('');
+          return;
+        }
+        // Browsers cannot render HEIC; the file is still uploaded, only the preview is skipped.
+        if (file && /^image\/(jpeg|png|webp|gif)$/.test(file.type)) {
+          preview.src = URL.createObjectURL(file);
+          preview.hidden = false;
+        }
       }
 
       onSubmitHandler(evt) {
