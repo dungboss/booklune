@@ -53,6 +53,7 @@
           class="product-variant-id"
 
         >
+        {%- render 'turtle-personalization-fields', product: product, section_id: section_id -%}
         <div class="product-form__buttons{% if block.settings.uppercase_text %} product-form__buttons--uppercase{% endif %} alignment-{{ block.settings.alignment }}">
           {%- liquid
             assign check_against_inventory = true

@@ -1,0 +1,76 @@
+{% comment %}
+  Renders customer personalization inputs imported by turtle-admin.
+
+  Source: product.metafields.turtle.etsy_personalization (JSON)
+    { "version": 1, "questions": [ { "name", "label", "type", "instructions", "required", "max_length", "options"? } ] }
+
+  Each answer is submitted as a line item property keyed by the question "name",
+  so it shows in cart, checkout and on the order. Must be rendered inside the product form.
+
+  Accepts:
+  - product: {Object} product object.
+  - section_id: {String} id of the section, used to build unique input ids.
+
+  Usage:
+  {% render 'turtle-personalization-fields', product: product, section_id: section.id %}
+{% endcomment %}
+{%- assign personalization = product.metafields.turtle.etsy_personalization.value -%}
+{%- if personalization.questions.size > 0 -%}
+  <div class="turtle-personalization">
+    {%- for question in personalization.questions -%}
+      {%- liquid
+        assign field_id = 'TurtlePersonalization-' | append: section_id | append: '-' | append: forloop.index
+        assign property_name = question.name | default: question.label | strip
+        assign field_label = question.label | default: question.name
+        assign field_type = question.type | downcase
+        assign use_select = false
+        if field_type == 'select' or field_type == 'dropdown'
+          if question.options.size > 0
+            assign use_select = true
+          endif
+        endif
+      -%}
+      <div class="turtle-personalization__field product-form__input">
+        <label class="form__label" for="{{ field_id }}">
+          {{- field_label | escape -}}
+          {%- if question.required %} <span class="turtle-personalization__required" aria-hidden="true">*</span>{% endif -%}
+        </label>
+
+        {%- if use_select -%}
+          <div class="select">
+            <select
+              id="{{ field_id }}"
+              class="select__select"
+              name="properties[{{ property_name | escape }}]"
+              data-turtle-personalization
+              {% if question.required %}required{% endif %}
+            >
+              <option value="">{{ question.instructions | default: field_label | escape }}</option>
+              {%- for option in question.options -%}
+                {%- assign option_value = option.value | default: option.label | default: option -%}
+                <option value="{{ option_value | escape }}">{{ option.label | default: option_value | escape }}</option>
+              {%- endfor -%}
+            </select>
+            <span class="svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+          </div>
+        {%- else -%}
+          {%- comment -%} Etsy personalization is free text; a textarea fits names + dates + places. {%- endcomment -%}
+          <textarea
+            id="{{ field_id }}"
+            class="input--small turtle-personalization__textarea"
+            name="properties[{{ property_name | escape }}]"
+            rows="3"
+            placeholder="{{ question.instructions | escape }}"
+            {% if question.max_length > 0 %}maxlength="{{ question.max_length }}"{% endif %}
+            autocomplete="off"
+            data-turtle-personalization
+            {% if question.required %}required aria-required="true"{% endif %}
+          ></textarea>
+          {%- if question.max_length > 0 -%}
+            <small class="turtle-personalization__hint caption">Max {{ question.max_length }} characters</small>
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+{%- endif -%}

@@ -8,6 +8,9 @@ if (!customElements.get('product-form')) {
         this.form = this.querySelector('form');
         this.variantIdInput.disabled = false;
         this.form.addEventListener('submit', this.onSubmitHandler.bind(this));
+        this.form.addEventListener('input', (event) => {
+          if (event.target.matches('[data-turtle-personalization]')) event.target.removeAttribute('aria-invalid');
+        });
         this.cart = document.querySelector('cart-notification') || document.querySelector('cart-drawer');
         this.submitButton = this.querySelector('[type="submit"]');
         this.submitButtonText = this.submitButton.querySelector('span');
@@ -21,9 +24,28 @@ if (!customElements.get('product-form')) {
         this.variantInputs = this.form.querySelector(".product-form__variants");
       }
 
+      // The form is `novalidate`, so required turtle-admin personalization fields are checked here.
+      // Also covers the sticky ATC button, which submits this same form from outside the viewport.
+      validatePersonalization() {
+        const fields = this.form.querySelectorAll('[data-turtle-personalization]');
+        let firstInvalid = null;
+        fields.forEach((field) => {
+          const invalid = field.required && !field.value.trim();
+          field.setAttribute('aria-invalid', invalid);
+          if (invalid && !firstInvalid) firstInvalid = field;
+        });
+        if (!firstInvalid) return true;
+
+        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        firstInvalid.focus({ preventScroll: true });
+        firstInvalid.reportValidity();
+        return false;
+      }
+
       onSubmitHandler(evt) {
         evt.preventDefault();
         if (this.submitButton.getAttribute('aria-disabled') === 'true') return;
+        if (!this.validatePersonalization()) return;
 
         this.handleErrorMessage();
 
