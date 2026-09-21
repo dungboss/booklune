@@ -1,0 +1,398 @@
+{% liquid
+  assign support_email = section.settings.support_email | default: settings.crestoria_support_email | strip
+  assign contact_url = section.settings.contact_url | default: pages['contact'].url | default: pages['contact-us'].url
+  if contact_url == blank
+    assign contact_url = '#PMContactSupport'
+  endif
+  assign help_url = section.settings.help_url | default: pages['faq'].url | default: contact_url
+  assign ticket_url = section.settings.ticket_url | default: contact_url
+  assign about_url = section.settings.about_url | default: pages['about-us'].url
+  assign reviews_url = section.settings.reviews_url | default: pages['reviews'].url
+  assign accessibility_url = section.settings.accessibility_url | default: pages['accessibility-statement'].url
+  assign tracking_url = section.settings.tracking_url | default: pages['track-order'].url | default: pages['tracking-order'].url
+  assign cancellation_url = section.settings.cancellation_url | default: pages['cancellation-modification'].url
+  assign refund_url = section.settings.refund_url | default: pages['replacement-refund'].url | default: shop.refund_policy.url
+  assign size_url = section.settings.size_url | default: pages['size-chart'].url
+  assign shipping_url = section.settings.shipping_url | default: pages['shipping-delivery'].url | default: shop.shipping_policy.url | default: pages['shipping-policy'].url
+  assign terms_url = section.settings.terms_url | default: pages['terms-of-service'].url | default: shop.terms_of_service.url
+  assign privacy_url = section.settings.privacy_url | default: pages['privacy-policy'].url | default: shop.privacy_policy.url
+  assign disclaimer_url = section.settings.disclaimer_url | default: pages['disclaimer-regarding-fake-websites'].url
+%}
+<div class="pm-footer pm-footer-v9" id="PMFooter-{{ section.id }}">
+  {% if section.settings.show_newsletter %}
+    <div class="pm-shell pm-footer-signup">
+      <div class="pm-footer-signup-copy"><h2>{{ section.settings.newsletter_title | escape }}</h2><p>{{ section.settings.newsletter_text | escape }}</p></div>
+      {% assign newsletter_id = 'PMNewsletter-' | append: section.id %}
+      {% form 'customer', id: newsletter_id, class: 'pm-footer-signup-form' %}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <label class="pm-sr" for="PMEmail-{{ section.id }}">Email address</label>
+        <div class="pm-footer-signup-control">
+          <input id="PMEmail-{{ section.id }}" type="email" name="contact[email]" value="{{ form.email | escape }}" placeholder="Your email address" autocomplete="email" autocorrect="off" autocapitalize="off" required>
+          <button type="submit">{{ section.settings.subscribe_label | escape }} {% render 'pb-market-icon', icon: 'arrow' %}</button>
+        </div>
+        {% if form.posted_successfully? %}<p class="pm-footer-form-status" role="status">Thanks for subscribing to Crestoria.</p>{% elsif form.errors %}<div class="pm-footer-form-status" role="alert">{{ form.errors | default_errors }}</div>{% endif %}
+        <p class="pm-footer-fine-print">{{ section.settings.newsletter_note | escape }}</p>
+      {% endform %}
+    </div>
+  {% endif %}
+  <div class="pm-shell pm-footer-directory">
+    <nav class="pm-footer-column" aria-labelledby="PMFooter-information-{{ section.id }}">
+      <h2 id="PMFooter-information-{{ section.id }}">{{ section.settings.information_heading | escape }}</h2>
+      <ul role="list">
+        {% if section.settings.information_menu != blank %}
+          {% for link in section.settings.information_menu.links %}<li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>{% endfor %}
+        {% else %}
+          {% assign fallback_id = 'PMFooter-about-' | append: section.id %}
+          <li>{% render 'pb-footer-entry', url: about_url, label: "About us", dialog_id: fallback_id %}</li>
+          {% assign fallback_id = 'PMFooter-reviews-' | append: section.id %}
+          <li>{% render 'pb-footer-entry', url: reviews_url, label: "Reviews", dialog_id: fallback_id %}</li>
+          {% assign fallback_id = 'PMFooter-accessibility-' | append: section.id %}
+          <li>{% render 'pb-footer-entry', url: accessibility_url, label: "Accessibility Statement", dialog_id: fallback_id %}</li>
+        {% endif %}
+      </ul>
+    </nav>
+    <nav class="pm-footer-column" aria-labelledby="PMFooter-service-{{ section.id }}">
+      <h2 id="PMFooter-service-{{ section.id }}">{{ section.settings.service_heading | escape }}</h2>
+      <ul role="list">
+        {% if section.settings.service_menu != blank %}
+          {% for link in section.settings.service_menu.links %}<li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>{% endfor %}
+        {% else %}
+          {% assign fallback_id = 'PMTrackOrder' %}
+          <li>{% render 'pb-footer-entry', url: tracking_url, label: "Track Order", dialog_id: fallback_id %}</li>
+          {% assign fallback_id = 'PMFooter-cancellation-' | append: section.id %}
+          <li>{% render 'pb-footer-entry', url: cancellation_url, label: "Cancellation & Modification", dialog_id: fallback_id %}</li>
+          {% assign fallback_id = 'PMFooter-refund-' | append: section.id %}
+          <li>{% render 'pb-footer-entry', url: refund_url, label: "Refund & Replacement", dialog_id: fallback_id %}</li>
+          {% assign fallback_id = 'PMFooter-size-' | append: section.id %}
+          <li>{% render 'pb-footer-entry', url: size_url, label: "Size Chart", dialog_id: fallback_id %}</li>
+          {% assign fallback_id = 'PMFooter-shipping-' | append: section.id %}
+          <li>{% render 'pb-footer-entry', url: shipping_url, label: "Shipping And Delivery", dialog_id: fallback_id %}</li>
+        {% endif %}
+      </ul>
+    </nav>
+    <nav class="pm-footer-column" aria-labelledby="PMFooter-policies-{{ section.id }}">
+      <h2 id="PMFooter-policies-{{ section.id }}">{{ section.settings.policies_heading | escape }}</h2>
+      <ul role="list">
+        {% if section.settings.policies_menu != blank %}
+          {% for link in section.settings.policies_menu.links %}<li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>{% endfor %}
+        {% else %}
+          {% assign fallback_id = 'PMFooter-terms-' | append: section.id %}
+          <li>{% render 'pb-footer-entry', url: terms_url, label: "Terms of Service", dialog_id: fallback_id %}</li>
+          {% assign fallback_id = 'PMFooter-privacy-' | append: section.id %}
+          <li>{% render 'pb-footer-entry', url: privacy_url, label: "Privacy Policy", dialog_id: fallback_id %}</li>
+          {% assign fallback_id = 'PMFooter-disclaimer-' | append: section.id %}
+          <li>{% render 'pb-footer-entry', url: disclaimer_url, label: "Disclaimer Regarding Fake Websites", dialog_id: fallback_id %}</li>
+        {% endif %}
+      </ul>
+    </nav>
+    <div class="pm-footer-column pm-footer-support">
+      <h2>{{ section.settings.support_heading | escape }}</h2>
+      <a class="pm-footer-contact" href="{{ contact_url }}" {% if contact_url == '#PMContactSupport' %}data-pm-open="PMContactSupport"{% endif %}>Contact Us</a>
+      <p>{{ section.settings.support_text | escape }}</p>
+      <a class="pm-footer-ticket" href="{{ ticket_url }}" {% if ticket_url == '#PMContactSupport' %}data-pm-open="PMContactSupport"{% endif %}>{{ section.settings.ticket_label | escape }} {% render 'pb-market-icon', icon: 'arrow' %}</a>
+      {% if support_email != blank %}<a class="pm-footer-email" href="mailto:{{ support_email | escape }}">{{ support_email | escape }}</a>{% endif %}
+      {% if section.settings.support_hours != blank %}<p class="pm-footer-hours">{{ section.settings.support_hours | escape }}</p>{% endif %}
+      {% if section.settings.help_url != blank or pages['faq'] != blank %}<a class="pm-footer-help-center" href="{{ help_url }}">Help Center &amp; FAQs</a>{% endif %}
+      {% if section.settings.show_social %}
+        <div class="pm-footer-socials" aria-label="Crestoria social media">
+          {% if settings.social_facebook_link != blank %}<a href="{{ settings.social_facebook_link }}" aria-label="Crestoria on Facebook">{{ 'icon-facebook.svg' | inline_asset_content }}</a>{% endif %}
+          {% if settings.social_instagram_link != blank %}<a href="{{ settings.social_instagram_link }}" aria-label="Crestoria on Instagram">{{ 'icon-instagram.svg' | inline_asset_content }}</a>{% endif %}
+          {% if settings.social_pinterest_link != blank %}<a href="{{ settings.social_pinterest_link }}" aria-label="Crestoria on Pinterest">{{ 'icon-pinterest.svg' | inline_asset_content }}</a>{% endif %}
+          {% if settings.social_tiktok_link != blank %}<a href="{{ settings.social_tiktok_link }}" aria-label="Crestoria on TikTok">{{ 'icon-tiktok.svg' | inline_asset_content }}</a>{% endif %}
+          {% if settings.social_youtube_link != blank %}<a href="{{ settings.social_youtube_link }}" aria-label="Crestoria on YouTube">{{ 'icon-youtube.svg' | inline_asset_content }}</a>{% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="pm-shell pm-footer-base">
+    <div class="pm-footer-signature"><a class="pm-wordmark" href="{{ routes.root_url }}">Crestoria</a><p>© {{ 'now' | date: '%Y' }} Crestoria. All rights reserved.</p></div>
+    <div class="pm-footer-legal-links">
+      {% assign fallback_id = 'PMFooter-terms-' | append: section.id %}{% render 'pb-footer-entry', url: terms_url, label: 'Terms of Service', dialog_id: fallback_id %}
+      {% assign fallback_id = 'PMFooter-privacy-' | append: section.id %}{% render 'pb-footer-entry', url: privacy_url, label: 'Privacy Policy', dialog_id: fallback_id %}
+    </div>
+    {% if section.settings.show_payment and shop.enabled_payment_types.size > 0 %}<div class="pm-footer-payment-block"><span>Payment methods</span><div class="pm-payments" aria-label="Accepted payment methods">{% for type in shop.enabled_payment_types %}{{ type | payment_type_svg_tag }}{% endfor %}</div></div>{% endif %}
+  </div>
+</div>
+{% if about_url == blank %}
+<dialog id="PMFooter-about-{{ section.id }}" class="pm-dialog pm-footer-dialog" aria-labelledby="PMFooterDialogTitle-about-{{ section.id }}">
+  <div class="pm-dialog-head"><h2 id="PMFooterDialogTitle-about-{{ section.id }}">About us</h2><button class="pm-icon-button" type="button" data-pm-close aria-label="Close">{% render 'pb-market-icon', icon: 'close' %}</button></div>
+  <div class="pm-dialog-body"><p>{{ section.settings.brand_text | escape }}</p><p>Explore Crestoria for personalized gifts and decor, or contact us for help choosing a design.</p><a class="pm-button" href="{{ routes.all_products_collection_url }}">Explore the collection</a></div>
+</dialog>
+{% endif %}
+{% if reviews_url == blank %}
+<dialog id="PMFooter-reviews-{{ section.id }}" class="pm-dialog pm-footer-dialog" aria-labelledby="PMFooterDialogTitle-reviews-{{ section.id }}">
+  <div class="pm-dialog-head"><h2 id="PMFooterDialogTitle-reviews-{{ section.id }}">Reviews</h2><button class="pm-icon-button" type="button" data-pm-close aria-label="Close">{% render 'pb-market-icon', icon: 'close' %}</button></div>
+  <div class="pm-dialog-body"><p>Look for customer feedback on individual product pages. For questions about a design or an order, contact our support team.</p><a class="pm-button" href="{{ routes.all_products_collection_url }}">Browse products</a></div>
+</dialog>
+{% endif %}
+{% if accessibility_url == blank %}
+<dialog id="PMFooter-accessibility-{{ section.id }}" class="pm-dialog pm-footer-dialog" aria-labelledby="PMFooterDialogTitle-accessibility-{{ section.id }}">
+  <div class="pm-dialog-head"><h2 id="PMFooterDialogTitle-accessibility-{{ section.id }}">Accessibility Statement</h2><button class="pm-icon-button" type="button" data-pm-close aria-label="Close">{% render 'pb-market-icon', icon: 'close' %}</button></div>
+  <div class="pm-dialog-body"><p>Having difficulty browsing a page, personalizing a product or placing an order? Please let us know the page and the issue so we can help you shop.</p><p><a href="{{ contact_url }}" {% if contact_url == '#PMContactSupport' %}data-pm-open="PMContactSupport"{% endif %}>Contact our support team</a>.</p></div>
+</dialog>
+{% endif %}
+{% if cancellation_url == blank %}
+<dialog id="PMFooter-cancellation-{{ section.id }}" class="pm-dialog pm-footer-dialog" aria-labelledby="PMFooterDialogTitle-cancellation-{{ section.id }}">
+  <div class="pm-dialog-head"><h2 id="PMFooterDialogTitle-cancellation-{{ section.id }}">Cancellation &amp; Modification</h2><button class="pm-icon-button" type="button" data-pm-close aria-label="Close">{% render 'pb-market-icon', icon: 'close' %}</button></div>
+  <div class="pm-dialog-body"><p>To request a cancellation or a change, contact us with your order number and the details as soon as possible. We will check the status of your order and let you know what is possible.</p><p>A request does not automatically change or cancel an order.</p><a class="pm-button" href="{{ contact_url }}" {% if contact_url == '#PMContactSupport' %}data-pm-open="PMContactSupport"{% endif %}>Contact support</a></div>
+</dialog>
+{% endif %}
+{% if refund_url == blank %}
+<dialog id="PMFooter-refund-{{ section.id }}" class="pm-dialog pm-footer-dialog" aria-labelledby="PMFooterDialogTitle-refund-{{ section.id }}">
+  <div class="pm-dialog-head"><h2 id="PMFooterDialogTitle-refund-{{ section.id }}">Refund &amp; Replacement</h2><button class="pm-icon-button" type="button" data-pm-close aria-label="Close">{% render 'pb-market-icon', icon: 'close' %}</button></div>
+  <div class="pm-dialog-body"><p>For a question about a return, refund, replacement or a problem with your order, contact us with your order number and relevant photos.</p><p>Please request the current policy and return instructions before sending an item back.</p><a class="pm-button" href="{{ contact_url }}" {% if contact_url == '#PMContactSupport' %}data-pm-open="PMContactSupport"{% endif %}>Contact support</a></div>
+</dialog>
+{% endif %}
+{% if size_url == blank %}
+<dialog id="PMFooter-size-{{ section.id }}" class="pm-dialog pm-footer-dialog" aria-labelledby="PMFooterDialogTitle-size-{{ section.id }}">
+  <div class="pm-dialog-head"><h2 id="PMFooterDialogTitle-size-{{ section.id }}">Size Chart</h2><button class="pm-icon-button" type="button" data-pm-close aria-label="Close">{% render 'pb-market-icon', icon: 'close' %}</button></div>
+  <div class="pm-dialog-body"><p>Dimensions and available sizes vary by product. Check the product photos, options and description for the design you are considering.</p><p>Need a size confirmed before ordering? Send us the product name or link.</p><a class="pm-button" href="{{ contact_url }}" {% if contact_url == '#PMContactSupport' %}data-pm-open="PMContactSupport"{% endif %}>Ask about a size</a></div>
+</dialog>
+{% endif %}
+{% if shipping_url == blank %}
+<dialog id="PMFooter-shipping-{{ section.id }}" class="pm-dialog pm-footer-dialog" aria-labelledby="PMFooterDialogTitle-shipping-{{ section.id }}">
+  <div class="pm-dialog-head"><h2 id="PMFooterDialogTitle-shipping-{{ section.id }}">Shipping And Delivery</h2><button class="pm-icon-button" type="button" data-pm-close aria-label="Close">{% render 'pb-market-icon', icon: 'close' %}</button></div>
+  <div class="pm-dialog-body"><p>Please check the product page and checkout for the delivery information available for your item and destination.</p><p>For a specific date or an existing order, contact our team with the product link or order number.</p><a class="pm-button" href="{{ contact_url }}" {% if contact_url == '#PMContactSupport' %}data-pm-open="PMContactSupport"{% endif %}>Ask about shipping</a></div>
+</dialog>
+{% endif %}
+{% if terms_url == blank %}
+<dialog id="PMFooter-terms-{{ section.id }}" class="pm-dialog pm-footer-dialog" aria-labelledby="PMFooterDialogTitle-terms-{{ section.id }}">
+  <div class="pm-dialog-head"><h2 id="PMFooterDialogTitle-terms-{{ section.id }}">Terms of Service</h2><button class="pm-icon-button" type="button" data-pm-close aria-label="Close">{% render 'pb-market-icon', icon: 'close' %}</button></div>
+  <div class="pm-dialog-body"><p>Please contact Crestoria for the current store terms before placing an order.</p><a class="pm-button" href="{{ contact_url }}" {% if contact_url == '#PMContactSupport' %}data-pm-open="PMContactSupport"{% endif %}>Request store terms</a></div>
+</dialog>
+{% endif %}
+{% if privacy_url == blank %}
+<dialog id="PMFooter-privacy-{{ section.id }}" class="pm-dialog pm-footer-dialog" aria-labelledby="PMFooterDialogTitle-privacy-{{ section.id }}">
+  <div class="pm-dialog-head"><h2 id="PMFooterDialogTitle-privacy-{{ section.id }}">Privacy Policy</h2><button class="pm-icon-button" type="button" data-pm-close aria-label="Close">{% render 'pb-market-icon', icon: 'close' %}</button></div>
+  <div class="pm-dialog-body"><p>For the current privacy policy or a question about your personal information, contact Crestoria.</p><a class="pm-button" href="{{ contact_url }}" {% if contact_url == '#PMContactSupport' %}data-pm-open="PMContactSupport"{% endif %}>Contact Crestoria</a></div>
+</dialog>
+{% endif %}
+{% if disclaimer_url == blank %}
+<dialog id="PMFooter-disclaimer-{{ section.id }}" class="pm-dialog pm-footer-dialog" aria-labelledby="PMFooterDialogTitle-disclaimer-{{ section.id }}">
+  <div class="pm-dialog-head"><h2 id="PMFooterDialogTitle-disclaimer-{{ section.id }}">Disclaimer Regarding Fake Websites</h2><button class="pm-icon-button" type="button" data-pm-close aria-label="Close">{% render 'pb-market-icon', icon: 'close' %}</button></div>
+  <div class="pm-dialog-body"><p>Unsure about a website or message using the Crestoria name? Contact us before sharing payment details or personal information.</p>{% if support_email != blank %}<p>Our support email is <a href="mailto:{{ support_email | escape }}">{{ support_email | escape }}</a>.</p>{% else %}<p><a href="{{ contact_url }}" {% if contact_url == '#PMContactSupport' %}data-pm-open="PMContactSupport"{% endif %}>Contact Crestoria</a> to check a message before responding.</p>{% endif %}</div>
+</dialog>
+{% endif %}
+
+
+<dialog id="PMContactSupport" class="pm-dialog pm-footer-dialog" aria-labelledby="PMContactSupportTitle">
+  <div class="pm-dialog-head"><h2 id="PMContactSupportTitle">Contact Crestoria</h2><button class="pm-icon-button" type="button" data-pm-close aria-label="Close contact form">{% render 'pb-market-icon', icon: 'close' %}</button></div>
+  <div class="pm-dialog-body">
+    <p>Questions about a design or an order? Send us a message.</p>
+    {% form 'contact', id: 'CrestoriaContactForm', class: 'pm-contact-form' %}
+      {% if form.posted_successfully? %}<p role="status">Thank you. Your message has been sent to Crestoria.</p>{% endif %}
+      {% if form.errors %}<div role="alert">{{ form.errors | default_errors }}</div>{% endif %}
+      <label for="CrestoriaContactName">Name</label><input id="CrestoriaContactName" name="contact[name]" autocomplete="name" type="text" value="{{ form.name | default: customer.name | escape }}" required>
+      <label for="CrestoriaContactEmail">Email address</label><input id="CrestoriaContactEmail" name="contact[email]" autocomplete="email" type="email" value="{{ form.email | default: customer.email | escape }}" required>
+      <label for="CrestoriaContactBody">Your message</label><textarea id="CrestoriaContactBody" name="contact[body]" rows="5" required>{{ form.body | escape }}</textarea>
+      <button type="submit" class="pm-button">Send message {% render 'pb-market-icon', icon: 'arrow' %}</button>
+    {% endform %}
+  </div>
+</dialog>
+
+{% schema %}
+{
+  "name": "Crestoria Market Footer",
+  "tag": "footer",
+  "class": "pm-footer-host",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Footer columns"
+    },
+    {
+      "type": "text",
+      "id": "information_heading",
+      "label": "Information heading",
+      "default": "Information"
+    },
+    {
+      "type": "link_list",
+      "id": "information_menu",
+      "label": "Information menu override"
+    },
+    {
+      "type": "text",
+      "id": "service_heading",
+      "label": "Customer service heading",
+      "default": "Customer Service"
+    },
+    {
+      "type": "link_list",
+      "id": "service_menu",
+      "label": "Customer service menu override"
+    },
+    {
+      "type": "text",
+      "id": "policies_heading",
+      "label": "Policies heading",
+      "default": "Policies"
+    },
+    {
+      "type": "link_list",
+      "id": "policies_menu",
+      "label": "Policies menu override"
+    },
+    {
+      "type": "text",
+      "id": "support_heading",
+      "label": "Support heading",
+      "default": "Help center"
+    },
+    {
+      "type": "text",
+      "id": "support_email",
+      "label": "Support email",
+      "info": "Optional. Use a verified address only. If blank, use the shared support email or the contact form."
+    },
+    {
+      "type": "textarea",
+      "id": "support_text",
+      "label": "Support text",
+      "default": "Questions about a product or an order? We are here to help."
+    },
+    {
+      "type": "text",
+      "id": "support_hours",
+      "label": "Support hours",
+      "info": "Optional. Enter only your own support hours; never the reference store’s hours."
+    },
+    {
+      "type": "text",
+      "id": "ticket_label",
+      "label": "Support button",
+      "default": "Submit a ticket"
+    },
+    {
+      "type": "url",
+      "id": "ticket_url",
+      "label": "Ticket / support form URL"
+    },
+    {
+      "type": "url",
+      "id": "contact_url",
+      "label": "Contact page override"
+    },
+    {
+      "type": "url",
+      "id": "help_url",
+      "label": "Help center URL"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "label": "Show configured social links",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment",
+      "label": "Show actual payment methods",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Show newsletter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "newsletter_title",
+      "label": "Newsletter heading",
+      "default": "A little inspiration, in your inbox."
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_text",
+      "label": "Newsletter text",
+      "default": "Gift inspiration, new designs and seasonal favorites, straight from Crestoria."
+    },
+    {
+      "type": "text",
+      "id": "subscribe_label",
+      "label": "Subscribe button",
+      "default": "Subscribe"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_note",
+      "label": "Newsletter note",
+      "default": "Subscribe to receive Crestoria emails. Unsubscribe at any time."
+    },
+    {
+      "type": "header",
+      "content": "Page links"
+    },
+    {
+      "type": "paragraph",
+      "content": "Existing Crestoria pages and store policies are used automatically. Set a link override to choose a different page. If a page does not exist, the item opens a help panel instead of a broken link. No competitor policies or legal identity are included."
+    },
+    {
+      "type": "textarea",
+      "id": "brand_text",
+      "label": "About Crestoria fallback",
+      "default": "Personalized gifts and 3D-printed decor for the people, hobbies and little moments that matter."
+    },
+    {
+      "type": "url",
+      "id": "about_url",
+      "label": "About us link"
+    },
+    {
+      "type": "url",
+      "id": "reviews_url",
+      "label": "Reviews link"
+    },
+    {
+      "type": "url",
+      "id": "accessibility_url",
+      "label": "Accessibility Statement link"
+    },
+    {
+      "type": "url",
+      "id": "tracking_url",
+      "label": "Track Order link"
+    },
+    {
+      "type": "url",
+      "id": "cancellation_url",
+      "label": "Cancellation & Modification link"
+    },
+    {
+      "type": "url",
+      "id": "refund_url",
+      "label": "Refund & Replacement link"
+    },
+    {
+      "type": "url",
+      "id": "size_url",
+      "label": "Size Chart link"
+    },
+    {
+      "type": "url",
+      "id": "shipping_url",
+      "label": "Shipping And Delivery link"
+    },
+    {
+      "type": "url",
+      "id": "terms_url",
+      "label": "Terms of Service link"
+    },
+    {
+      "type": "url",
+      "id": "privacy_url",
+      "label": "Privacy Policy link"
+    },
+    {
+      "type": "url",
+      "id": "disclaimer_url",
+      "label": "Disclaimer Regarding Fake Websites link"
+    }
+  ]
+}
+{% endschema %}

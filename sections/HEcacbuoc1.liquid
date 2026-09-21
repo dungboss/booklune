@@ -1,0 +1,136 @@
+{% comment %}
+  SECTION 4/8: Các bước có ảnh (kiểu "LIGHT THE NIGHT IN THREE STEPS")
+  Cài: Edit code → Sections → Add a new section → tên "nl-steps" → dán → Save.
+  Mỗi bước 1 block: ảnh phía trên + badge số tự đánh + tiêu đề + mô tả.
+{% endcomment %}
+
+<div class="nls-sec" style="background-color:{{ section.settings.section_bg }}">
+<div class="nls{% if section.settings.hover_effect %} nls--hover{% endif %}{% if section.settings.animate %} nls--anim{% endif %}" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;--nls-card:{{ section.settings.card_bg }};--nls-border:{{ section.settings.border_color }};--nls-eyebrow:{{ section.settings.eyebrow_color }};--nls-head:{{ section.settings.heading_color }};--nls-title:{{ section.settings.title_color }};--nls-text:{{ section.settings.text_color }};--nls-badge:{{ section.settings.badge_bg }};--nls-badgetext:{{ section.settings.badge_text_color }};--nls-h:{{ section.settings.heading_size }}px;--nls-t:{{ section.settings.title_size }}px;--nls-d:{{ section.settings.desc_size }}px;--nls-pad:{{ section.settings.card_padding }}px;--nls-r:{{ section.settings.card_radius }}px;--nls-ar:{{ section.settings.aspect }}">
+
+  {%- if section.settings.eyebrow != blank -%}
+    <span class="nls__eyebrow">{{ section.settings.eyebrow }}</span>
+  {%- endif -%}
+  {%- if section.settings.heading != blank -%}
+    <h2 class="nls__heading">{{ section.settings.heading }}</h2>
+  {%- endif -%}
+
+  <div class="nls__grid" style="--nls-cols:{{ section.blocks.size | at_most: 4 }}">
+    {%- for block in section.blocks -%}
+      <div class="nls__card" {{ block.shopify_attributes }}>
+        <div class="nls__imgwrap">
+          <span class="nls__num">{{ forloop.index }}</span>
+          {%- if block.settings.image != blank -%}
+            {{ block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', class: 'nls__img' }}
+          {%- else -%}
+            {{ 'product-2' | placeholder_svg_tag: 'nls__img nls__ph' }}
+          {%- endif -%}
+        </div>
+        <div class="nls__body">
+          {%- if block.settings.title != blank -%}<h3 class="nls__title">{{ block.settings.title }}</h3>{%- endif -%}
+          {%- if block.settings.text != blank -%}<p class="nls__desc">{{ block.settings.text | newline_to_br }}</p>{%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+</div>
+
+<style>
+  .nls-sec{overflow-x:hidden}
+  .nls{max-width:1200px;margin:0 auto;padding-left:20px;padding-right:20px;box-sizing:border-box}
+  .nls *{box-sizing:border-box;margin:0;padding:0}
+  .nls__eyebrow{display:block;text-align:center;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--nls-eyebrow);margin-bottom:9px}
+  .nls__heading{text-align:center;font-size:var(--nls-h,26px);font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:var(--nls-head);margin-bottom:20px;overflow-wrap:break-word}
+  .nls__grid{display:grid;grid-template-columns:repeat(var(--nls-cols,3),minmax(0,1fr));gap:14px}
+  .nls__card{background:var(--nls-card);border:1px solid var(--nls-border);border-radius:var(--nls-r,12px);overflow:hidden;transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease}
+  .nls--hover .nls__card:hover{transform:translateY(-6px);border-color:var(--nls-badge);box-shadow:0 20px 38px -20px rgba(0,0,0,.9)}
+  .nls__imgwrap{position:relative;overflow:hidden}
+  .nls__num{position:absolute;top:10px;left:10px;z-index:2;width:24px;height:24px;border-radius:50%;background:var(--nls-badge);color:var(--nls-badgetext);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 0 14px -2px var(--nls-badge)}
+  .nls__img{width:100%;aspect-ratio:var(--nls-ar,4/3);object-fit:cover;display:block;transition:transform .5s ease}
+  .nls--hover .nls__card:hover .nls__img{transform:scale(1.05)}
+  .nls__ph{background:#0c1420;fill:#2c3d52}
+  .nls__body{padding:var(--nls-pad,16px)}
+  .nls__title{font-size:var(--nls-t,14px);font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--nls-title);margin-bottom:7px;overflow-wrap:break-word}
+  .nls__desc{font-size:var(--nls-d,12px);line-height:1.6;color:var(--nls-text);overflow-wrap:break-word}
+  .nls--anim .nls__card{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+  .nls--anim.is-in .nls__card{opacity:1;transform:none}
+  .nls--anim.is-in .nls__card:nth-child(2){transition-delay:.12s}
+  .nls--anim.is-in .nls__card:nth-child(3){transition-delay:.24s}
+  .nls--anim.is-in .nls__card:nth-child(4){transition-delay:.36s}
+  @media (max-width:849px){.nls__grid{grid-template-columns:minmax(0,1fr)}}
+  @media (prefers-reduced-motion:reduce){
+    .nls__card,.nls__img{transition:none}
+    .nls--hover .nls__card:hover,.nls--hover .nls__card:hover .nls__img{transform:none}
+    .nls--anim .nls__card{opacity:1;transform:none}
+  }
+</style>
+
+<script>
+(function(){
+  var els=document.querySelectorAll('.nls--anim');
+  if(!els.length)return;
+  if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('is-in');});return;}
+  var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('is-in');io.unobserve(x.target);}});},{threshold:.15});
+  els.forEach(function(e){io.observe(e);});
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Các bước có ảnh",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Effortless Experience" },
+    { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Set It Up In Three Steps" },
+    { "type": "select", "id": "aspect", "label": "Tỉ lệ ảnh",
+      "options": [
+        { "value": "1/1", "label": "1:1 vuông" },
+        { "value": "4/3", "label": "4:3" },
+        { "value": "3/2", "label": "3:2" },
+        { "value": "16/9", "label": "16:9" }
+      ], "default": "4/3" },
+    { "type": "checkbox", "id": "hover_effect", "label": "Hiệu ứng nổi khi di chuột", "default": true },
+    { "type": "checkbox", "id": "animate", "label": "Card hiện dần khi cuộn tới", "default": true },
+    { "type": "header", "content": "Màu sắc" },
+    { "type": "color", "id": "section_bg", "label": "Màu nền section", "default": "#050a12" },
+    { "type": "color", "id": "card_bg", "label": "Màu nền card", "default": "#0a1119" },
+    { "type": "color", "id": "border_color", "label": "Màu viền card", "default": "#1d2c3d" },
+    { "type": "color", "id": "eyebrow_color", "label": "Màu eyebrow", "default": "#5c7d9c" },
+    { "type": "color", "id": "heading_color", "label": "Màu tiêu đề section", "default": "#ffffff" },
+    { "type": "color", "id": "title_color", "label": "Màu tiêu đề card", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Màu mô tả", "default": "#8ea3b8" },
+    { "type": "color", "id": "badge_bg", "label": "Badge số — màu nền", "default": "#4aa3e8" },
+    { "type": "color", "id": "badge_text_color", "label": "Badge số — màu chữ", "default": "#06101c" },
+    { "type": "header", "content": "Cỡ chữ & kích cỡ card" },
+    { "type": "range", "id": "heading_size", "min": 14, "max": 44, "step": 1, "unit": "px", "label": "Cỡ chữ tiêu đề section", "default": 26 },
+    { "type": "range", "id": "title_size", "min": 11, "max": 24, "step": 1, "unit": "px", "label": "Cỡ chữ tiêu đề card", "default": 14 },
+    { "type": "range", "id": "desc_size", "min": 10, "max": 18, "step": 1, "unit": "px", "label": "Cỡ chữ mô tả", "default": 12 },
+    { "type": "range", "id": "card_padding", "min": 8, "max": 40, "step": 2, "unit": "px", "label": "Padding trong card", "default": 16 },
+    { "type": "range", "id": "card_radius", "min": 0, "max": 28, "step": 1, "unit": "px", "label": "Bo góc card", "default": 12 },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding trên", "default": 32 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding dưới", "default": 24 }
+  ],
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Bước",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Ảnh" },
+        { "type": "text", "id": "title", "label": "Tiêu đề", "default": "Step title" },
+        { "type": "textarea", "id": "text", "label": "Mô tả", "default": "Short description of this step." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "T03 Các bước có ảnh",
+      "blocks": [
+        { "type": "step", "settings": { "title": "Place Your Display" } },
+        { "type": "step", "settings": { "title": "Choose Your Mood" } },
+        { "type": "step", "settings": { "title": "Own The Night" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

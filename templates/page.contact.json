@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "pb-market-contact",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

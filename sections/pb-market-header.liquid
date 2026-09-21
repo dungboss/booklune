@@ -1,0 +1,85 @@
+<div class="pm-header" data-pm-header>
+  {% if section.settings.announcement != blank %}<div class="pm-announcement">{{ section.settings.announcement | escape }}</div>{% endif %}
+  <div class="pm-shell pm-header-main">
+    <button type="button" class="pm-icon-button pm-mobile-menu-button" data-pm-open="PMMobileMenu" aria-label="Open menu">{% render 'pb-market-icon', icon: 'menu' %}</button>
+    <a class="pm-wordmark" href="{{ routes.root_url }}" aria-label="Crestoria home">Crestoria</a>
+    <div class="pm-search" data-pm-search>
+      <form action="{{ routes.search_url }}" method="get" role="search" class="pm-search-form">
+        <label class="pm-sr" for="PMSearch-{{ section.id }}">Search products</label>
+        <input id="PMSearch-{{ section.id }}" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ section.settings.search_placeholder | escape }}" autocomplete="off" data-pm-search-input role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="PMResults-{{ section.id }}">
+        <input type="hidden" name="type" value="product"><input type="hidden" name="options[prefix]" value="last">
+        <button type="submit" class="pm-search-submit" aria-label="Search">{% render 'pb-market-icon', icon: 'search' %}</button>
+      </form>
+      <div class="pm-search-results" id="PMResults-{{ section.id }}" data-pm-search-results role="listbox" aria-label="Suggested products" hidden></div>
+    </div>
+    <div class="pm-header-actions">
+      {% if shop.customer_accounts_enabled %}<a class="pm-account" href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}">{% if customer %}My Account{% else %}Sign In{% endif %}</a>{% endif %}
+      <button class="pm-track pm-text-button" type="button" data-pm-open="PMTrackOrder">Track Order</button>
+      {% if localization.available_countries.size > 1 %}
+        {% form 'localization', id: 'PMCountryForm', class: 'pm-country' %}
+          <label class="pm-sr" for="PMCountry">Country and currency</label>
+          <select id="PMCountry" name="country_code" aria-label="Country and currency" data-pm-country>{% for country in localization.available_countries %}<option value="{{ country.iso_code }}" {% if country.iso_code == localization.country.iso_code %}selected{% endif %}>{{ country.iso_code }} · {{ country.currency.iso_code }}</option>{% endfor %}</select>
+          <noscript><button type="submit">Apply</button></noscript>
+        {% endform %}
+      {% endif %}
+      <button class="pm-icon-button pm-wishlist-open" type="button" data-pm-open="PMWishlist" aria-label="Open saved gifts">{% render 'pb-market-icon', icon: 'heart' %}<span class="pm-counter" data-pm-wishlist-count hidden>0</span></button>
+      <a id="cart-icon-bubble" class="pm-icon-button pm-cart-link" href="{{ routes.cart_url }}" aria-label="Cart, {{ cart.item_count }} items">{% render 'pb-market-icon', icon: 'cart' %}<span class="pm-counter" data-pm-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>{{ cart.item_count }}</span></a>
+    </div>
+  </div>
+  <nav class="pm-shell pm-nav" aria-label="Main navigation">
+    <a href="{{ routes.root_url }}" {% if request.page_type == 'index' %}aria-current="page"{% endif %}>Home</a>
+    <details class="pm-menu"><summary>Collection {% render 'pb-market-icon', icon: 'down' %}</summary><div class="pm-mega">{% render 'pb-market-mega', menu_kind: 'collections' %}</div></details>
+    <a class="pm-season-link" href="{{ routes.root_url }}#pb-halloween">Halloween</a>
+    <a class="pm-season-link" href="{{ routes.root_url }}#pb-christmas">Christmas</a>
+    <a class="pm-season-link" href="{{ routes.root_url }}#pb-wedding">Wedding</a>
+    <details class="pm-menu"><summary>Gifts {% render 'pb-market-icon', icon: 'down' %}</summary><div class="pm-mega">{% render 'pb-market-mega', menu_kind: 'gifts' %}</div></details>
+    <details class="pm-menu"><summary>Home &amp; Living {% render 'pb-market-icon', icon: 'down' %}</summary><div class="pm-mega">{% render 'pb-market-mega', menu_kind: 'home' %}</div></details>
+    <a href="{% render 'pb-market-link', handle: 'can-holder', query: 'can cooler' %}">Drink &amp; Barware</a>
+    {% if section.settings.show_apparel %}<a href="{{ routes.search_url }}?type=product&amp;q=apparel">Apparel</a>{% endif %}
+    <a href="{{ routes.search_url }}?type=product&amp;q=accessories">Accessories</a>
+    <button class="pm-text-button" type="button" data-pm-open="PMGiftFinder">Gift Finder</button>
+    {% render 'crestoria-support-link', label: 'Contact', prefer_form: true %}
+  </nav>
+  <nav class="pm-mobile-links" aria-label="Quick navigation"><a href="{{ routes.root_url }}">Home</a><a href="{{ routes.all_products_collection_url }}">Collection</a>{% render 'crestoria-support-link', label: 'Contact', prefer_form: true %}<button class="pm-text-button" type="button" data-pm-open="PMGiftFinder">Gift Finder</button></nav>
+</div>
+<dialog id="PMMobileMenu" class="pm-dialog pm-drawer" aria-labelledby="PMMenuTitle">
+ <div class="pm-dialog-head"><span id="PMMenuTitle" class="pm-wordmark">Crestoria</span><button class="pm-icon-button" type="button" data-pm-close aria-label="Close menu">{% render 'pb-market-icon', icon: 'close' %}</button></div>
+ <div class="pm-dialog-body"><nav class="pm-mobile-nav" aria-label="Mobile navigation"><a href="{{ routes.root_url }}">Home</a><a href="{{ routes.all_products_collection_url }}">All products</a><a href="{{ routes.root_url }}#pb-halloween">Halloween</a><a href="{{ routes.root_url }}#pb-christmas">Christmas</a><a href="{{ routes.root_url }}#pb-wedding">Wedding</a><details><summary>Collection {% render 'pb-market-icon', icon: 'down' %}</summary>{% render 'pb-market-mega', menu_kind: 'collections' %}</details><details><summary>Gifts {% render 'pb-market-icon', icon: 'down' %}</summary>{% render 'pb-market-mega', menu_kind: 'gifts' %}</details><details><summary>Home &amp; Living {% render 'pb-market-icon', icon: 'down' %}</summary>{% render 'pb-market-mega', menu_kind: 'home' %}</details><a href="{% render 'pb-market-link', handle: 'can-holder', query: 'can cooler' %}">Drink &amp; Barware</a>{% if section.settings.show_apparel %}<a href="{{ routes.search_url }}?type=product&amp;q=apparel">Apparel</a>{% endif %}<a href="{{ routes.search_url }}?type=product&amp;q=accessories">Accessories</a><button type="button" class="pm-text-button" data-pm-open="PMGiftFinder">Gift Finder</button>{% render 'crestoria-support-link', label: 'Contact', prefer_form: true %}</nav><div class="pm-mobile-support"><button class="pm-text-button" type="button" data-pm-open="PMTrackOrder">Track Order</button>{% if shop.customer_accounts_enabled %}<a href="{{ routes.account_login_url }}">Sign In</a>{% endif %}{% render 'crestoria-support-link' %}</div></div>
+</dialog>
+<dialog id="PMWishlist" class="pm-dialog pm-wishlist-dialog" aria-labelledby="PMWishlistTitle"><div class="pm-dialog-head"><h2 id="PMWishlistTitle">Your saved gifts</h2><button class="pm-icon-button" type="button" data-pm-close aria-label="Close saved gifts">{% render 'pb-market-icon', icon: 'close' %}</button></div><div class="pm-dialog-body"><p class="pm-muted">Keep your favorites together on this browser.</p><div data-pm-wishlist-list></div></div></dialog>
+<dialog id="PMTrackOrder" class="pm-dialog" aria-labelledby="PMTrackTitle"><div class="pm-dialog-head"><h2 id="PMTrackTitle">Track your order</h2><button class="pm-icon-button" type="button" data-pm-close aria-label="Close order help">{% render 'pb-market-icon', icon: 'close' %}</button></div><div class="pm-dialog-body"><p>Open the order-status link in your confirmation or shipping email to see the latest information for your order.</p>{% if section.settings.tracking_url != blank %}<a class="pm-button" href="{{ section.settings.tracking_url }}">Open order tracking</a>{% elsif pages['track-order'] != blank %}<a class="pm-button" href="{{ pages['track-order'].url }}">Open order tracking</a>{% endif %}{% if shop.customer_accounts_enabled %}<a class="pm-button pm-button-outline" href="{{ routes.account_url }}">View my orders</a>{% endif %}<p class="pm-muted">Need help? Contact us: {% render 'crestoria-support-link' %} with your order number and the email used at checkout.</p></div></dialog>
+<dialog id="PMGiftFinder" class="pm-dialog" aria-labelledby="PMGiftTitle"><div class="pm-dialog-head"><h2 id="PMGiftTitle">Find their kind of gift</h2><button class="pm-icon-button" type="button" data-pm-close aria-label="Close gift finder">{% render 'pb-market-icon', icon: 'close' %}</button></div><div class="pm-dialog-body"><p>Start with what they love. Then choose a budget.</p><form action="{{ routes.all_products_collection_url }}" method="get" data-pm-gift-form><label for="PMGiftInterest">What are they into?</label><select id="PMGiftInterest" data-pm-gift-interest><option value="{{ routes.all_products_collection_url }}">A little bit of everything</option>{% for c in collections %}{% if c.all_products_count > 0 and c.handle != 'all' %}<option value="{{ c.url }}">{{ c.title | escape }}</option>{% endif %}{% endfor %}</select><label for="PMGiftBudget">Your budget ({{ localization.country.currency.iso_code }})</label><select id="PMGiftBudget" name="filter.v.price.lte"><option value="">Any budget</option><option value="20">Under 20</option><option value="30">Under 30</option><option value="50">Under 50</option><option value="100">Under 100</option></select><button type="submit" class="pm-button">Show gift ideas {% render 'pb-market-icon', icon: 'arrow' %}</button></form></div></dialog>
+<div class="pm-toast" data-pm-toast role="status" aria-live="polite" hidden></div>
+
+{% schema %}
+{
+  "name": "Crestoria Market Header",
+  "tag": "header",
+  "class": "pm-header-host",
+  "settings": [
+    {
+      "type": "text",
+      "id": "announcement",
+      "label": "Announcement text"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search placeholder",
+      "default": "Find a gift made just for them"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_apparel",
+      "label": "Show Apparel in navigation",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "tracking_url",
+      "label": "Order tracking page or app URL",
+      "info": "Leave blank to use the existing Track Order page, account orders, and order-email help."
+    }
+  ]
+}
+{% endschema %}

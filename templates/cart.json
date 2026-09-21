@@ -1,0 +1,41 @@
+{
+  "sections": {
+    "cart-items": {
+      "type": "ds-main-cart-items",
+      "settings": {
+        "padding_top": 0,
+        "padding_bottom": 24
+      }
+    },
+    "ds-featured-collection": {
+      "type": "pb-market-products",
+      "settings": {
+        "title": "You may also like",
+        "collection": "best-sellers",
+        "limit": 6,
+        "columns": 6,
+        "layout": "slider",
+        "fallback_all": true,
+        "soft_background": false
+      }
+    },
+    "cart-footer": {
+      "type": "main-cart-footer",
+      "blocks": {
+        "buttons": {
+          "type": "buttons",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "buttons"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "cart-items",
+    "cart-footer",
+    "ds-featured-collection"
+  ]
+}

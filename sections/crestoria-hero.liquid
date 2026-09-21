@@ -1,0 +1,310 @@
+{{ 'crestoria-theme.css' | asset_url | stylesheet_tag }}
+
+<section class="crestoria-hero color-{{ section.settings.color_scheme }} gradient">
+  {% if section.settings.show_brand_banner and section.settings.brand_banner != blank %}
+    <div class="crestoria-hero__brand-strip">
+      {{ section.settings.brand_banner | image_url: width: 2400 | image_tag:
+        class: 'crestoria-hero__brand-image',
+        loading: 'eager',
+        widths: '750, 1100, 1500, 2000, 2400',
+        sizes: '100vw',
+        alt: section.settings.brand_banner.alt | default: 'Crestoria'
+      }}
+    </div>
+  {% endif %}
+
+  <div class="page-width crestoria-hero__inner crestoria-hero__inner--{{ section.settings.image_position }}">
+    <div class="crestoria-hero__copy">
+      {% if section.settings.eyebrow != blank %}
+        <p class="crestoria-hero__eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+
+      {% if section.settings.heading != blank %}
+        <h1 class="crestoria-hero__heading">{{ section.settings.heading }}</h1>
+      {% endif %}
+
+      {% if section.settings.text != blank %}
+        <div class="crestoria-hero__text rte">{{ section.settings.text }}</div>
+      {% endif %}
+
+      <div class="crestoria-hero__buttons">
+        {% if section.settings.button_label != blank %}
+          <a class="button" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">
+            {{ section.settings.button_label }}
+          </a>
+        {% endif %}
+        {% if section.settings.secondary_button_label != blank %}
+          <a class="button button--secondary" href="{{ section.settings.secondary_button_link | default: routes.root_url }}">
+            {{ section.settings.secondary_button_label }}
+          </a>
+        {% endif %}
+      </div>
+
+      {% if section.settings.show_highlights %}
+        <ul class="crestoria-hero__highlights" role="list">
+          <li>Original designs</li>
+          <li>Personalized options</li>
+          <li>3D printed with care</li>
+        </ul>
+      {% endif %}
+    </div>
+
+    <div class="crestoria-hero__media">
+      {% if section.settings.product_image != blank %}
+        {{ section.settings.product_image | image_url: width: 1400 | image_tag:
+          class: 'crestoria-hero__product-image',
+          loading: 'eager',
+          widths: '550, 750, 950, 1200, 1400',
+          sizes: '(min-width: 990px) 46vw, 92vw',
+          alt: section.settings.product_image.alt | default: section.settings.heading
+        }}
+      {% else %}
+        <div class="crestoria-hero__placeholder">
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          <div class="crestoria-hero__placeholder-copy">
+            <strong>Add your best product photo</strong>
+            <span>Recommended: square or 4:5 transparent PNG</span>
+          </div>
+        </div>
+      {% endif %}
+
+      {% if section.settings.media_badge != blank %}
+        <div class="crestoria-hero__media-badge">{{ section.settings.media_badge }}</div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .crestoria-hero {
+    background:
+      radial-gradient(circle at 10% 92%, rgba(255,255,255,.72) 0 7%, transparent 7.2%),
+      radial-gradient(circle at 92% 88%, rgba(255,255,255,.66) 0 8%, transparent 8.2%),
+      linear-gradient(135deg, #FFFFFF 0%, #F8F3F1 62%, #E8D6D4 100%);
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .crestoria-hero__brand-strip {
+    position: relative;
+    width: 100%;
+    height: {{ section.settings.banner_max_height }}px;
+    background: #E5E5E5;
+    line-height: 0;
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .crestoria-hero__brand-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  #shopify-section-{{ section.id }} .crestoria-hero__inner {
+    min-height: {{ section.settings.height }}px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(380px, .92fr);
+    align-items: center;
+    gap: clamp(4rem, 7vw, 10rem);
+    padding-top: 64px;
+    padding-bottom: 72px;
+  }
+
+  #shopify-section-{{ section.id }} .crestoria-hero__inner--left .crestoria-hero__copy { order: 2; }
+  #shopify-section-{{ section.id }} .crestoria-hero__inner--left .crestoria-hero__media { order: 1; }
+
+  #shopify-section-{{ section.id }} .crestoria-hero__copy { max-width: 650px; }
+
+  #shopify-section-{{ section.id }} .crestoria-hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    margin: 0 0 20px;
+    padding: 8px 16px;
+    border: 1px solid rgba(163,85,83,.24);
+    border-radius: 999px;
+    background: rgba(255,255,255,.78);
+    color: #A35553;
+    box-shadow: 0 9px 25px rgba(17,17,17,.08);
+    font-family: 'Nunito', var(--font-body-family), sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .crestoria-hero__heading {
+    max-width: 620px;
+    margin: 0 0 22px;
+    color: #171717;
+    font-family: 'Fredoka', 'Nunito', var(--font-heading-family), sans-serif;
+    font-size: clamp(4.6rem, 5.5vw, 7.4rem);
+    font-weight: 650;
+    letter-spacing: -.045em;
+    line-height: .98;
+    text-wrap: balance;
+  }
+
+  #shopify-section-{{ section.id }} .crestoria-hero__text {
+    max-width: 590px;
+    margin: 0 0 30px;
+    color: #626262;
+    font-family: 'Nunito', var(--font-body-family), sans-serif;
+    font-size: 1.85rem;
+    font-weight: 500;
+    line-height: 1.7;
+  }
+
+  #shopify-section-{{ section.id }} .crestoria-hero__text p { margin: 0; }
+  #shopify-section-{{ section.id }} .crestoria-hero__buttons { display: flex; flex-wrap: wrap; gap: 12px; }
+  #shopify-section-{{ section.id }} .crestoria-hero__buttons .button { min-height: 50px; padding-inline: 30px; font-weight: 800; letter-spacing: .025em; }
+
+  #shopify-section-{{ section.id }} .crestoria-hero__highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 22px;
+    margin: 26px 0 0;
+    padding: 0;
+    color: #626262;
+    font-family: 'Nunito', var(--font-body-family), sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    list-style: none;
+  }
+
+  #shopify-section-{{ section.id }} .crestoria-hero__highlights li::before {
+    content: '✦';
+    margin-right: 7px;
+    color: #111111;
+  }
+
+  #shopify-section-{{ section.id }} .crestoria-hero__media {
+    position: relative;
+    width: 100%;
+    min-height: 440px;
+    border: 1px solid rgba(255,255,255,.75);
+    border-radius: 38px;
+    background: linear-gradient(145deg, rgba(255,255,255,.82), rgba(218,194,165,.34));
+    box-shadow: 0 30px 70px rgba(17,17,17,.16);
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .crestoria-hero__product-image {
+    width: 100%;
+    height: 100%;
+    min-height: 440px;
+    object-fit: {{ section.settings.image_fit }};
+    object-position: center;
+  }
+
+  #shopify-section-{{ section.id }} .crestoria-hero__placeholder {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 30px;
+    color: rgba(17,17,17,.34);
+  }
+
+  #shopify-section-{{ section.id }} .crestoria-hero__placeholder .placeholder-svg {
+    position: absolute;
+    inset: 10%;
+    width: 80%;
+    height: 80%;
+    opacity: .2;
+  }
+
+  #shopify-section-{{ section.id }} .crestoria-hero__placeholder-copy {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    gap: 4px;
+    padding: 14px 18px;
+    border-radius: 16px;
+    background: rgba(255,255,255,.72);
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .crestoria-hero__placeholder-copy strong { color: #171717; font-size: 1.45rem; }
+  #shopify-section-{{ section.id }} .crestoria-hero__placeholder-copy span { font-size: 1.2rem; }
+
+  #shopify-section-{{ section.id }} .crestoria-hero__media-badge {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    padding: 10px 15px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.88);
+    color: #A35553;
+    box-shadow: 0 10px 24px rgba(17,17,17,.13);
+    font-family: 'Nunito', var(--font-body-family), sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+  }
+
+  @media screen and (max-width: 989px) {
+    #shopify-section-{{ section.id }} .crestoria-hero__inner {
+      min-height: auto;
+      grid-template-columns: 1fr;
+      gap: 38px;
+      padding-top: 46px;
+      padding-bottom: 52px;
+    }
+    #shopify-section-{{ section.id }} .crestoria-hero__copy { max-width: 720px; text-align: center; margin-inline: auto; }
+    #shopify-section-{{ section.id }} .crestoria-hero__heading { margin-inline: auto; }
+    #shopify-section-{{ section.id }} .crestoria-hero__text { margin-inline: auto; margin-bottom: 26px; }
+    #shopify-section-{{ section.id }} .crestoria-hero__buttons,
+    #shopify-section-{{ section.id }} .crestoria-hero__highlights { justify-content: center; }
+    #shopify-section-{{ section.id }} .crestoria-hero__inner--left .crestoria-hero__copy,
+    #shopify-section-{{ section.id }} .crestoria-hero__inner--left .crestoria-hero__media { order: initial; }
+    #shopify-section-{{ section.id }} .crestoria-hero__media { min-height: 390px; }
+    #shopify-section-{{ section.id }} .crestoria-hero__product-image { min-height: 390px; }
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .crestoria-hero__brand-strip {
+      height: clamp(150px, 42vw, 220px);
+    }
+
+
+    #shopify-section-{{ section.id }} .crestoria-hero__inner { padding-top: 34px; padding-bottom: 40px; gap: 30px; }
+    #shopify-section-{{ section.id }} .crestoria-hero__eyebrow { margin-bottom: 14px; font-size: 1.05rem; }
+    #shopify-section-{{ section.id }} .crestoria-hero__heading { font-size: clamp(3.8rem, 13vw, 5.2rem); line-height: 1; }
+    #shopify-section-{{ section.id }} .crestoria-hero__text { font-size: 1.55rem; line-height: 1.62; }
+    #shopify-section-{{ section.id }} .crestoria-hero__buttons { display: grid; }
+    #shopify-section-{{ section.id }} .crestoria-hero__buttons .button { width: 100%; }
+    #shopify-section-{{ section.id }} .crestoria-hero__highlights { display: grid; gap: 8px; font-size: 1.2rem; }
+    #shopify-section-{{ section.id }} .crestoria-hero__media,
+    #shopify-section-{{ section.id }} .crestoria-hero__product-image { min-height: 330px; border-radius: 25px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Crestoria hero",
+  "settings": [
+    {"type":"checkbox","id":"show_brand_banner","label":"Show brand banner","default":false},
+    {"type":"image_picker","id":"brand_banner","label":"Brand banner (wide image)"},
+    {"type":"range","id":"banner_max_height","min":120,"max":420,"step":10,"unit":"px","label":"Desktop banner maximum height","default":250},
+    {"type":"range","id":"mobile_banner_max_height","min":80,"max":240,"step":10,"unit":"px","label":"Mobile banner maximum height","default":150},
+    {"type":"image_picker","id":"product_image","label":"Featured product image"},
+    {"type":"select","id":"image_fit","label":"Product image fit","default":"contain","options":[{"value":"contain","label":"Show whole image"},{"value":"cover","label":"Fill image area"}]},
+    {"type":"select","id":"image_position","label":"Product image position","default":"right","options":[{"value":"right","label":"Right"},{"value":"left","label":"Left"}]},
+    {"type":"text","id":"media_badge","label":"Image badge","default":"Made layer by layer"},
+    {"type":"text","id":"eyebrow","label":"Small heading","default":"PERSONALIZED 3D GIFTS & DECOR"},
+    {"type":"text","id":"heading","label":"Heading","default":"Playful ideas, brought to life"},
+    {"type":"richtext","id":"text","label":"Text","default":"<p>Discover personalized key holders, bookish accessories, desk decor and seasonal gifts designed to feel useful, original and unmistakably yours.</p>"},
+    {"type":"text","id":"button_label","label":"Primary button label","default":"SHOP BEST SELLERS"},
+    {"type":"url","id":"button_link","label":"Primary button link"},
+    {"type":"text","id":"secondary_button_label","label":"Secondary button label","default":"SHOP ALL PRODUCTS"},
+    {"type":"url","id":"secondary_button_link","label":"Secondary button link"},
+    {"type":"checkbox","id":"show_highlights","label":"Show product highlights","default":true},
+    {"type":"range","id":"height","min":440,"max":760,"step":20,"unit":"px","label":"Desktop content height","default":560},
+    {"type":"color_scheme","id":"color_scheme","label":"Color scheme","default":"scheme-3"}
+  ],
+  "presets":[{"name":"Crestoria hero"}]
+}
+{% endschema %}

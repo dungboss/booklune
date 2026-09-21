@@ -1,0 +1,129 @@
+{% comment %}
+  SECTION 3/8: Các bước đánh số (kiểu "FORM THE JUTSU")
+  Cài: Edit code → Sections → Add a new section → tên "lp-steps" → dán → Save.
+  Mỗi bước 1 block: ảnh nền + badge số tự đánh + tiêu đề + mô tả.
+{% endcomment %}
+
+<div class="lps-sec" style="background-color:{{ section.settings.section_bg }}">
+<div class="lps{% if section.settings.hover_effect %} lps--hover{% endif %}{% if section.settings.animate %} lps--anim{% endif %}" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;--lps-card:{{ section.settings.card_bg }};--lps-border:{{ section.settings.border_color }};--lps-head:{{ section.settings.heading_color }};--lps-title:{{ section.settings.title_color }};--lps-text:{{ section.settings.text_color }};--lps-badge:{{ section.settings.badge_bg }};--lps-badgetext:{{ section.settings.badge_text_color }};--lps-h:{{ section.settings.heading_size }}px;--lps-t:{{ section.settings.title_size }}px;--lps-d:{{ section.settings.desc_size }}px;--lps-pad:{{ section.settings.card_padding }}px;--lps-r:{{ section.settings.card_radius }}px;--lps-minh:{{ section.settings.card_height }}px;--lps-ov:{{ section.settings.overlay_opacity | divided_by: 100.0 }}">
+  {%- if section.settings.heading != blank -%}
+    <div class="lps__headwrap"><span class="lps__line"></span><h2 class="lps__heading">{{ section.settings.heading }}</h2><span class="lps__line"></span></div>
+  {%- endif -%}
+  <div class="lps__grid" style="--lps-cols:{{ section.blocks.size | at_most: 4 }}">
+    {%- for block in section.blocks -%}
+      <div class="lps__card" {{ block.shopify_attributes }}>
+        <div class="lps__bg">
+          {%- if block.settings.image != blank -%}
+            {{ block.settings.image | image_url: width: 900 | image_tag: loading: 'lazy', class: 'lps__img' }}
+          {%- endif -%}
+        </div>
+        <div class="lps__shade"></div>
+        <div class="lps__body">
+          <span class="lps__num">{{ forloop.index }}</span>
+          <div class="lps__txt">
+            {%- if block.settings.title != blank -%}<h3 class="lps__title">{{ block.settings.title }}</h3>{%- endif -%}
+            {%- if block.settings.text != blank -%}<p class="lps__desc">{{ block.settings.text }}</p>{%- endif -%}
+          </div>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+</div>
+
+<style>
+  .lps-sec{overflow-x:hidden}
+  .lps{max-width:1200px;margin:0 auto;padding-left:20px;padding-right:20px;box-sizing:border-box}
+  .lps *{box-sizing:border-box;margin:0;padding:0}
+  .lps__headwrap{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+  .lps__line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--lps-border))}
+  .lps__line:last-child{background:linear-gradient(90deg,var(--lps-border),transparent)}
+  .lps__heading{font-size:var(--lps-h,24px);font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--lps-head);text-align:center}
+  .lps__grid{display:grid;grid-template-columns:repeat(var(--lps-cols,3),minmax(0,1fr));gap:14px}
+  .lps__card{position:relative;min-height:var(--lps-minh,120px);background:var(--lps-card);border:1px solid var(--lps-border);border-radius:var(--lps-r,10px);overflow:hidden;transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease}
+  .lps--hover .lps__card:hover{transform:translateY(-6px);border-color:var(--lps-badge);box-shadow:0 18px 34px -16px rgba(0,0,0,.8)}
+  .lps__bg{position:absolute;inset:0}
+  .lps__img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
+  .lps--hover .lps__card:hover .lps__img{transform:scale(1.06)}
+  .lps__shade{position:absolute;inset:0;background:linear-gradient(90deg,#000 22%,transparent 92%);opacity:var(--lps-ov,.72)}
+  .lps__body{position:relative;display:flex;align-items:flex-start;gap:11px;padding:var(--lps-pad,16px)}
+  .lps__num{flex:0 0 26px;width:26px;height:26px;border-radius:50%;background:var(--lps-badge);color:var(--lps-badgetext);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .lps__txt{min-width:0}
+  .lps__title{font-size:var(--lps-t,14.5px);font-weight:700;color:var(--lps-title);margin-bottom:5px;overflow-wrap:break-word}
+  .lps__desc{font-size:var(--lps-d,12.5px);line-height:1.5;color:var(--lps-text);overflow-wrap:break-word}
+  .lps--anim .lps__card{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+  .lps--anim.is-in .lps__card{opacity:1;transform:none}
+  .lps--anim.is-in .lps__card:nth-child(2){transition-delay:.1s}
+  .lps--anim.is-in .lps__card:nth-child(3){transition-delay:.2s}
+  .lps--anim.is-in .lps__card:nth-child(4){transition-delay:.3s}
+  @media (max-width:849px){.lps__grid{grid-template-columns:minmax(0,1fr)}}
+  @media (prefers-reduced-motion:reduce){
+    .lps__card,.lps__img{transition:none}
+    .lps--hover .lps__card:hover{transform:none}
+    .lps--hover .lps__card:hover .lps__img{transform:none}
+    .lps--anim .lps__card{opacity:1;transform:none}
+  }
+</style>
+
+<script>
+(function(){
+  var els=document.querySelectorAll('.lps--anim');
+  if(!els.length)return;
+  if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('is-in');});return;}
+  var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('is-in');io.unobserve(x.target);}});},{threshold:.15});
+  els.forEach(function(e){io.observe(e);});
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Các bước đánh số",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "How It Works" },
+    { "type": "checkbox", "id": "hover_effect", "label": "Hiệu ứng nổi khi di chuột", "default": true },
+    { "type": "checkbox", "id": "animate", "label": "Card hiện dần khi cuộn tới", "default": true },
+    { "type": "header", "content": "Màu sắc" },
+    { "type": "color", "id": "section_bg", "label": "Màu nền section", "default": "#0a0d11" },
+    { "type": "color", "id": "card_bg", "label": "Màu nền card", "default": "#141a21" },
+    { "type": "color", "id": "border_color", "label": "Màu viền card", "default": "#2a333d" },
+    { "type": "color", "id": "heading_color", "label": "Màu tiêu đề section", "default": "#ffffff" },
+    { "type": "color", "id": "title_color", "label": "Màu tiêu đề card", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Màu mô tả", "default": "#a9b5c1" },
+    { "type": "color", "id": "badge_bg", "label": "Badge số — màu nền", "default": "#f2760c" },
+    { "type": "color", "id": "badge_text_color", "label": "Badge số — màu chữ", "default": "#ffffff" },
+    { "type": "range", "id": "overlay_opacity", "min": 0, "max": 95, "step": 5, "unit": "%", "label": "Độ tối lớp phủ ảnh", "default": 70 },
+    { "type": "header", "content": "Cỡ chữ & kích cỡ card" },
+    { "type": "range", "id": "heading_size", "min": 14, "max": 40, "step": 1, "unit": "px", "label": "Cỡ chữ tiêu đề section", "default": 24 },
+    { "type": "range", "id": "title_size", "min": 11, "max": 24, "step": 1, "unit": "px", "label": "Cỡ chữ tiêu đề card", "default": 15 },
+    { "type": "range", "id": "desc_size", "min": 10, "max": 18, "step": 1, "unit": "px", "label": "Cỡ chữ mô tả", "default": 13 },
+    { "type": "range", "id": "card_height", "min": 90, "max": 320, "step": 5, "unit": "px", "label": "Chiều cao tối thiểu card", "default": 120 },
+    { "type": "range", "id": "card_padding", "min": 10, "max": 40, "step": 2, "unit": "px", "label": "Padding trong card", "default": 16 },
+    { "type": "range", "id": "card_radius", "min": 0, "max": 26, "step": 1, "unit": "px", "label": "Bo góc card", "default": 10 },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding trên", "default": 20 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding dưới", "default": 12 }
+  ],
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Bước",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Ảnh nền card" },
+        { "type": "text", "id": "title", "label": "Tiêu đề", "default": "Step title" },
+        { "type": "textarea", "id": "text", "label": "Mô tả", "default": "Short step description." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "T3 Các bước đánh số",
+      "blocks": [
+        { "type": "step", "settings": { "title": "Step One", "text": "Describe the first step." } },
+        { "type": "step", "settings": { "title": "Step Two", "text": "Describe the second step." } },
+        { "type": "step", "settings": { "title": "Step Three", "text": "Describe the third step." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

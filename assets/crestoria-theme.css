@@ -1,0 +1,526 @@
+
+:root {
+  --crestoria-cream-50: #FFFFFF;
+  --crestoria-cream-100: #F8F3F1;
+  --crestoria-beige-200: #E8D6D4;
+  --crestoria-beige-300: #E2DDDA;
+  --crestoria-caramel-400: #A35553;
+  --crestoria-brown-500: #111111;
+  --crestoria-espresso: #171717;
+  --crestoria-brown: #525252;
+  --crestoria-white: #ffffff;
+  --crestoria-shadow: 0 14px 34px rgba(17,17,17, .15);
+}
+
+body,
+.gradient {
+  background: var(--crestoria-cream-50);
+  color: var(--crestoria-espresso);
+}
+
+body { letter-spacing: .01em; }
+
+h1, h2, h3, h4, h5, h6,
+.h0, .h1, .h2, .h3, .h4, .h5 {
+  color: var(--crestoria-espresso);
+  letter-spacing: -.02em;
+  font-weight: 700;
+}
+
+.announcement-bar,
+.announcement-bar-section {
+  background: var(--crestoria-caramel-400) !important;
+  color: #fff !important;
+}
+.announcement-bar__message { color: #fff !important; font-weight: 700; }
+
+.header-wrapper,
+.header-wrapper--border-bottom {
+  background: rgba(255,255,255,.96) !important;
+  border-bottom: 1px solid rgba(163,85,83,.34) !important;
+  box-shadow: 0 6px 22px rgba(17,17,17,.08);
+}
+.header__menu-item,
+.header__icon,
+.header__heading-link { color: var(--crestoria-espresso) !important; }
+.header__menu-item:hover span,
+.header__active-menu-item { color: var(--crestoria-brown-500) !important; }
+
+.button,
+.shopify-payment-button__button,
+.quick-add__submit,
+.cart__checkout-button {
+  border-radius: 999px !important;
+  background: var(--crestoria-caramel-400) !important;
+  color: white !important;
+  border: 1px solid var(--crestoria-caramel-400) !important;
+  box-shadow: 0 8px 20px rgba(163,85,83,.22);
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease !important;
+}
+.button:hover,
+.shopify-payment-button__button:hover,
+.quick-add__submit:hover,
+.cart__checkout-button:hover {
+  background: var(--crestoria-brown-500) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(163,85,83,.28);
+}
+.button--secondary {
+  background: white !important;
+  color: var(--crestoria-brown-500) !important;
+  border-color: var(--crestoria-beige-300) !important;
+}
+
+.card,
+.card-wrapper .card,
+.product-card-wrapper .card,
+.collection-card-wrapper .card,
+.article-card-wrapper .card,
+.multicolumn-card,
+.image-with-text__content,
+.collapsible-content__wrapper,
+.shopify-policy__container {
+  background: #fff !important;
+  border: 1px solid rgba(163,85,83,.28) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 10px 28px rgba(17,17,17,.09);
+  overflow: hidden;
+}
+.card-wrapper { transition: transform .22s ease; }
+.card-wrapper:hover { transform: translateY(-5px); }
+.card__heading a, .full-unstyled-link { color: var(--crestoria-espresso); }
+.price, .price-item { color: var(--crestoria-brown-500) !important; }
+.badge { border-radius: 999px !important; background: var(--crestoria-caramel-400) !important; color: white !important; }
+
+.field__input,
+.select__select,
+.customer .field input,
+textarea,
+.quantity {
+  border-radius: 16px !important;
+  background: #fff !important;
+  border-color: rgba(163,85,83,.55) !important;
+}
+
+.product__media-wrapper .global-media-settings,
+.product__media img,
+.thumbnail,
+.media {
+  border-radius: 22px !important;
+}
+.product__title h1 { color: var(--crestoria-espresso); }
+.product-form__input input[type='radio'] + label {
+  border-radius: 999px !important;
+  border-color: var(--crestoria-beige-300) !important;
+}
+.product-form__input input[type='radio']:checked + label {
+  background: var(--crestoria-caramel-400) !important;
+  color: #fff !important;
+  border-color: var(--crestoria-caramel-400) !important;
+}
+
+.footer,
+.footer.gradient {
+  background: var(--crestoria-beige-200) !important;
+  color: var(--crestoria-espresso) !important;
+  border-top: 2px solid rgba(163,85,83,.28) !important;
+  position: relative;
+}
+.footer h2, .footer a, .footer p, .footer small { color: var(--crestoria-espresso) !important; }
+
+.crestoria-section-soft { background: var(--crestoria-cream-100) !important; }
+.crestoria-rounded { border-radius: 28px; }
+
+@media screen and (max-width: 749px) {
+  .card, .multicolumn-card, .image-with-text__content { border-radius: 18px !important; }
+  .header { padding-top: 8px !important; padding-bottom: 8px !important; }
+}
+
+/* Crestoria typography refresh */
+body,
+button,
+input,
+select,
+textarea,
+.rte,
+.header__menu-item,
+.footer {
+  font-family: 'Nunito', var(--font-body-family), sans-serif !important;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h0, .h1, .h2, .h3, .h4, .h5,
+.title,
+.card__heading {
+  font-family: 'Fredoka', 'Nunito', var(--font-heading-family), sans-serif !important;
+  font-weight: 600;
+  letter-spacing: -.025em;
+}
+
+.card__heading { line-height: 1.25; }
+.header__menu-item { font-weight: 700; }
+
+
+/* Warm beige-brown finishing details */
+::selection { background: #E2DDDA; color: #292929; }
+a { text-underline-offset: .22em; }
+.header__submenu, .menu-drawer, .predictive-search, .cart-drawer {
+  background: #FFFFFF !important;
+  color: #171717 !important;
+}
+.product-form__input input[type='radio'] + label:hover {
+  border-color: #111111 !important;
+  color: #333333 !important;
+}
+.shopify-payment-button__button--unbranded { background: #171717 !important; }
+.shopify-payment-button__button--unbranded:hover { background: #292929 !important; }
+
+
+/* Crestoria white, black and blush palette */
+:root {
+  --crestoria-surface: #FFFFFF;
+  --crestoria-surface-soft: #F8F3F1;
+  --crestoria-surface-strong: #E8D6D4;
+  --crestoria-border: #E5E5E5;
+  --crestoria-text: #171717;
+  --crestoria-muted: #626262;
+  --crestoria-accent: #A35553;
+  --crestoria-accent-dark: #111111;
+}
+body, .gradient, .color-background-1 { background-color: var(--crestoria-surface); }
+.color-background-2 { background-color: var(--crestoria-surface-soft); }
+.newsletter, .newsletter__wrapper, .multicolumn, .rich-text, .collapsible-content { background-image: none !important; }
+.product__info-container, .cart-drawer, .menu-drawer, .predictive-search { border-color: var(--crestoria-border) !important; }
+.price--on-sale .price-item--sale, .price-item--sale { color: var(--crestoria-accent-dark) !important; }
+.shopify-payment-button__button, .product-form__submit { background: var(--crestoria-accent) !important; }
+.shopify-payment-button__button:hover, .product-form__submit:hover { background: var(--crestoria-accent-dark) !important; }
+
+/* =========================================================
+   Crestoria V5 — responsive polish & overflow hardening
+   Keeps every section inside the viewport and removes
+   intentionally-peeking mobile cards that looked cropped.
+   ========================================================= */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+#MainContent,
+#MainContent > .shopify-section,
+.shopify-section,
+.page-width,
+.isolate,
+.content-container {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+img,
+video,
+iframe,
+svg {
+  max-width: 100%;
+}
+
+.rte,
+.rte p,
+.multicolumn-text,
+.card__heading,
+.card-information,
+.footer-block,
+.footer-block__details-content {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+/* Product cards: perfectly centered title + price, consistent baselines. */
+.product-card-wrapper .card__content,
+.product-card-wrapper .card__information,
+.product-card-wrapper .card-information {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.product-card-wrapper .card__information {
+  min-height: 8.6rem;
+  padding: 1.15rem 1.15rem 1.35rem !important;
+  text-align: center !important;
+}
+
+.product-card-wrapper .card__heading {
+  width: 100%;
+  min-height: 3.15em;
+  margin: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center !important;
+  line-height: 1.28;
+}
+
+.product-card-wrapper .card__heading a {
+  width: 100%;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-align: center !important;
+}
+
+.product-card-wrapper .card-information {
+  text-align: center !important;
+}
+
+.product-card-wrapper .card-information .price {
+  width: 100%;
+  margin: .55rem auto 0 !important;
+  justify-content: center !important;
+  align-items: baseline;
+  text-align: center !important;
+  column-gap: .65rem;
+  row-gap: .25rem;
+}
+
+.product-card-wrapper .price--on-sale .price__sale {
+  display: flex !important;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: .25rem .65rem;
+  width: 100%;
+  text-align: center;
+}
+
+.product-card-wrapper .loox-rating,
+.product-card-wrapper .rating {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center;
+}
+
+/* Footer: clean straight top edge instead of the uneven scallop pattern. */
+.footer::before,
+.footer::after {
+  content: none !important;
+  display: none !important;
+}
+
+.footer__content-top {
+  position: relative;
+}
+
+@media screen and (min-width: 750px) {
+  .footer__content-top .footer__blocks-wrapper {
+    align-items: flex-start;
+  }
+
+  .footer__content-top .footer-block {
+    text-align: center;
+  }
+
+  .footer-block__heading {
+    margin-top: 0;
+    text-align: center;
+  }
+
+  .footer-block__details-content .list-menu__item--link {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .footer .newsletter-form {
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .footer .footer__list-social {
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  /* Consistent safe area on small screens. */
+  :root {
+    --pb-mobile-edge: 1.6rem;
+  }
+
+  #MainContent > .shopify-section {
+    overflow-x: hidden;
+  }
+
+  .page-width,
+  .page-width-desktop,
+  .title-wrapper--self-padded-mobile,
+  .title-wrapper--self-padded-tablet-down {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* The multicolumn stylesheet removed page padding on mobile.
+     Put readable padding back for headings and intro copy. */
+  .multicolumn .title-wrapper-with-link,
+  .multicolumn .multicolumn-text {
+    padding-left: var(--pb-mobile-edge) !important;
+    padding-right: var(--pb-mobile-edge) !important;
+  }
+
+  .multicolumn .multicolumn-text {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Non-slider multicolumn sections (Why Shop Crestoria) become
+     full-width cards with even left/right margins. */
+  .multicolumn-list:not(.slider) {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: var(--pb-mobile-edge) !important;
+    padding-right: var(--pb-mobile-edge) !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .multicolumn-list:not(.slider) > .grid__item {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  /* Full-card mobile sliders: no half-visible next/previous card. */
+  .multicolumn slider-component,
+  .slider-mobile-gutter {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .multicolumn .slider.slider--mobile.slider--no-preview {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    scroll-padding-left: 0 !important;
+  }
+
+  .multicolumn .slider.slider--mobile.slider--no-preview::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  .multicolumn .slider.slider--mobile.slider--no-preview > .grid__item {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    padding-left: var(--pb-mobile-edge) !important;
+    padding-right: var(--pb-mobile-edge) !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .multicolumn .slider.slider--mobile.slider--no-preview > .grid__item:first-of-type {
+    margin-left: 0 !important;
+  }
+
+  .multicolumn .slider-buttons {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  /* Featured products: normal 2-column grid, equal gaps, no horizontal bleed. */
+  .collection .product-grid:not(.slider) {
+    width: auto !important;
+    max-width: 100% !important;
+    margin-left: var(--pb-mobile-edge) !important;
+    margin-right: var(--pb-mobile-edge) !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .collection .product-grid:not(.slider) > .grid__item {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .product-card-wrapper .card__information {
+    min-height: 8.1rem;
+    padding: .9rem .75rem 1.05rem !important;
+  }
+
+  .product-card-wrapper .card__heading {
+    min-height: 3.25em;
+  }
+
+  .product-card-wrapper .card-information .price {
+    font-size: 1.35rem;
+    letter-spacing: .04rem;
+  }
+
+  /* Newsletter input never touches or crosses the viewport edge. */
+  .newsletter__wrapper {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+    box-sizing: border-box;
+  }
+
+  .newsletter__wrapper > *,
+  .newsletter-form,
+  .newsletter-form__field-wrapper,
+  .newsletter-form__field-wrapper .field {
+    width: 100%;
+    max-width: 100% !important;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .newsletter__wrapper .inline-richtext,
+  .newsletter__subheading {
+    max-width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Footer blocks stack cleanly on phones and stay inside the screen. */
+  .footer__content-top {
+    padding-left: var(--pb-mobile-edge) !important;
+    padding-right: var(--pb-mobile-edge) !important;
+  }
+
+  .footer__content-top .grid {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 !important;
+    gap: 2.4rem 0 !important;
+  }
+
+  .footer-block.grid__item,
+  .footer-block.footer-block--mobile-1,
+  .footer-block.footer-block--mobile-2 {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .footer .newsletter-form,
+  .footer .newsletter-form__field-wrapper,
+  .footer .field {
+    width: 100%;
+    max-width: 100% !important;
+    min-width: 0;
+  }
+}
+

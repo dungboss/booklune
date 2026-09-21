@@ -1,0 +1,406 @@
+{% comment %}
+  TX Trending Products — Lưới sản phẩm nổi bật.
+  Cách dùng: chọn 1 collection (tự động) HOẶC thêm block "Sản phẩm" để tự chọn tay.
+  Nếu có block tự chọn thì block được ưu tiên hơn collection.
+{% endcomment %}
+
+{%- assign s = section.settings -%}
+{%- liquid
+  assign mode = 'placeholder'
+  if section.blocks.size > 0
+    assign mode = 'blocks'
+  elsif s.collection != blank
+    assign mode = 'collection'
+  endif
+-%}
+
+<style>
+  #s-{{ section.id }} {
+    --prod-card-bg: {{ s.card_bg }};
+    --prod-border: {{ s.card_border_color }};
+    --prod-title: {{ s.title_color }};
+    --prod-price: {{ s.price_color }};
+    --prod-star: {{ s.star_color }};
+    --prod-star-empty: {{ s.star_empty_color }};
+    --prod-count: {{ s.rating_text_color }};
+    --prod-glow: {{ s.glow_color }};
+  }
+  #s-{{ section.id }}.tx-trend {
+    background: {{ s.bg_color }};
+    padding: {{ s.pad_top }}px 0 {{ s.pad_bottom }}px;
+  }
+  #s-{{ section.id }} .tx-trend__inner { max-width: {{ s.content_width }}px; margin: 0 auto; padding: 0 20px; }
+  #s-{{ section.id }} .tx-trend__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  #s-{{ section.id }} .tx-trend__heading {
+    margin: 0;
+    color: {{ s.heading_color }};
+    font-size: {{ s.heading_size }}px;
+    font-weight: 800;
+    letter-spacing: .03em;
+    {% if s.heading_uppercase %}text-transform: uppercase;{% endif %}
+  }
+  #s-{{ section.id }} .tx-trend__viewall {
+    color: {{ s.viewall_color }};
+    font-size: {{ s.viewall_size }}px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+  }
+  #s-{{ section.id }} .tx-trend__viewall .arr { transition: transform .3s cubic-bezier(.2,.7,.2,1); }
+  #s-{{ section.id }} .tx-trend__viewall:hover .arr { transform: translateX(4px); }
+  #s-{{ section.id }} .tx-trend__grid {
+    display: grid;
+    grid-template-columns: repeat({{ s.columns_desktop }}, minmax(0, 1fr));
+    gap: {{ s.gap }}px;
+  }
+  #s-{{ section.id }} .tx-prod {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    background: var(--prod-card-bg);
+    border: {{ s.card_border_width }}px solid var(--prod-border);
+    border-radius: {{ s.card_radius }}px;
+    overflow: hidden;
+    {% if s.card_shadow %}box-shadow: 0 2px 10px rgba(0,0,0,.05);{% endif %}
+    transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s ease, border-color .35s ease;
+  }
+  #s-{{ section.id }} .tx-prod__media {
+    position: relative;
+    aspect-ratio: {% case s.image_ratio %}{% when 'portrait' %}3 / 4{% when 'landscape' %}4 / 3{% else %}1 / 1{% endcase %};
+    background: {{ s.media_bg }};
+    overflow: hidden;
+  }
+  #s-{{ section.id }} .tx-prod__media img, #s-{{ section.id }} .tx-prod__media svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: {{ s.image_fit }};
+    transition: transform .6s cubic-bezier(.2,.7,.2,1);
+  }
+  #s-{{ section.id }} .tx-prod__badge {
+    position: absolute;
+    top: 10px; left: 10px;
+    z-index: 1;
+    background: {{ s.badge_bg }};
+    color: {{ s.badge_text_color }};
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    padding: 4px 8px;
+    border-radius: 6px;
+    text-transform: uppercase;
+  }
+  #s-{{ section.id }} .tx-prod__info { padding: 12px 12px 14px; display: flex; flex-direction: column; gap: 5px; }
+  #s-{{ section.id }} .tx-prod__title {
+    color: var(--prod-title);
+    font-size: {{ s.title_size }}px;
+    font-weight: {{ s.title_weight }};
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: {{ s.title_lines }};
+    overflow: hidden;
+  }
+  #s-{{ section.id }} .tx-prod__price-row { display: flex; align-items: baseline; gap: 8px; }
+  #s-{{ section.id }} .tx-prod__price { color: var(--prod-price); font-size: {{ s.price_size }}px; font-weight: 700; }
+  #s-{{ section.id }} .tx-prod__compare { color: {{ s.compare_color }}; font-size: {{ s.price_size | minus: 2 }}px; }
+  #s-{{ section.id }} .tx-stars {
+    position: relative;
+    display: inline-block;
+    font-size: {{ s.rating_size }}px;
+    line-height: 1;
+    letter-spacing: 2px;
+  }
+  #s-{{ section.id }} .tx-stars__bg { color: var(--prod-star-empty); }
+  #s-{{ section.id }} .tx-stars__fg {
+    position: absolute;
+    left: 0; top: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    color: var(--prod-star);
+  }
+  #s-{{ section.id }} .tx-prod__rating { display: flex; align-items: center; gap: 6px; }
+  #s-{{ section.id }} .tx-prod__count { color: var(--prod-count); font-size: {{ s.rating_size }}px; }
+  {% if s.hover_effect == 'lift' or s.hover_effect == 'lift-zoom' %}
+  #s-{{ section.id }} .tx-prod:hover { transform: translateY(-6px); box-shadow: 0 16px 34px rgba(0,0,0,.14); }
+  {% endif %}
+  {% if s.hover_effect == 'zoom' or s.hover_effect == 'lift-zoom' %}
+  #s-{{ section.id }} .tx-prod:hover .tx-prod__media img,
+  #s-{{ section.id }} .tx-prod:hover .tx-prod__media svg { transform: scale(1.07); }
+  {% endif %}
+  {% if s.hover_effect == 'glow' %}
+  #s-{{ section.id }} .tx-prod:hover {
+    transform: translateY(-4px);
+    border-color: var(--prod-glow);
+    box-shadow: 0 0 0 1px var(--prod-glow), 0 12px 34px color-mix(in srgb, var(--prod-glow) 35%, transparent);
+  }
+  {% endif %}
+  {% if s.reveal != 'none' %}
+  #s-{{ section.id }} [data-tx-reveal] {
+    opacity: 0;
+    {% case s.reveal %}
+      {% when 'up' %}transform: translateY(26px);
+      {% when 'zoom' %}transform: scale(.92);
+    {% endcase %}
+    transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1);
+    transition-delay: calc(var(--d, 0) * 80ms);
+  }
+  #s-{{ section.id }} [data-tx-reveal].tx-in { opacity: 1; transform: none; }
+  {% endif %}
+  @media (max-width: 989px) {
+    #s-{{ section.id }} .tx-trend__grid { grid-template-columns: repeat({{ s.columns_desktop | at_most: 3 }}, minmax(0, 1fr)); }
+  }
+  @media (max-width: 599px) {
+    #s-{{ section.id }} .tx-trend__grid { grid-template-columns: repeat({{ s.columns_mobile }}, minmax(0, 1fr)); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #s-{{ section.id }} * { transition: none !important; animation: none !important; }
+    #s-{{ section.id }} [data-tx-reveal] { opacity: 1 !important; transform: none !important; }
+  }
+</style>
+
+<div id="s-{{ section.id }}" class="tx-trend">
+  <div class="tx-trend__inner">
+    <div class="tx-trend__head">
+      <h2 class="tx-trend__heading">{{ s.heading | escape }}</h2>
+      {%- if s.show_viewall -%}
+        {%- assign viewall_url = s.viewall_link -%}
+        {%- if viewall_url == blank and s.collection != blank -%}{%- assign viewall_url = s.collection.url -%}{%- endif -%}
+        <a href="{{ viewall_url | default: routes.all_products_collection_url }}" class="tx-trend__viewall">{{ s.viewall_text | escape }} <span class="arr">›</span></a>
+      {%- endif -%}
+    </div>
+
+    <div class="tx-trend__grid">
+      {%- if mode == 'blocks' -%}
+        {%- for block in section.blocks -%}
+          {%- assign product = block.settings.product -%}
+          <a class="tx-prod" href="{{ product.url | default: '#' }}" {{ block.shopify_attributes }} {% if s.reveal != 'none' %}data-tx-reveal style="--d:{{ forloop.index0 }}"{% endif %}>
+            <span class="tx-prod__media">
+              {%- if s.show_badge and product.compare_at_price > product.price -%}
+                <span class="tx-prod__badge">{{ s.badge_label | escape }}</span>
+              {%- endif -%}
+              {%- if product.featured_image -%}
+                {{ product.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300,450,600', alt: product.title }}
+              {%- else -%}
+                {%- assign ph = forloop.index | modulo: 6 | plus: 1 -%}
+                {{ 'product-' | append: ph | placeholder_svg_tag }}
+              {%- endif -%}
+            </span>
+            <span class="tx-prod__info">
+              <span class="tx-prod__title">{{ product.title | default: 'Chọn sản phẩm cho block này' | escape }}</span>
+              <span class="tx-prod__price-row">
+                <span class="tx-prod__price">{% if product != blank %}{{ product.price | money }}{% else %}$0.00{% endif %}</span>
+                {%- if product.compare_at_price > product.price -%}
+                  <s class="tx-prod__compare">{{ product.compare_at_price | money }}</s>
+                {%- endif -%}
+              </span>
+              {%- if s.show_rating -%}
+                <span class="tx-prod__rating">
+                  <span class="tx-stars" role="img" aria-label="{{ block.settings.rating }} / 5">
+                    <span class="tx-stars__bg">★★★★★</span>
+                    <span class="tx-stars__fg" style="width: {{ block.settings.rating | times: 20 }}%">★★★★★</span>
+                  </span>
+                  {%- if block.settings.rating_count != blank -%}
+                    <span class="tx-prod__count">{{ block.settings.rating_count | escape }}</span>
+                  {%- endif -%}
+                </span>
+              {%- endif -%}
+            </span>
+          </a>
+        {%- endfor -%}
+
+      {%- elsif mode == 'collection' -%}
+        {%- for product in s.collection.products limit: s.limit -%}
+          <a class="tx-prod" href="{{ product.url }}" {% if s.reveal != 'none' %}data-tx-reveal style="--d:{{ forloop.index0 }}"{% endif %}>
+            <span class="tx-prod__media">
+              {%- if s.show_badge and product.compare_at_price > product.price -%}
+                <span class="tx-prod__badge">{{ s.badge_label | escape }}</span>
+              {%- endif -%}
+              {%- if product.featured_image -%}
+                {{ product.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300,450,600', alt: product.title }}
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag }}
+              {%- endif -%}
+            </span>
+            <span class="tx-prod__info">
+              <span class="tx-prod__title">{{ product.title | escape }}</span>
+              <span class="tx-prod__price-row">
+                <span class="tx-prod__price">{{ product.price | money }}</span>
+                {%- if product.compare_at_price > product.price -%}
+                  <s class="tx-prod__compare">{{ product.compare_at_price | money }}</s>
+                {%- endif -%}
+              </span>
+              {%- assign mf = product.metafields.reviews.rating -%}
+              {%- if s.show_rating and mf != blank -%}
+                {%- assign pct = mf.value.rating | times: 100.0 | divided_by: mf.value.scale_max -%}
+                <span class="tx-prod__rating">
+                  <span class="tx-stars" role="img" aria-label="{{ mf.value.rating }} / {{ mf.value.scale_max }}">
+                    <span class="tx-stars__bg">★★★★★</span>
+                    <span class="tx-stars__fg" style="width: {{ pct }}%">★★★★★</span>
+                  </span>
+                  {%- assign rc = product.metafields.reviews.rating_count.value -%}
+                  {%- if rc != blank -%}
+                    <span class="tx-prod__count">({{ rc }})</span>
+                  {%- endif -%}
+                </span>
+              {%- endif -%}
+            </span>
+          </a>
+        {%- endfor -%}
+
+      {%- else -%}
+        {%- for i in (1..6) -%}
+          <div class="tx-prod" {% if s.reveal != 'none' %}data-tx-reveal style="--d:{{ forloop.index0 }}"{% endif %}>
+            <span class="tx-prod__media">{{ 'product-' | append: i | placeholder_svg_tag }}</span>
+            <span class="tx-prod__info">
+              <span class="tx-prod__title">Sản phẩm mẫu — chọn collection hoặc thêm block</span>
+              <span class="tx-prod__price-row"><span class="tx-prod__price">$29.99</span></span>
+              {%- if s.show_rating -%}
+                <span class="tx-prod__rating">
+                  <span class="tx-stars" role="img" aria-label="4.5 / 5">
+                    <span class="tx-stars__bg">★★★★★</span>
+                    <span class="tx-stars__fg" style="width: 90%">★★★★★</span>
+                  </span>
+                  <span class="tx-prod__count">(1,248)</span>
+                </span>
+              {%- endif -%}
+            </span>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% if s.reveal != 'none' %}
+<script>
+  (function () {
+    var root = document.getElementById('s-{{ section.id }}');
+    if (!root) return;
+    var els = root.querySelectorAll('[data-tx-reveal]');
+    if (!els.length) return;
+    if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('tx-in'); }); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('tx-in'); io.unobserve(en.target); } });
+    }, { threshold: .1 });
+    els.forEach(function (e) { io.observe(e); });
+  })();
+</script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "TX 5. Sản phẩm trending",
+  "settings": [
+    { "type": "header", "content": "Tiêu đề" },
+    { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "TRENDING NOW" },
+    { "type": "range", "id": "heading_size", "label": "Cỡ chữ tiêu đề", "min": 14, "max": 44, "step": 1, "unit": "px", "default": 22 },
+    { "type": "color", "id": "heading_color", "label": "Màu tiêu đề", "default": "#111318" },
+    { "type": "checkbox", "id": "heading_uppercase", "label": "Tiêu đề in hoa", "default": true },
+    { "type": "checkbox", "id": "show_viewall", "label": "Hiện nút 'Xem tất cả'", "default": true },
+    { "type": "text", "id": "viewall_text", "label": "Chữ nút xem tất cả", "default": "VIEW ALL" },
+    { "type": "url", "id": "viewall_link", "label": "Liên kết xem tất cả (mặc định: collection đã chọn)" },
+    { "type": "color", "id": "viewall_color", "label": "Màu chữ xem tất cả", "default": "#2962ff" },
+    { "type": "range", "id": "viewall_size", "label": "Cỡ chữ xem tất cả", "min": 10, "max": 18, "step": 1, "unit": "px", "default": 12 },
+    { "type": "header", "content": "Nguồn sản phẩm (chọn collection hoặc thêm block)" },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "limit", "label": "Số sản phẩm hiển thị (chế độ collection)", "min": 2, "max": 12, "step": 1, "default": 6 },
+    { "type": "header", "content": "Màu sắc" },
+    { "type": "color", "id": "bg_color", "label": "Màu nền section", "default": "#f3f4f6" },
+    { "type": "color", "id": "card_bg", "label": "Màu nền card", "default": "#ffffff" },
+    { "type": "color", "id": "card_border_color", "label": "Màu viền card", "default": "#e5e7eb" },
+    { "type": "color", "id": "media_bg", "label": "Màu nền khung ảnh", "default": "#0b0e14" },
+    { "type": "color", "id": "title_color", "label": "Màu tên sản phẩm", "default": "#111318" },
+    { "type": "color", "id": "price_color", "label": "Màu giá", "default": "#111318" },
+    { "type": "color", "id": "compare_color", "label": "Màu giá gạch ngang", "default": "#9ca3af" },
+    { "type": "color", "id": "star_color", "label": "Màu sao đánh giá", "default": "#f59e0b" },
+    { "type": "color", "id": "star_empty_color", "label": "Màu sao rỗng", "default": "#d8dbe0" },
+    { "type": "color", "id": "rating_text_color", "label": "Màu số lượt đánh giá", "default": "#9ca3af" },
+    { "type": "header", "content": "Kích thước card & lưới" },
+    { "type": "range", "id": "columns_desktop", "label": "Số cột trên máy tính", "min": 2, "max": 6, "step": 1, "default": 6 },
+    { "type": "select", "id": "columns_mobile", "label": "Số cột trên điện thoại", "default": "2", "options": [
+      { "value": "1", "label": "1 cột" },
+      { "value": "2", "label": "2 cột" }
+    ] },
+    { "type": "range", "id": "gap", "label": "Khoảng cách giữa các card", "min": 6, "max": 40, "step": 2, "unit": "px", "default": 14 },
+    { "type": "range", "id": "card_radius", "label": "Bo góc card", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 12 },
+    { "type": "range", "id": "card_border_width", "label": "Độ dày viền card", "min": 0, "max": 6, "step": 1, "unit": "px", "default": 1 },
+    { "type": "checkbox", "id": "card_shadow", "label": "Đổ bóng nhẹ cho card", "default": true },
+    { "type": "select", "id": "image_ratio", "label": "Tỉ lệ khung ảnh", "default": "square", "options": [
+      { "value": "square", "label": "Vuông (1:1)" },
+      { "value": "portrait", "label": "Dọc (3:4)" },
+      { "value": "landscape", "label": "Ngang (4:3)" }
+    ] },
+    { "type": "select", "id": "image_fit", "label": "Kiểu hiển thị ảnh", "default": "cover", "options": [
+      { "value": "cover", "label": "Phủ kín khung (cover)" },
+      { "value": "contain", "label": "Trọn ảnh trong khung (contain)" }
+    ] },
+    { "type": "header", "content": "Chữ trên card" },
+    { "type": "range", "id": "title_size", "label": "Cỡ chữ tên sản phẩm", "min": 11, "max": 20, "step": 1, "unit": "px", "default": 13 },
+    { "type": "select", "id": "title_weight", "label": "Độ đậm tên sản phẩm", "default": "600", "options": [
+      { "value": "500", "label": "Vừa" },
+      { "value": "600", "label": "Hơi đậm" },
+      { "value": "700", "label": "Đậm" }
+    ] },
+    { "type": "select", "id": "title_lines", "label": "Số dòng tên sản phẩm", "default": "1", "options": [
+      { "value": "1", "label": "1 dòng" },
+      { "value": "2", "label": "2 dòng" }
+    ] },
+    { "type": "range", "id": "price_size", "label": "Cỡ chữ giá", "min": 11, "max": 22, "step": 1, "unit": "px", "default": 14 },
+    { "type": "header", "content": "Đánh giá sao" },
+    { "type": "checkbox", "id": "show_rating", "label": "Hiện đánh giá sao", "default": true },
+    { "type": "range", "id": "rating_size", "label": "Cỡ sao & số lượt", "min": 9, "max": 16, "step": 1, "unit": "px", "default": 12 },
+    { "type": "header", "content": "Nhãn giảm giá (Sale)" },
+    { "type": "checkbox", "id": "show_badge", "label": "Hiện nhãn khi có giá gạch ngang", "default": true },
+    { "type": "text", "id": "badge_label", "label": "Chữ trên nhãn", "default": "SALE" },
+    { "type": "color", "id": "badge_bg", "label": "Màu nền nhãn", "default": "#ef4444" },
+    { "type": "color", "id": "badge_text_color", "label": "Màu chữ nhãn", "default": "#ffffff" },
+    { "type": "header", "content": "Hiệu ứng" },
+    { "type": "select", "id": "hover_effect", "label": "Hiệu ứng khi rê chuột vào card", "default": "lift-zoom", "options": [
+      { "value": "none", "label": "Không có" },
+      { "value": "lift", "label": "Nâng card lên" },
+      { "value": "zoom", "label": "Phóng to ảnh" },
+      { "value": "lift-zoom", "label": "Nâng card + phóng to ảnh" },
+      { "value": "glow", "label": "Viền phát sáng" }
+    ] },
+    { "type": "color", "id": "glow_color", "label": "Màu phát sáng (nếu chọn Glow)", "default": "#2962ff" },
+    { "type": "select", "id": "reveal", "label": "Hiệu ứng xuất hiện khi cuộn tới", "default": "up", "options": [
+      { "value": "none", "label": "Không có" },
+      { "value": "fade", "label": "Mờ dần hiện ra" },
+      { "value": "up", "label": "Trượt lên" },
+      { "value": "zoom", "label": "Phóng to dần" }
+    ] },
+    { "type": "header", "content": "Bố cục" },
+    { "type": "range", "id": "content_width", "label": "Độ rộng nội dung", "min": 1000, "max": 1800, "step": 50, "unit": "px", "default": 1450 },
+    { "type": "range", "id": "pad_top", "label": "Khoảng trống trên", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 28 },
+    { "type": "range", "id": "pad_bottom", "label": "Khoảng trống dưới", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 36 }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Sản phẩm tự chọn",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Chọn sản phẩm" },
+        { "type": "range", "id": "rating", "label": "Số sao hiển thị", "min": 0, "max": 5, "step": 0.5, "default": 4.5 },
+        { "type": "text", "id": "rating_count", "label": "Số lượt đánh giá (ví dụ: (1,248))", "default": "(1,248)" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    { "name": "TX 5. Sản phẩm trending" }
+  ]
+}
+{% endschema %}

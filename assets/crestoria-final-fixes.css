@@ -1,0 +1,426 @@
+/* Crestoria V5 final cascade layer — intentionally loaded after all sections. */
+.footer,
+.footer.gradient {
+  border-top: 2px solid rgba(163,85,83,.28) !important;
+}
+.footer::before,
+.footer::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* =========================================================
+   Crestoria V5 — responsive polish & overflow hardening
+   Keeps every section inside the viewport and removes
+   intentionally-peeking mobile cards that looked cropped.
+   ========================================================= */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+#MainContent,
+#MainContent > .shopify-section,
+.shopify-section,
+.page-width,
+.isolate,
+.content-container {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+img,
+video,
+iframe,
+svg {
+  max-width: 100%;
+}
+
+.rte,
+.rte p,
+.multicolumn-text,
+.card__heading,
+.card-information,
+.footer-block,
+.footer-block__details-content {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+/* Product cards: perfectly centered title + price, consistent baselines. */
+.product-card-wrapper .card__content,
+.product-card-wrapper .card__information,
+.product-card-wrapper .card-information {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.product-card-wrapper .card__information {
+  min-height: 8.6rem;
+  padding: 1.15rem 1.15rem 1.35rem !important;
+  text-align: center !important;
+}
+
+.product-card-wrapper .card__heading {
+  width: 100%;
+  min-height: 3.15em;
+  margin: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center !important;
+  line-height: 1.28;
+}
+
+.product-card-wrapper .card__heading a {
+  width: 100%;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-align: center !important;
+}
+
+.product-card-wrapper .card-information {
+  text-align: center !important;
+}
+
+.product-card-wrapper .card-information .price {
+  width: 100%;
+  margin: .55rem auto 0 !important;
+  justify-content: center !important;
+  align-items: baseline;
+  text-align: center !important;
+  column-gap: .65rem;
+  row-gap: .25rem;
+}
+
+.product-card-wrapper .price--on-sale .price__sale {
+  display: flex !important;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: .25rem .65rem;
+  width: 100%;
+  text-align: center;
+}
+
+.product-card-wrapper .loox-rating,
+.product-card-wrapper .rating {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center;
+}
+
+/* Footer: clean straight top edge instead of the uneven scallop pattern. */
+.footer::before,
+.footer::after {
+  content: none !important;
+  display: none !important;
+}
+
+.footer__content-top {
+  position: relative;
+}
+
+@media screen and (min-width: 750px) {
+  .footer__content-top .footer__blocks-wrapper {
+    align-items: flex-start;
+  }
+
+  .footer__content-top .footer-block {
+    text-align: center;
+  }
+
+  .footer-block__heading {
+    margin-top: 0;
+    text-align: center;
+  }
+
+  .footer-block__details-content .list-menu__item--link {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .footer .newsletter-form {
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .footer .footer__list-social {
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  /* Consistent safe area on small screens. */
+  :root {
+    --pb-mobile-edge: 1.6rem;
+  }
+
+  #MainContent > .shopify-section {
+    overflow-x: hidden;
+  }
+
+  .page-width,
+  .page-width-desktop,
+  .title-wrapper--self-padded-mobile,
+  .title-wrapper--self-padded-tablet-down {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* The multicolumn stylesheet removed page padding on mobile.
+     Put readable padding back for headings and intro copy. */
+  .multicolumn .title-wrapper-with-link,
+  .multicolumn .multicolumn-text {
+    padding-left: var(--pb-mobile-edge) !important;
+    padding-right: var(--pb-mobile-edge) !important;
+  }
+
+  .multicolumn .multicolumn-text {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Non-slider multicolumn sections (Why Shop Crestoria) become
+     full-width cards with even left/right margins. */
+  .multicolumn-list:not(.slider) {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: var(--pb-mobile-edge) !important;
+    padding-right: var(--pb-mobile-edge) !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .multicolumn-list:not(.slider) > .grid__item {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  /* Full-card mobile sliders: no half-visible next/previous card. */
+  .multicolumn slider-component,
+  .slider-mobile-gutter {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .multicolumn .slider.slider--mobile.slider--no-preview {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    scroll-padding-left: 0 !important;
+  }
+
+  .multicolumn .slider.slider--mobile.slider--no-preview::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  .multicolumn .slider.slider--mobile.slider--no-preview > .grid__item {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    padding-left: var(--pb-mobile-edge) !important;
+    padding-right: var(--pb-mobile-edge) !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .multicolumn .slider.slider--mobile.slider--no-preview > .grid__item:first-of-type {
+    margin-left: 0 !important;
+  }
+
+  .multicolumn .slider-buttons {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  /* Featured products: normal 2-column grid, equal gaps, no horizontal bleed. */
+  .collection .product-grid:not(.slider) {
+    width: auto !important;
+    max-width: 100% !important;
+    margin-left: var(--pb-mobile-edge) !important;
+    margin-right: var(--pb-mobile-edge) !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .collection .product-grid:not(.slider) > .grid__item {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .product-card-wrapper .card__information {
+    min-height: 8.1rem;
+    padding: .9rem .75rem 1.05rem !important;
+  }
+
+  .product-card-wrapper .card__heading {
+    min-height: 3.25em;
+  }
+
+  .product-card-wrapper .card-information .price {
+    font-size: 1.35rem;
+    letter-spacing: .04rem;
+  }
+
+  /* Newsletter input never touches or crosses the viewport edge. */
+  .newsletter__wrapper {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+    box-sizing: border-box;
+  }
+
+  .newsletter__wrapper > *,
+  .newsletter-form,
+  .newsletter-form__field-wrapper,
+  .newsletter-form__field-wrapper .field {
+    width: 100%;
+    max-width: 100% !important;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .newsletter__wrapper .inline-richtext,
+  .newsletter__subheading {
+    max-width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Footer blocks stack cleanly on phones and stay inside the screen. */
+  .footer__content-top {
+    padding-left: var(--pb-mobile-edge) !important;
+    padding-right: var(--pb-mobile-edge) !important;
+  }
+
+  .footer__content-top .grid {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 !important;
+    gap: 2.4rem 0 !important;
+  }
+
+  .footer-block.grid__item,
+  .footer-block.footer-block--mobile-1,
+  .footer-block.footer-block--mobile-2 {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .footer .newsletter-form,
+  .footer .newsletter-form__field-wrapper,
+  .footer .field {
+    width: 100%;
+    max-width: 100% !important;
+    min-width: 0;
+  }
+}
+
+
+/* =========================================================
+   Crestoria V6 — clean footer edge + generous top breathing room
+   ========================================================= */
+
+/* Remove every decorative/scalloped layer that can sit on the footer edge. */
+.shopify-section-group-footer-group,
+.shopify-section-group-footer-group .footer,
+.shopify-section-group-footer-group .footer.gradient,
+.shopify-section-group-footer-group .footer__content-top,
+.shopify-section-group-footer-group .footer__blocks-wrapper {
+  background-image: none !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  clip-path: none !important;
+  border-image: none !important;
+}
+
+.shopify-section-group-footer-group::before,
+.shopify-section-group-footer-group::after,
+.shopify-section-group-footer-group > div::before,
+.shopify-section-group-footer-group > div::after,
+.shopify-section-group-footer-group .footer::before,
+.shopify-section-group-footer-group .footer::after,
+.shopify-section-group-footer-group .footer__content-top::before,
+.shopify-section-group-footer-group .footer__content-top::after,
+.shopify-section-group-footer-group .footer__blocks-wrapper::before,
+.shopify-section-group-footer-group .footer__blocks-wrapper::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Flat, uninterrupted footer surface. */
+.shopify-section-group-footer-group,
+.shopify-section-group-footer-group .footer,
+.shopify-section-group-footer-group .footer.gradient {
+  background-color: #F8F3F1 !important;
+  border-top: 0 !important;
+}
+
+/* Move the whole footer content away from the top edge. */
+.shopify-section-group-footer-group .footer {
+  padding-top: 7.2rem !important;
+}
+
+.shopify-section-group-footer-group .footer__content-top {
+  padding-top: 0 !important;
+}
+
+.shopify-section-group-footer-group .footer__blocks-wrapper {
+  margin-top: 0 !important;
+}
+
+/* Keep the three first-row headings visually aligned after removing the divider. */
+.shopify-section-group-footer-group .footer-block__heading {
+  margin-top: 0 !important;
+  margin-bottom: 2.2rem !important;
+}
+
+/* Match the footer brand name to the elegant Crestoria wordmark language. */
+.shopify-section-group-footer-group .footer-block__brand-info .footer-block__heading {
+  font-family: 'DM Serif Display', Georgia, 'Times New Roman', serif !important;
+  font-size: 2.7rem !important;
+  line-height: 1 !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.025em !important;
+  color: #333333 !important;
+}
+
+@media screen and (max-width: 749px) {
+  .shopify-section-group-footer-group .footer {
+    padding-top: 5.2rem !important;
+  }
+
+  .shopify-section-group-footer-group .footer__content-top {
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+  }
+
+  .shopify-section-group-footer-group .footer-block__heading {
+    margin-bottom: 1.5rem !important;
+  }
+}

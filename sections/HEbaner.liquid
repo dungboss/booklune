@@ -1,0 +1,143 @@
+{% comment %}
+  SECTION 3/8: Banner lifestyle (eyebrow + heading + nút)
+  Cài: Edit code → Sections → Add a new section → tên "nl-banner" → dán → Save.
+  Dùng cho khối ảnh lớn giữa trang. Có tiêu đề nhỏ phía trên khung (ngoài ảnh)
+  và khối chữ đè lên ảnh, căn trái hoặc giữa.
+{% endcomment %}
+
+<div class="nlb-sec" style="background-color:{{ section.settings.section_bg }}">
+<div class="nlb{% if section.settings.animate %} nlb--anim{% endif %}" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;--nlb-eyebrow:{{ section.settings.eyebrow_color }};--nlb-outer:{{ section.settings.outer_title_color }};--nlb-title:{{ section.settings.title_color }};--nlb-text:{{ section.settings.text_color }};--nlb-btn:{{ section.settings.btn_bg }};--nlb-btntext:{{ section.settings.btn_text_color }};--nlb-border:{{ section.settings.border_color }};--nlb-ot:{{ section.settings.outer_title_size }}px;--nlb-t:{{ section.settings.title_size }}px;--nlb-b:{{ section.settings.body_size }}px;--nlb-h:{{ section.settings.height }}px;--nlb-hm:{{ section.settings.height_mobile }}px;--nlb-ov:{{ section.settings.overlay_opacity | divided_by: 100.0 }};--nlb-r:{{ section.settings.radius }}px;--nlb-w:{{ section.settings.content_width }}px;--nlb-align:{{ section.settings.align }}">
+
+  {%- if section.settings.eyebrow != blank -%}
+    <span class="nlb__eyebrow">{{ section.settings.eyebrow }}</span>
+  {%- endif -%}
+  {%- if section.settings.outer_title != blank -%}
+    <h2 class="nlb__outer">{{ section.settings.outer_title }}</h2>
+  {%- endif -%}
+
+  <div class="nlb__frame">
+    <div class="nlb__bg">
+      {%- if section.settings.image != blank -%}
+        {{ section.settings.image | image_url: width: 2000 | image_tag: loading: 'lazy', class: 'nlb__img nlb__img--d' }}
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'nlb__img nlb__img--d nlb__ph' }}
+      {%- endif -%}
+      {%- if section.settings.image_mobile != blank -%}
+        {{ section.settings.image_mobile | image_url: width: 1100 | image_tag: loading: 'lazy', class: 'nlb__img nlb__img--m' }}
+      {%- endif -%}
+    </div>
+    <div class="nlb__shade"></div>
+    <div class="nlb__content">
+      {%- if section.settings.inner_eyebrow != blank -%}
+        <span class="nlb__ieyebrow">{{ section.settings.inner_eyebrow }}</span>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h3 class="nlb__heading">{{ section.settings.heading | newline_to_br }}</h3>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <p class="nlb__text">{{ section.settings.text | newline_to_br }}</p>
+      {%- endif -%}
+      {%- if section.settings.btn_label != blank -%}
+        <a class="nlb__btn" href="{{ section.settings.btn_link | default: '#' }}">{{ section.settings.btn_label }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+
+</div>
+</div>
+
+<style>
+  .nlb-sec{overflow-x:hidden}
+  .nlb{max-width:1200px;margin:0 auto;padding-left:20px;padding-right:20px;box-sizing:border-box}
+  .nlb *{box-sizing:border-box;margin:0;padding:0}
+  .nlb__eyebrow{display:block;text-align:center;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--nlb-eyebrow);margin-bottom:9px}
+  .nlb__outer{text-align:center;font-size:var(--nlb-ot,26px);font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:var(--nlb-outer);margin-bottom:16px;overflow-wrap:break-word}
+  .nlb__frame{position:relative;height:var(--nlb-h,300px);border-radius:var(--nlb-r,12px);overflow:hidden;border:1px solid var(--nlb-border)}
+  .nlb__bg,.nlb__shade{position:absolute;inset:0}
+  .nlb__img{width:100%;height:100%;object-fit:cover;display:block}
+  .nlb__img--m{display:none}
+  .nlb__ph{background:#0c1420;fill:#2c3d52}
+  .nlb__shade{background:linear-gradient(90deg,#04080f 12%,rgba(4,8,15,.25) 82%);opacity:var(--nlb-ov,.85)}
+  .nlb__content{position:relative;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:var(--nlb-align,flex-start);text-align:left;gap:9px;padding:26px;max-width:var(--nlb-w,420px)}
+  .nlb__ieyebrow{font-size:9.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--nlb-eyebrow)}
+  .nlb__heading{font-size:var(--nlb-t,26px);font-weight:800;line-height:1.2;letter-spacing:.02em;text-transform:uppercase;color:var(--nlb-title);overflow-wrap:break-word}
+  .nlb__text{font-size:var(--nlb-b,12.5px);line-height:1.6;color:var(--nlb-text);overflow-wrap:break-word}
+  .nlb__btn{display:inline-block;margin-top:5px;padding:10px 22px;border-radius:20px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--nlb-btntext);background:var(--nlb-btn);transition:filter .2s,transform .2s,box-shadow .2s}
+  .nlb__btn:hover{filter:brightness(1.1);transform:translateY(-2px);box-shadow:0 12px 24px -12px var(--nlb-btn)}
+  .nlb--anim .nlb__content>*{opacity:0;transform:translateY(16px);transition:opacity .65s ease,transform .65s ease}
+  .nlb--anim.is-in .nlb__content>*{opacity:1;transform:none}
+  .nlb--anim.is-in .nlb__content>*:nth-child(2){transition-delay:.1s}
+  .nlb--anim.is-in .nlb__content>*:nth-child(3){transition-delay:.2s}
+  .nlb--anim.is-in .nlb__content>*:nth-child(4){transition-delay:.3s}
+  @media (max-width:749px){
+    .nlb__frame{height:var(--nlb-hm,320px)}
+    .nlb__heading{font-size:calc(var(--nlb-t,26px)*.78)}
+    .nlb__outer{font-size:calc(var(--nlb-ot,26px)*.8)}
+    .nlb__content{max-width:100%;padding:18px}
+    .nlb__shade{background:linear-gradient(0deg,#04080f 18%,rgba(4,8,15,.3) 90%)}
+    .nlb__img--m{display:block}
+    .nlb__bg:has(.nlb__img--m) .nlb__img--d{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .nlb--anim .nlb__content>*{opacity:1;transform:none;transition:none}
+    .nlb__btn:hover{transform:none}
+  }
+</style>
+
+<script>
+(function(){
+  var els=document.querySelectorAll('.nlb--anim');
+  if(!els.length)return;
+  if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('is-in');});return;}
+  var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('is-in');io.unobserve(x.target);}});},{threshold:.2});
+  els.forEach(function(e){io.observe(e);});
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Banner lifestyle",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Chữ phía trên khung ảnh" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "From Shadow To Showpiece" },
+    { "type": "text", "id": "outer_title", "label": "Tiêu đề lớn", "default": "The Night Has A New Centerpiece" },
+    { "type": "header", "content": "Chữ đè lên ảnh" },
+    { "type": "text", "id": "inner_eyebrow", "label": "Eyebrow nhỏ", "default": "More Than Ambient Light" },
+    { "type": "textarea", "id": "heading", "label": "Tiêu đề (xuống dòng được)", "default": "Turn Any Corner\nInto A Collector Display" },
+    { "type": "textarea", "id": "text", "label": "Mô tả", "default": "Designed to become the visual anchor of your desk, shelf or nightstand — day or night." },
+    { "type": "text", "id": "btn_label", "label": "Chữ trên nút (để trống = ẩn)", "default": "See It In Action →" },
+    { "type": "text", "id": "btn_link", "label": "Link nút" },
+    { "type": "select", "id": "align", "label": "Vị trí khối chữ",
+      "options": [
+        { "value": "flex-start", "label": "Trái" },
+        { "value": "center", "label": "Giữa" }
+      ], "default": "flex-start" },
+    { "type": "header", "content": "Ảnh nền" },
+    { "type": "image_picker", "id": "image", "label": "Ảnh nền (desktop)" },
+    { "type": "image_picker", "id": "image_mobile", "label": "Ảnh nền (mobile)" },
+    { "type": "range", "id": "overlay_opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "label": "Độ đậm lớp phủ", "default": 85 },
+    { "type": "range", "id": "height", "min": 180, "max": 700, "step": 10, "unit": "px", "label": "Chiều cao (desktop)", "default": 300 },
+    { "type": "range", "id": "height_mobile", "min": 180, "max": 600, "step": 10, "unit": "px", "label": "Chiều cao (mobile)", "default": 320 },
+    { "type": "range", "id": "radius", "min": 0, "max": 28, "step": 1, "unit": "px", "label": "Bo góc", "default": 12 },
+    { "type": "checkbox", "id": "animate", "label": "Chữ hiện dần khi cuộn tới", "default": true },
+    { "type": "header", "content": "Màu sắc" },
+    { "type": "color", "id": "section_bg", "label": "Màu nền section", "default": "#050a12" },
+    { "type": "color", "id": "border_color", "label": "Màu viền khung", "default": "#1d2c3d" },
+    { "type": "color", "id": "eyebrow_color", "label": "Màu eyebrow", "default": "#5c7d9c" },
+    { "type": "color", "id": "outer_title_color", "label": "Màu tiêu đề ngoài", "default": "#ffffff" },
+    { "type": "color", "id": "title_color", "label": "Màu tiêu đề trong ảnh", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Màu mô tả", "default": "#9fb2c4" },
+    { "type": "color", "id": "btn_bg", "label": "Nút — màu nền", "default": "#4aa3e8" },
+    { "type": "color", "id": "btn_text_color", "label": "Nút — màu chữ", "default": "#06101c" },
+    { "type": "header", "content": "Cỡ chữ & kích cỡ" },
+    { "type": "range", "id": "outer_title_size", "min": 14, "max": 44, "step": 1, "unit": "px", "label": "Cỡ chữ tiêu đề ngoài", "default": 26 },
+    { "type": "range", "id": "title_size", "min": 14, "max": 44, "step": 1, "unit": "px", "label": "Cỡ chữ tiêu đề trong ảnh", "default": 26 },
+    { "type": "range", "id": "body_size", "min": 10, "max": 20, "step": 1, "unit": "px", "label": "Cỡ chữ mô tả", "default": 13 },
+    { "type": "range", "id": "content_width", "min": 260, "max": 800, "step": 20, "unit": "px", "label": "Độ rộng khối chữ", "default": 420 },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding trên", "default": 32 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding dưới", "default": 24 }
+  ],
+  "presets": [ { "name": "T02 Banner lifestyle" } ]
+}
+{% endschema %}

@@ -1,0 +1,12 @@
+{%- liquid
+  assign support_address = settings.crestoria_support_email | strip
+  assign support_page = pages['contact'].url | default: pages['contact-us'].url
+  assign support_label = label | default: 'Contact Crestoria'
+-%}
+{%- if support_address != blank and prefer_form != true -%}
+  <a href="mailto:{{ support_address | escape }}">{{ support_address | escape }}</a>
+{%- elsif support_page != blank -%}
+  <a href="{{ support_page }}">{{ support_label | escape }}</a>
+{%- else -%}
+  <a href="#PMContactSupport" data-pm-open="PMContactSupport">{{ support_label | escape }}</a>
+{%- endif -%}

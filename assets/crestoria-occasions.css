@@ -1,0 +1,58 @@
+/* Crestoria V13: only Discovery sections with horizontal movement enabled. */
+.pm-discovery--marquee .pm-occasion-window {
+  width:100%; min-width:0; position:relative;
+}
+.pm-discovery--marquee.is-marquee-ready .pm-occasion-window {
+  --occasion-fade:clamp(18px,4vw,56px);
+  -webkit-mask-image:linear-gradient(to right,transparent,#000 var(--occasion-fade),#000 calc(100% - var(--occasion-fade)),transparent);
+  mask-image:linear-gradient(to right,transparent,#000 var(--occasion-fade),#000 calc(100% - var(--occasion-fade)),transparent);
+}
+.pm-discovery--marquee .pm-occasion-window:focus-within {
+  -webkit-mask-image:none; mask-image:none;
+}
+.pm-discovery--marquee .pm-discovery-grid {
+  --occasion-width:clamp(164px,15vw,204px);
+  display:flex; flex-wrap:nowrap; align-items:flex-start; justify-content:flex-start;
+  gap:24px; width:100%; max-width:none; min-width:0; margin:0;
+  padding:8px 0 12px; overflow-x:auto; overflow-y:hidden;
+  overscroll-behavior-x:contain; scroll-snap-type:none; scroll-behavior:auto;
+  scrollbar-width:none; -webkit-overflow-scrolling:touch;
+  touch-action:pan-x pan-y pinch-zoom; overflow-anchor:none; direction:ltr;
+}
+.pm-discovery--marquee .pm-discovery-grid::-webkit-scrollbar { display:none; }
+.pm-discovery--marquee .pm-discovery-grid>.pm-tile {
+  width:var(--occasion-width); flex:0 0 var(--occasion-width); max-width:none;
+  text-decoration:none; -webkit-user-drag:none;
+}
+.pm-discovery--marquee .pm-tile-media { width:100%; max-width:none; }
+.pm-discovery--marquee .pm-tile img { -webkit-user-drag:none; user-select:none; }
+.pm-discovery--marquee .pm-tile-label { width:100%; padding-inline:4px; }
+.pm-discovery--marquee .pm-discovery-grid.is-dragging,
+.pm-discovery--marquee .pm-discovery-grid.is-dragging * { cursor:grabbing; user-select:none; }
+.pm-discovery--marquee .pm-occasion-controls {
+  display:flex; align-items:center; justify-content:flex-end; gap:6px;
+  margin-top:2px;
+}
+.pm-discovery--marquee .pm-occasion-controls button {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:34px; height:34px; padding:8px; border-radius:50%;
+  background:var(--pm-bg); color:var(--pm-ink); border:1px solid var(--pm-line);
+  line-height:1; box-shadow:none;
+}
+.pm-discovery--marquee .pm-occasion-controls button:hover {
+  background:var(--pm-ink); color:var(--pm-bg); border-color:var(--pm-ink);
+}
+.pm-discovery--marquee .pm-occasion-controls svg { display:block; width:16px; height:16px; }
+@media(hover:hover) and (pointer:fine) {
+  .pm-discovery--marquee .pm-discovery-grid { cursor:grab; }
+}
+@media(max-width:749px) {
+  .pm-discovery--marquee .pm-discovery-grid {
+    --occasion-width:clamp(132px,40vw,166px); gap:16px;
+  }
+  .pm-discovery--marquee.is-marquee-ready .pm-occasion-window { --occasion-fade:18px; }
+  .pm-discovery--marquee .pm-occasion-controls button { width:38px; height:38px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .pm-discovery--marquee .pm-tile-media { transition:none; }
+}

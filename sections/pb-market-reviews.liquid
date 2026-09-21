@@ -1,0 +1,60 @@
+{% if section.blocks.size > 0 %}<section class="pm-section" id="PMReviews"><div class="pm-shell"><div class="pm-section-intro"><h2>{{ section.settings.title | escape }}</h2></div><div class="pm-review-grid">{% for block in section.blocks %}{% if block.type == '@app' %}<div class="pm-review-app">{% render block %}</div>{% else %}<article class="pm-review" {{ block.shopify_attributes }}>{% if block.settings.image %}{{ block.settings.image | image_url: width: 500 | image_tag: loading: 'lazy', alt: block.settings.name }}{% endif %}<div class="pm-review-copy"><div class="pm-review-stars" aria-label="{{ block.settings.rating }} out of 5 stars">{% for star in (1..block.settings.rating) %}★{% endfor %}</div><blockquote>{{ block.settings.quote | escape }}</blockquote><strong>{{ block.settings.name | escape }}</strong></div></article>{% endif %}{% endfor %}</div></div></section>{% elsif request.design_mode %}<div class="pm-shell pm-editor-note">Customer stories: add real customer feedback or an app block. Hidden from customers until content is added.</div>{% endif %}
+{% schema %}
+{
+  "name": "Crestoria Stories",
+  "tag": "section",
+  "class": "pm-section-host",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "From the Crestoria community"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "review",
+      "name": "Real customer review",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Use only genuine feedback from your own customers. No reviews or ratings are supplied with this theme."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer display name"
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Review"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Customer photo (with permission)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Crestoria Stories"
+    }
+  ]
+}
+{% endschema %}

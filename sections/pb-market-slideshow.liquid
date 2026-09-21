@@ -1,0 +1,363 @@
+{% comment %}
+  Crestoria Market V9 — full-bleed, accessible homepage slideshow.
+  Uploaded banner images are displayed as artwork without duplicate text by default.
+  With no uploaded artwork, render an editable campaign from the store's own collection.
+  No competitor products, discounts, reviews or campaign images are bundled.
+{% endcomment %}
+{% if section.blocks.size > 0 or request.design_mode %}
+<section id="PMHero-{{ section.id }}" class="pm-section pm-hero" data-pm-hero
+  data-autoplay="{{ section.settings.autoplay }}" data-interval="{{ section.settings.interval | times: 1000 }}"
+  role="region" aria-roledescription="carousel" aria-label="{{ section.settings.accessible_label | escape }}"
+  style="--pm-hero-height:{{ section.settings.desktop_height }};--pm-hero-mobile-height:{{ section.settings.mobile_height }}px;">
+  <div class="pm-hero-stage" data-pm-hero-stage>
+    {% for block in section.blocks %}
+      {% liquid
+        assign slide_collection = block.settings.collection
+        if slide_collection == blank
+          capture slide_handle
+            render 'pb-season-handle', handles: block.settings.collection_handles
+          endcapture
+          assign slide_handle = slide_handle | strip
+          assign slide_collection = collections[slide_handle]
+        endif
+        assign slide_link = block.settings.link
+        if slide_link == blank and slide_collection != blank
+          assign slide_link = slide_collection.url
+        endif
+        if slide_link == blank
+          assign slide_anchor = block.settings.anchor | handleize
+          if slide_anchor != blank
+            assign slide_link = routes.root_url | append: '#' | append: slide_anchor
+          else
+            assign slide_link = routes.all_products_collection_url
+          endif
+        endif
+        assign banner_image = block.settings.image | default: block.settings.mobile_image
+        assign campaign_image = block.settings.campaign_image | default: banner_image
+        if campaign_image == blank and slide_collection != blank
+          assign campaign_image = slide_collection.image | default: slide_collection.products.first.featured_image
+        endif
+        assign image_loading = 'lazy'
+        assign image_priority = 'auto'
+        if forloop.first
+          assign image_loading = 'eager'
+          assign image_priority = 'high'
+        endif
+        assign slide_label = block.settings.label | default: block.settings.heading | default: 'Featured collection'
+        assign image_alt = block.settings.image_alt | default: slide_label
+      %}
+      <div id="PMSlide-{{ section.id }}-{{ block.id }}" class="pm-hero-slide{% if forloop.first %} is-current{% endif %}{% if banner_image != blank and block.settings.image_only %} pm-hero-slide--artwork{% else %} pm-hero-slide--campaign{% endif %}"
+        data-pm-hero-slide data-block-id="{{ block.id }}" data-slide-label="{{ slide_label | escape }}"
+        role="group" aria-roledescription="slide" aria-label="{{ forloop.index }} of {{ section.blocks.size }}: {{ slide_label | escape }}"
+        {% unless forloop.first %}hidden inert{% endunless %} {{ block.shopify_attributes }}>
+        {% if banner_image != blank and block.settings.image_only %}
+          {% if forloop.first and section.settings.main_heading %}<h1 class="pm-sr">{{ block.settings.heading | escape }} {{ block.settings.heading_line_2 | escape }}</h1>{% endif %}
+          <a class="pm-hero-artwork pm-hero-artwork--{{ block.settings.image_fit }}" href="{{ slide_link }}" aria-label="{{ image_alt | escape }}">
+            <picture>
+              {% if block.settings.mobile_image != blank %}
+                <source media="(max-width: 749px)" srcset="{{ block.settings.mobile_image | image_url: width: 480 }} 480w, {{ block.settings.mobile_image | image_url: width: 750 }} 750w, {{ block.settings.mobile_image | image_url: width: 1000 }} 1000w" sizes="100vw">
+              {% endif %}
+              {{ banner_image | image_url: width: 2880 | image_tag: widths: '750, 1100, 1440, 1920, 2560, 2880', sizes: '100vw', loading: image_loading, fetchpriority: image_priority, alt: image_alt }}
+            </picture>
+          </a>
+        {% else %}
+          <div class="pm-hero-campaign pm-hero-campaign--{{ block.settings.theme }}">
+            <div class="pm-hero-copy">
+              {% if block.settings.kicker != blank %}<p class="pm-kicker">{{ block.settings.kicker | escape }}</p>{% endif %}
+              {% if forloop.first and section.settings.main_heading %}
+                <h1>{{ block.settings.heading | escape }}{% if block.settings.heading_line_2 != blank %}<span>{{ block.settings.heading_line_2 | escape }}</span>{% endif %}</h1>
+              {% else %}
+                <h2>{{ block.settings.heading | escape }}{% if block.settings.heading_line_2 != blank %}<span>{{ block.settings.heading_line_2 | escape }}</span>{% endif %}</h2>
+              {% endif %}
+              {% if block.settings.text != blank %}<p class="pm-hero-text">{{ block.settings.text | escape }}</p>{% endif %}
+              {% if block.settings.button_label != blank %}<a class="pm-button pm-hero-cta" href="{{ slide_link }}">{{ block.settings.button_label | escape }} {% render 'pb-market-icon', icon: 'arrow' %}</a>{% endif %}
+              <div class="pm-hero-caption"><span></span>{{ slide_label | escape }}</div>
+            </div>
+            <div class="pm-hero-visual{% if campaign_image != blank %} pm-hero-visual--photo{% endif %}">
+              {% if campaign_image != blank %}
+                <a class="pm-hero-product-photo" href="{{ slide_link }}" aria-label="{{ slide_label | escape }}">
+                  {{ campaign_image | image_url: width: 1500 | image_tag: loading: image_loading, widths: '480, 750, 1000, 1500', sizes: '(min-width: 750px) 50vw, 100vw', alt: slide_label }}
+                </a>
+              {% else %}
+                <a class="pm-hero-theme-art" href="{{ slide_link }}" aria-label="{{ slide_label | escape }}">
+                  <span class="pm-hero-art-orbit pm-hero-art-orbit--one" aria-hidden="true"></span>
+                  <span class="pm-hero-art-orbit pm-hero-art-orbit--two" aria-hidden="true"></span>
+                  <span class="pm-hero-art-spark pm-hero-art-spark--one" aria-hidden="true">✦</span>
+                  <span class="pm-hero-art-spark pm-hero-art-spark--two" aria-hidden="true">✧</span>
+                  <span class="pm-hero-art-medallion" aria-hidden="true">{% render 'pb-market-icon', icon: block.settings.theme %}</span>
+                  <span class="pm-hero-art-tag">{{ slide_label | escape }}</span>
+                  <span class="pm-hero-art-note">{{ block.settings.art_note | escape }}</span>
+                </a>
+              {% endif %}
+              {% if block.settings.show_thumbnails and slide_collection.products.size > 1 %}
+                <div class="pm-hero-thumbnails" aria-label="{{ slide_label | escape }} products">
+                  {% for item in slide_collection.products limit: 4 %}
+                    {% if item.featured_image != blank %}<a href="{{ item.url }}" aria-label="{{ item.title | escape }}">{{ item.featured_image | image_url: width: 200 | image_tag: loading: 'lazy', alt: item.title }}</a>{% endif %}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    {% else %}
+      {% if request.design_mode %}<div class="pm-hero-empty">Add a slide to Crestoria Hero Slider.</div>{% endif %}
+    {% endfor %}
+    {% if section.blocks.size > 1 %}
+      <button class="pm-hero-arrow pm-hero-arrow--prev" type="button" data-pm-hero-prev aria-label="Previous banner" aria-controls="PMHero-{{ section.id }}">{% render 'pb-market-icon', icon: 'chevron' %}</button>
+      <button class="pm-hero-arrow pm-hero-arrow--next" type="button" data-pm-hero-next aria-label="Next banner" aria-controls="PMHero-{{ section.id }}">{% render 'pb-market-icon', icon: 'chevron' %}</button>
+      <div class="pm-hero-pagination" data-pm-hero-controls>
+        <div class="pm-hero-dots" role="group" aria-label="Choose a banner">
+          {% for block in section.blocks %}<button class="pm-hero-dot" type="button" data-pm-hero-dot="{{ forloop.index0 }}" aria-label="Show {{ block.settings.label | default: block.settings.heading | escape }} banner" aria-controls="PMSlide-{{ section.id }}-{{ block.id }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"><span></span></button>{% endfor %}
+        </div>
+        {% if section.settings.autoplay %}<button type="button" class="pm-hero-pause" data-pm-hero-pause aria-label="Pause automatic banner rotation" aria-pressed="false"><span data-pm-hero-pause-icon aria-hidden="true">Ⅱ</span></button>{% endif %}
+      </div>
+    {% endif %}
+    <span class="pm-sr" data-pm-hero-status aria-live="off" aria-atomic="true"></span>
+  </div>
+</section>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Crestoria Hero Slider",
+  "tag": "section",
+  "class": "pm-section-host pm-hero-host",
+  "enabled_on": {
+    "templates": [
+      "index"
+    ]
+  },
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "text",
+      "id": "accessible_label",
+      "label": "Slideshow label",
+      "default": "Seasonal gifts and collections"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Automatically rotate banners",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "interval",
+      "label": "Time between banners",
+      "default": 6,
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "unit": "s"
+    },
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "label": "Banner height at 1920 px wide",
+      "default": 600,
+      "min": 400,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "info": "The banner is edge-to-edge and scales proportionally on desktop. 600 px matches a 1920 × 600 banner."
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "label": "Mobile banner height",
+      "default": 480,
+      "min": 440,
+      "max": 640,
+      "step": 20,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "main_heading",
+      "label": "Use first campaign headline as H1",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Banner slide",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Slide name",
+          "default": "Halloween"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Desktop banner image",
+          "info": "Wide artwork: recommended 1920 × 600 px. Images with text are supported."
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile banner image",
+          "info": "Recommended 900 × 1125 px. Optional, but recommended when the desktop image contains small text."
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Banner image description",
+          "info": "Describe text or products shown in the banner for screen readers."
+        },
+        {
+          "type": "checkbox",
+          "id": "image_only",
+          "label": "Uploaded image already includes text",
+          "default": true,
+          "info": "On: show the complete clickable artwork with no extra heading. Off: show editable text beside the selected image."
+        },
+        {
+          "type": "select",
+          "id": "image_fit",
+          "label": "Banner image fit",
+          "default": "contain",
+          "options": [
+            {
+              "value": "contain",
+              "label": "Show complete image (no crop)"
+            },
+            {
+              "value": "cover",
+              "label": "Fill banner (may crop edges)"
+            }
+          ]
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Banner link override"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "collection_handles",
+          "label": "Auto-detect collection handles",
+          "info": "Existing handles separated by |. No products or collections are created."
+        },
+        {
+          "type": "text",
+          "id": "anchor",
+          "label": "Homepage department anchor",
+          "default": "pb-halloween"
+        },
+        {
+          "type": "header",
+          "content": "Content without banner artwork"
+        },
+        {
+          "type": "text",
+          "id": "kicker",
+          "label": "Small heading",
+          "default": "THE HALLOWEEN EDIT"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading, first line",
+          "default": "A little spooky."
+        },
+        {
+          "type": "text",
+          "id": "heading_line_2",
+          "label": "Heading, second line",
+          "default": "A lot of personality."
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "Find playful Halloween gifts and decor to make the season your own."
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Explore Halloween"
+        },
+        {
+          "type": "image_picker",
+          "id": "campaign_image",
+          "label": "Campaign product photo",
+          "info": "When blank, a photo is taken only from the matching collection. If no photo is available, a themed illustration is shown."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_thumbnails",
+          "label": "Show collection photo shortcuts",
+          "default": true
+        },
+        {
+          "type": "select",
+          "id": "theme",
+          "label": "Fallback illustration",
+          "default": "pumpkin",
+          "options": [
+            {
+              "value": "pumpkin",
+              "label": "Halloween"
+            },
+            {
+              "value": "tree",
+              "label": "Christmas"
+            },
+            {
+              "value": "rings",
+              "label": "Wedding"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "art_note",
+          "label": "Illustration caption",
+          "default": "Made for your kind of magic."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Crestoria Hero Slider",
+      "blocks": [
+        {
+          "type": "slide"
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "label": "Christmas",
+            "theme": "tree",
+            "heading": "Make the holidays",
+            "heading_line_2": "a little more personal.",
+            "anchor": "pb-christmas"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "label": "Wedding",
+            "theme": "rings",
+            "heading": "For your forever",
+            "heading_line_2": "kind of moments.",
+            "anchor": "pb-wedding"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

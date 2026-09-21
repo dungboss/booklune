@@ -1,0 +1,23 @@
+{%- if item != blank -%}
+{%- liquid
+ assign card_variant = item.selected_or_first_available_variant
+ assign card_rating = item.metafields.reviews.rating.value
+ assign card_count = item.metafields.reviews.rating_count.value
+-%}
+<article class="pm-card">
+  <div class="pm-card-media">
+    <a class="pm-card-picture" href="{{ item.url }}" tabindex="-1" aria-hidden="true">
+      {% if item.featured_image %}
+        {{ item.featured_image | image_url: width: 640 | image_tag: class: 'pm-card-image', loading: 'lazy', widths: '180, 320, 480, 640', sizes: '(min-width: 1200px) 220px, (min-width: 750px) 25vw, 50vw', alt: item.title }}
+      {% else %}<span class="pm-no-image">{{ item.title | escape }}</span>{% endif %}
+    </a>
+    {% if card_variant.compare_at_price > card_variant.price %}<span class="pm-card-badge">Sale</span>{% endif %}
+    <button class="pm-save pm-icon-button" type="button" data-pm-save data-handle="{{ item.handle | escape }}" data-id="{{ item.id }}" data-url="{{ item.url | escape }}" data-title="{{ item.title | escape }}" data-image="{% if item.featured_image %}{{ item.featured_image | image_url: width: 480 }}{% endif %}" data-price="{{ item.price | money_with_currency | strip_html | escape }}" aria-label="Save {{ item.title | escape }}" aria-pressed="false">{% render 'pb-market-icon', icon: 'heart' %}</button>
+  </div>
+  <div class="pm-card-info">
+    <h3 class="pm-card-title"><a href="{{ item.url }}">{{ item.title | escape }}</a></h3>
+    {% if card_rating != blank %}<div class="pm-card-rating"><span aria-hidden="true">★</span> {{ card_rating.rating | round: 1 }}{% if card_count != blank %}<span> ({{ card_count }})</span>{% endif %}</div>{% endif %}
+    <div class="pm-card-price">{% if item.price_varies %}<span class="pm-from">From</span>{% endif %}<strong>{{ item.price | money }}</strong>{% if card_variant.compare_at_price > card_variant.price and item.price_varies == false %}<s>{{ card_variant.compare_at_price | money }}</s>{% endif %}</div>
+  </div>
+</article>
+{%- endif -%}

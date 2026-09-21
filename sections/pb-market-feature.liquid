@@ -1,0 +1,57 @@
+<section class="pm-section"><div class="pm-shell pm-feature-grid">{% for block in section.blocks %}{% assign feature_collection = block.settings.collection %}{% assign feature_image = block.settings.image | default: feature_collection.featured_image %}<article class="pm-feature" {{ block.shopify_attributes }}><div class="pm-feature-copy"><span class="pm-kicker">{{ block.settings.eyebrow | escape }}</span><h2>{{ block.settings.title | escape }}</h2><p>{{ block.settings.text | escape }}</p><a class="pm-button pm-button-outline" href="{{ feature_collection.url | default: routes.all_products_collection_url }}">{{ block.settings.button | escape }} {% render 'pb-market-icon', icon: 'arrow' %}</a></div>{% if feature_image %}{{ feature_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360, 600, 900', sizes: '(min-width: 750px) 28vw, 45vw', alt: block.settings.title }}{% endif %}</article>{% endfor %}</div></section>
+{% schema %}
+{
+  "name": "Crestoria Featured Story",
+  "tag": "section",
+  "class": "pm-section-host",
+  "settings": [],
+  "max_blocks": 2,
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Small label",
+          "default": "Make it personal"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "A little joy, made for you"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "Thoughtful details for everyday spaces."
+        },
+        {
+          "type": "text",
+          "id": "button",
+          "label": "Button label",
+          "default": "Explore collection"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Crestoria Featured Story"
+    }
+  ]
+}
+{% endschema %}

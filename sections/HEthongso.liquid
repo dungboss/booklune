@@ -1,0 +1,125 @@
+{% comment %}
+  SECTION 8/8 (a): Bảng thông số + ảnh kích thước
+  Cài: Edit code → Sections → Add a new section → tên "lp-specs" → dán → Save.
+  Trái: bảng thông số (mỗi dòng 1 block). Phải: ảnh size/dimension.
+{% endcomment %}
+
+<div class="lpp-sec" style="background-color:{{ section.settings.section_bg }}">
+<div class="lpp{% if section.settings.animate %} lpp--anim{% endif %}" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;--lpp-card:{{ section.settings.card_bg }};--lpp-table:{{ section.settings.table_bg }};--lpp-border:{{ section.settings.border_color }};--lpp-head:{{ section.settings.heading_color }};--lpp-label:{{ section.settings.label_color }};--lpp-value:{{ section.settings.value_color }};--lpp-h:{{ section.settings.heading_size }}px;--lpp-c:{{ section.settings.cell_size }}px;--lpp-pad:{{ section.settings.card_padding }}px;--lpp-r:{{ section.settings.card_radius }}px;--lpp-imgh:{{ section.settings.image_height }}px">
+  <div class="lpp__row">
+
+    <div class="lpp__card lpp__card--table">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="lpp__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      <table class="lpp__table">
+        {%- for block in section.blocks -%}
+          <tr {{ block.shopify_attributes }}>
+            <td class="lpp__label">{{ block.settings.label }}</td>
+            <td class="lpp__value">{{ block.settings.value }}</td>
+          </tr>
+        {%- endfor -%}
+      </table>
+    </div>
+
+    <div class="lpp__card lpp__card--img">
+      {%- if section.settings.image_heading != blank -%}
+        <h2 class="lpp__heading">{{ section.settings.image_heading }}</h2>
+      {%- endif -%}
+      <div class="lpp__imgwrap">
+        {%- if section.settings.image != blank -%}
+          {{ section.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'lpp__img' }}
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'lpp__img lpp__ph' }}
+        {%- endif -%}
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<style>
+  .lpp-sec{overflow-x:hidden}
+  .lpp{max-width:1200px;margin:0 auto;padding-left:20px;padding-right:20px;box-sizing:border-box}
+  .lpp *{box-sizing:border-box;margin:0;padding:0}
+  .lpp__row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:14px;align-items:stretch}
+  .lpp__card{background:var(--lpp-card);border:1px solid var(--lpp-border);border-radius:var(--lpp-r,12px);padding:var(--lpp-pad,20px);min-width:0}
+  .lpp__heading{font-size:var(--lpp-h,20px);font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--lpp-head);text-align:center;margin-bottom:14px;overflow-wrap:break-word}
+  .lpp__table{width:100%;border-collapse:separate;border-spacing:0;background:var(--lpp-table);border-radius:8px;overflow:hidden;border:1px solid var(--lpp-border)}
+  .lpp__table td{padding:10px 13px;font-size:var(--lpp-c,12.5px);line-height:1.5;border-bottom:1px solid var(--lpp-border);vertical-align:top;overflow-wrap:break-word}
+  .lpp__table tr:last-child td{border-bottom:none}
+  .lpp__label{width:38%;font-weight:700;color:var(--lpp-label);border-right:1px solid var(--lpp-border)}
+  .lpp__value{color:var(--lpp-value)}
+  .lpp__imgwrap{display:flex;align-items:center;justify-content:center;height:var(--lpp-imgh,240px)}
+  .lpp__img{max-width:100%;max-height:var(--lpp-imgh,240px);width:auto;object-fit:contain;display:block}
+  .lpp__ph{width:100%;height:100%;background:#12161b;fill:#3d4650}
+  .lpp--anim .lpp__card{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+  .lpp--anim.is-in .lpp__card{opacity:1;transform:none}
+  .lpp--anim.is-in .lpp__card:nth-child(2){transition-delay:.12s}
+  @media (max-width:849px){.lpp__row{grid-template-columns:minmax(0,1fr)}}
+  @media (prefers-reduced-motion:reduce){.lpp--anim .lpp__card{opacity:1;transform:none;transition:none}}
+</style>
+
+<script>
+(function(){
+  var els=document.querySelectorAll('.lpp--anim');
+  if(!els.length)return;
+  if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('is-in');});return;}
+  var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('is-in');io.unobserve(x.target);}});},{threshold:.15});
+  els.forEach(function(e){io.observe(e);});
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Bảng thông số + ảnh",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Tiêu đề bảng", "default": "Specifications" },
+    { "type": "text", "id": "image_heading", "label": "Tiêu đề khối ảnh", "default": "Size: 23 × 23 CM" },
+    { "type": "image_picker", "id": "image", "label": "Ảnh kích thước" },
+    { "type": "checkbox", "id": "animate", "label": "Hiện dần khi cuộn tới", "default": true },
+    { "type": "header", "content": "Màu sắc" },
+    { "type": "color", "id": "section_bg", "label": "Màu nền section", "default": "#0a0d11" },
+    { "type": "color", "id": "card_bg", "label": "Màu nền card", "default": "#141a21" },
+    { "type": "color", "id": "table_bg", "label": "Màu nền bảng", "default": "#0e1319" },
+    { "type": "color", "id": "border_color", "label": "Màu viền & đường kẻ", "default": "#2a333d" },
+    { "type": "color", "id": "heading_color", "label": "Màu tiêu đề", "default": "#ffffff" },
+    { "type": "color", "id": "label_color", "label": "Màu tên thông số", "default": "#e4eaf0" },
+    { "type": "color", "id": "value_color", "label": "Màu giá trị", "default": "#a9b5c1" },
+    { "type": "header", "content": "Cỡ chữ & kích cỡ card" },
+    { "type": "range", "id": "heading_size", "min": 13, "max": 34, "step": 1, "unit": "px", "label": "Cỡ chữ tiêu đề", "default": 20 },
+    { "type": "range", "id": "cell_size", "min": 10, "max": 18, "step": 1, "unit": "px", "label": "Cỡ chữ trong bảng", "default": 13 },
+    { "type": "range", "id": "image_height", "min": 140, "max": 460, "step": 10, "unit": "px", "label": "Chiều cao ảnh", "default": 240 },
+    { "type": "range", "id": "card_padding", "min": 10, "max": 44, "step": 2, "unit": "px", "label": "Padding trong card", "default": 20 },
+    { "type": "range", "id": "card_radius", "min": 0, "max": 26, "step": 1, "unit": "px", "label": "Bo góc card", "default": 12 },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding trên", "default": 16 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding dưới", "default": 16 }
+  ],
+  "max_blocks": 16,
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Dòng thông số",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Tên thông số", "default": "Label" },
+        { "type": "text", "id": "value", "label": "Giá trị", "default": "Value" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "T8 Bảng thông số + ảnh",
+      "blocks": [
+        { "type": "row", "settings": { "label": "Product Name", "value": "Your product name" } },
+        { "type": "row", "settings": { "label": "Size", "value": "23 × 23 CM" } },
+        { "type": "row", "settings": { "label": "Materials", "value": "Durable ABS Plastic" } },
+        { "type": "row", "settings": { "label": "Lighting", "value": "Seven-Color LED" } },
+        { "type": "row", "settings": { "label": "Power", "value": "One-Button Activation" } },
+        { "type": "row", "settings": { "label": "Includes", "value": "Prop, Stand, User Guide" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

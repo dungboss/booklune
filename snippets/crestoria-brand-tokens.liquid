@@ -1,0 +1,23 @@
+{% comment %}Crestoria V16 — richer rosewood / black / white. Colours only; content stays unchanged.{% endcomment %}
+<style id="crestoria-brand-tokens">
+:root {
+  --cr-bg: {{ settings.crestoria_background | default: "#FFFFFF" }};
+  --cr-ink: {{ settings.crestoria_ink | default: "#111111" }};
+  --cr-accent: {{ settings.crestoria_accent | default: "#7E3F3E" }};
+  --cr-pink: {{ settings.crestoria_pink | default: "#954D4A" }};
+  --cr-soft: {{ settings.crestoria_soft | default: "#F1E7E5" }};
+  --cr-blush: {{ settings.crestoria_blush | default: "#CFB1AE" }};
+  --cr-tint: {{ settings.crestoria_tint | default: "#E2CFCC" }};
+  --cr-line: {{ settings.crestoria_line | default: "#C7B3B0" }};
+  --cr-muted: {{ settings.crestoria_muted | default: "#4F4947" }};
+  --pm-bg:var(--cr-bg); --pm-soft:var(--cr-soft); --pm-footer:var(--cr-soft);
+  --pm-ink:var(--cr-ink); --pm-cta:var(--cr-accent); --pm-accent:var(--cr-accent); --pm-caramel:var(--cr-accent);
+  --pm-muted:var(--cr-muted); --pm-line:var(--cr-line); --pm-white:#FFFFFF;
+  --crestoria-surface:var(--cr-bg); --crestoria-surface-soft:var(--cr-soft); --crestoria-surface-strong:var(--cr-blush);
+  --crestoria-text:var(--cr-ink); --crestoria-cream-50:var(--cr-bg); --crestoria-cream-100:var(--cr-soft);
+  --crestoria-beige-200:var(--cr-blush); --crestoria-beige-300:var(--cr-line);
+  --crestoria-caramel-400:var(--cr-ink); --crestoria-brown-500:var(--cr-ink); --crestoria-brown:var(--cr-muted);
+  --crestoria-espresso:var(--cr-ink); --crestoria-accent:var(--cr-accent); --crestoria-accent-dark:#66302F;
+  --crestoria-muted:var(--cr-muted); --crestoria-border:var(--cr-line);
+}
+</style>

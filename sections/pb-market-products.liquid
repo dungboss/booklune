@@ -1,0 +1,101 @@
+{% liquid
+ assign shelf_collection = section.settings.collection
+ assign shelf_products = section.settings.products
+ if shelf_products == blank and shelf_collection != blank
+  assign shelf_products = shelf_collection.products
+ endif
+ if shelf_products == blank and section.settings.fallback_all
+  assign shelf_collection = collections['all']
+  assign shelf_products = shelf_collection.products
+ endif
+ assign shelf_url = shelf_collection.url | default: routes.all_products_collection_url
+%}
+{% if shelf_products != blank %}
+<section class="pm-section pm-product-section{% if section.settings.soft_background %} pm-soft{% endif %}" aria-labelledby="PMTitle-{{ section.id }}"><div class="pm-shell" data-pm-carousel>
+ <div class="pm-section-heading"><div><h2 id="PMTitle-{{ section.id }}">{{ section.settings.title | escape }}</h2>{% if section.settings.text != blank %}<p>{{ section.settings.text | escape }}</p>{% endif %}</div><a class="pm-view-all" href="{{ shelf_url }}">View all {% render 'pb-market-icon', icon: 'arrow' %}</a></div>
+ <div class="pm-product-rail{% if section.settings.layout == 'grid' %} pm-product-grid{% endif %}" data-pm-rail style="--pm-product-columns:{{ section.settings.columns }};">{% for item in shelf_products limit: section.settings.limit %}{% render 'pb-market-card', item: item %}{% endfor %}</div>
+ {% if section.settings.layout == 'slider' %}<div class="pm-carousel-controls"><button type="button" class="pm-icon-button pm-prev" data-pm-prev aria-label="Previous products">{% render 'pb-market-icon', icon: 'chevron' %}</button><span data-pm-page aria-live="polite"></span><button type="button" class="pm-icon-button" data-pm-next aria-label="Next products">{% render 'pb-market-icon', icon: 'chevron' %}</button></div>{% endif %}
+</div></section>
+{% elsif request.design_mode %}<div class="pm-shell pm-editor-note">{{ section.settings.title | escape }}: choose a collection containing products. This message is only visible in the theme editor.</div>{% endif %}
+{% schema %}
+{
+  "name": "Crestoria Product Shelf",
+  "tag": "section",
+  "class": "pm-section-host",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Trending Now"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Subheading"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "product_list",
+      "id": "products",
+      "label": "Specific products (optional)",
+      "limit": 24
+    },
+    {
+      "type": "checkbox",
+      "id": "fallback_all",
+      "label": "Use all products when empty",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "label": "Number of products",
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Desktop columns",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "slider",
+          "label": "Swipeable product row"
+        },
+        {
+          "value": "grid",
+          "label": "Product grid"
+        }
+      ],
+      "default": "slider"
+    },
+    {
+      "type": "checkbox",
+      "id": "soft_background",
+      "label": "Soft beige background",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Crestoria Product Shelf"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,10 @@
+{%- liquid
+  assign link_collection = collections[handle]
+  if link_collection != blank
+    echo link_collection.url
+  else
+    echo routes.search_url
+    echo '?type=product&q='
+    echo query | url_encode
+  endif
+-%}

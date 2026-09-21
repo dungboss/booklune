@@ -1,0 +1,70 @@
+<section class="pm-section pm-trust-section"><div class="pm-shell"><div class="pm-section-intro"><h2>{{ section.settings.title | escape }}</h2></div><div class="pm-trust-grid">{% for block in section.blocks %}<article class="pm-trust-card" {{ block.shopify_attributes }}><span class="pm-trust-icon">{% render 'pb-market-icon', icon: block.settings.icon %}</span><h3>{{ block.settings.title | escape }}</h3><p>{{ block.settings.text | escape }}</p></article>{% endfor %}</div></div></section>
+{% schema %}
+{
+  "name": "Crestoria Shopping Trust",
+  "tag": "section",
+  "class": "pm-section-host",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Thoughtful from start to finish"
+    }
+  ],
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "gift",
+              "label": "Gift"
+            },
+            {
+              "value": "lock",
+              "label": "Lock"
+            },
+            {
+              "value": "truck",
+              "label": "Truck"
+            },
+            {
+              "value": "help",
+              "label": "Help"
+            },
+            {
+              "value": "box",
+              "label": "Box"
+            }
+          ],
+          "default": "gift"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Personal details"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "Select the customization available for your chosen design."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Crestoria Shopping Trust"
+    }
+  ]
+}
+{% endschema %}

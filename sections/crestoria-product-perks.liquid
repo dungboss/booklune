@@ -1,0 +1,14 @@
+{{ 'crestoria-product-page.css' | asset_url | stylesheet_tag }}
+<section class="eko-perks color-{{ section.settings.color_scheme }}">
+  <div class="page-width eko-perks__grid">
+    {% for block in section.blocks %}
+      <div class="eko-perk" {{ block.shopify_attributes }}>
+        <div class="eko-perk__icon">{{ block.settings.icon }}</div>
+        <div><h3>{{ block.settings.title }}</h3><p>{{ block.settings.text }}</p></div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+{% schema %}
+{"name":"Crestoria product perks","settings":[{"type":"color_scheme","id":"color_scheme","label":"Color scheme","default":"scheme-1"}],"blocks":[{"type":"perk","name":"Perk","settings":[{"type":"text","id":"icon","label":"Icon","default":"📦"},{"type":"text","id":"title","label":"Title","default":"Made to order"},{"type":"text","id":"text","label":"Text","default":"Carefully produced for your order."}]}],"presets":[{"name":"Crestoria product perks","blocks":[{"type":"perk"},{"type":"perk"},{"type":"perk"},{"type":"perk"}]}]}
+{% endschema %}

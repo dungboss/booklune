@@ -1,0 +1,590 @@
+{%- assign lqh_cur = product.selected_or_first_available_variant -%}
+{%- capture lqh_svg -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{%- endcapture -%}
+{%- capture lqh_star -%}<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3.3l2.7 5.4 6 .9-4.3 4.2 1 6-5.4-2.8-5.4 2.8 1-6L3.3 9.6l6-.9z"/></svg>{%- endcapture -%}
+
+<div class="lqh-sec"{% if section.settings.section_bg != blank %} style="background-color:{{ section.settings.section_bg }}"{% endif %}>
+<div class="lqh" id="lqh-{{ section.id }}" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;--lqh-title:{{ section.settings.title_color }};--lqh-text:{{ section.settings.text_color }};--lqh-star:{{ section.settings.star_color }};--lqh-cta:{{ section.settings.cta_bg }};--lqh-ctatext:{{ section.settings.cta_text_color }};--lqh-accent:{{ section.settings.accent_color }};--lqh-border:{{ section.settings.border_color }};--lqh-t:{{ section.settings.title_size }}px;--lqh-r:{{ section.settings.cta_radius }}px;--lqh-ar:{{ section.settings.media_ratio }};--lqh-fit:{{ section.settings.media_fit }}">
+
+  {%- if product == blank -%}
+    <p class="lqh__warn">Section "Hero Light" cần đặt trong template Product để có dữ liệu sản phẩm.</p>
+  {%- else -%}
+
+  <div class="lqh__grid">
+
+    <div class="lqh__gallery">
+      <div class="lqh__mains">
+        {%- for media in product.media -%}
+          <div class="lqh__media{% if forloop.first %} is-active{% endif %}" data-idx="{{ forloop.index0 }}">
+            {%- case media.media_type -%}
+              {%- when 'video' -%}{{ media | video_tag: controls: true, playsinline: true, preload: 'metadata', image_size: '1200x' }}
+              {%- when 'external_video' -%}{{ media | external_video_tag }}
+              {%- when 'model' -%}{{ media | model_viewer_tag }}
+              {%- else -%}{{ media | image_url: width: 1400 | image_tag: loading: 'lazy' }}
+            {%- endcase -%}
+          </div>
+        {%- else -%}
+          <div class="lqh__media is-active" data-idx="0">{{ 'product-2' | placeholder_svg_tag: 'lqh__ph' }}</div>
+        {%- endfor -%}
+      </div>
+      {%- if product.media.size > 1 -%}
+        <div class="lqh__thumbrow">
+          <button type="button" class="lqh__arrow" data-dir="-1" aria-label="Previous">&#8249;</button>
+          <div class="lqh__thumbs">
+            {%- for media in product.media -%}
+              <button type="button" class="lqh__thumb{% if forloop.first %} is-active{% endif %}" data-idx="{{ forloop.index0 }}" aria-label="Media {{ forloop.index }}">
+                {{ media.preview_image | image_url: width: 180 | image_tag: loading: 'lazy' }}
+                {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}<span class="lqh__play">&#9654;</span>{%- endif -%}
+              </button>
+            {%- endfor -%}
+          </div>
+          <button type="button" class="lqh__arrow" data-dir="1" aria-label="Next">&#8250;</button>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="lqh__info">
+
+      {%- if section.settings.show_rating -%}
+        <div class="lqh__rating">
+          <span class="lqh__stars">{% for i in (1..5) %}{{ lqh_star }}{% endfor %}</span>
+          <b>{{ section.settings.rating_value }}</b>
+          <span class="lqh__sep">|</span>
+          <b>{{ section.settings.rating_text }}</b>
+        </div>
+      {%- endif -%}
+
+      <h2 class="lqh__title">{{ product.title }}</h2>
+
+      <div class="lqh__pricerow">
+        <span class="lqh__price" data-price>{{ lqh_cur.price | money }}</span>
+        <s class="lqh__compare" data-compare{% unless lqh_cur.compare_at_price > lqh_cur.price %} hidden{% endunless %}>{% if lqh_cur.compare_at_price > lqh_cur.price %}{{ lqh_cur.compare_at_price | money }}{% endif %}</s>
+      </div>
+
+      {% form 'product', product %}
+        <input type="hidden" name="id" value="{{ lqh_cur.id }}">
+        {%- if section.settings.buy_redirect == 'checkout' -%}
+          <input type="hidden" name="return_to" value="/checkout">
+        {%- endif -%}
+        {%- if section.settings.show_variants and product.variants.size > 1 -%}
+          <div class="lqh__pills">
+            {%- for v in product.variants -%}
+              <label class="lqh__pill">
+                <input type="radio" name="lqh-opt-{{ section.id }}" value="{{ v.id }}" data-price="{{ v.price | money }}"{% if v.compare_at_price > v.price %} data-compare="{{ v.compare_at_price | money }}"{% endif %}{% if v.id == lqh_cur.id %} checked{% endif %}{% unless v.available %} disabled{% endunless %}>
+                <span>{{ v.title }}</span>
+              </label>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+        <button type="submit" class="lqh__cta"{% unless lqh_cur.available %} disabled{% endunless %}>{{ section.settings.cta_label }}</button>
+      {% endform %}
+
+      {%- if section.settings.show_payments -%}
+        <div class="lqh__pays">
+          {%- for type in shop.enabled_payment_types -%}
+            {{ type | payment_type_svg_tag: class: 'lqh__pay' }}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.show_delivery -%}
+        {%- assign lqh_now = 'now' | date: '%s' | plus: 0 -%}
+        {%- assign lqh_min = section.settings.delivery_min | times: 86400 | plus: lqh_now -%}
+        {%- assign lqh_max = section.settings.delivery_max | times: 86400 | plus: lqh_now -%}
+        <p class="lqh__delivery">&#128230; {{ section.settings.delivery_prefix }} <b>{{ lqh_min | date: '%b %d' }} &ndash; {{ lqh_max | date: '%b %d' }}</b></p>
+      {%- endif -%}
+
+      {%- if section.settings.show_review and section.settings.review_quote != blank -%}
+        <div class="lqh__reviewwrap">
+          <p class="lqh__quote">&ldquo;{{ section.settings.review_quote }}&rdquo;</p>
+          <div class="lqh__reviewer">
+            <span class="lqh__rname">{{ section.settings.review_author }}</span>
+            <span class="lqh__stars lqh__stars--sm">{% for i in (1..5) %}{{ lqh_star }}{% endfor %}</span>
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="lqh__trust">
+          {%- for block in section.blocks -%}
+            <div class="lqh__trow" {{ block.shopify_attributes }}>
+              <span class="lqh__ticon">
+                {%- case block.settings.icon -%}
+                  {%- when 'truck' -%}{{ lqh_svg }}<path d="M3 6.6h11v9.8H3z"/><path d="M14 9.6h4l3 3.4v3.4h-7z"/><circle cx="7.2" cy="18.4" r="1.9"/><circle cx="16.8" cy="18.4" r="1.9"/></svg>
+                  {%- when 'chat' -%}{{ lqh_svg }}<rect x="3.8" y="4.4" width="16.4" height="11.6" rx="3"/><path d="M8.4 16v3.4L12.4 16"/><path d="M8.5 10.2h.01M12 10.2h.01M15.5 10.2h.01"/></svg>
+                  {%- when 'heart' -%}{{ lqh_svg }}<path d="M12 20s-7.6-4.7-7.6-10.1A4.3 4.3 0 0 1 12 7.1a4.3 4.3 0 0 1 7.6 2.8C19.6 15.3 12 20 12 20z"/></svg>
+                  {%- when 'shield' -%}{{ lqh_svg }}<path d="M12 3.2l7 2.6v5.4c0 4.6-3 7.6-7 9.6-4-2-7-5-7-9.6V5.8z"/><path d="M9 11.9l2.1 2.1 3.9-4.1"/></svg>
+                  {%- when 'star' -%}{{ lqh_svg }}<path d="M12 3.6l2.5 5.1 5.6.8-4 4 .9 5.6-5-2.6-5 2.6.9-5.6-4-4 5.6-.8z"/></svg>
+                  {%- when 'box' -%}{{ lqh_svg }}<path d="M12 3.4 20 7.6v8.8l-8 4.2-8-4.2V7.6z"/><path d="M4 7.6l8 4.2 8-4.2M12 11.8v8.6"/></svg>
+                  {%- when 'clock' -%}{{ lqh_svg }}<circle cx="12" cy="12" r="8.3"/><path d="M12 7.4V12l3.1 1.9"/></svg>
+                  {%- else -%}{{ lqh_svg }}<circle cx="12" cy="12" r="8.3"/><path d="M9 12.1l2.1 2.1 3.9-4.1"/></svg>
+                {%- endcase -%}
+              </span>
+              <span class="lqh__ttext">{{ block.settings.text }}</span>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+    </div>
+
+  </div>
+  {%- endif -%}
+
+</div>
+</div>
+
+<style>
+  .lqh-sec{overflow-x:hidden}
+  .lqh{max-width:1200px;margin:0 auto;padding-left:20px;padding-right:20px;box-sizing:border-box}
+  .lqh *{box-sizing:border-box;margin:0;padding:0}
+  .lqh__warn{color:#b06a2c;font-size:14px;text-align:center;padding:30px 0}
+  .lqh__grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:34px;align-items:start}
+  .lqh__gallery,.lqh__info{min-width:0;max-width:100%}
+  .lqh__mains{aspect-ratio:var(--lqh-ar,1/1);border-radius:10px;overflow:hidden;background:#f4f4f5}
+  .lqh__media{display:none;width:100%;height:100%}
+  .lqh__media.is-active{display:block}
+  .lqh__media img,.lqh__media video,.lqh__media iframe{width:100%;max-width:100%;height:100%;object-fit:var(--lqh-fit,cover);display:block;border:0}
+  .lqh__ph{width:100%;height:100%;background:#eceef0;fill:#b6bcc4}
+  .lqh__thumbrow{display:flex;align-items:center;gap:6px;margin-top:12px}
+  .lqh__arrow{flex:0 0 26px;height:26px;border:0;background:none;color:var(--lqh-text);font-size:22px;line-height:1;cursor:pointer;padding:0}
+  .lqh__arrow:hover{color:var(--lqh-title)}
+  .lqh__thumbs{display:flex;gap:8px;overflow-x:auto;scroll-behavior:smooth;min-width:0;scrollbar-width:none;-ms-overflow-style:none}
+  .lqh__thumbs::-webkit-scrollbar{display:none}
+  .lqh__thumb{flex:0 0 62px;height:78px;border-radius:6px;overflow:hidden;border:2px solid transparent;padding:0;background:#f4f4f5;cursor:pointer;position:relative}
+  .lqh__thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .lqh__thumb.is-active{border-color:var(--lqh-accent)}
+  .lqh__play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;text-shadow:0 1px 6px rgba(0,0,0,.7)}
+  .lqh__rating{display:flex;align-items:center;gap:7px;font-size:14px;color:var(--lqh-title);margin-bottom:10px;flex-wrap:wrap}
+  .lqh__sep{color:var(--lqh-border)}
+  .lqh__stars{display:inline-flex;gap:1px;color:var(--lqh-star)}
+  .lqh__stars svg{width:16px;height:16px}
+  .lqh__stars--sm svg{width:14px;height:14px}
+  .lqh__title{font-size:var(--lqh-t,27px);font-weight:700;line-height:1.25;color:var(--lqh-title);margin-bottom:10px;overflow-wrap:break-word}
+  .lqh__pricerow{display:flex;align-items:baseline;gap:10px;margin-bottom:16px}
+  .lqh__price{font-size:21px;font-weight:700;color:var(--lqh-title)}
+  .lqh__compare{font-size:15px;color:var(--lqh-text)}
+  .lqh__pills{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:14px}
+  .lqh__pill input{position:absolute;opacity:0;pointer-events:none}
+  .lqh__pill span{display:block;padding:9px 14px;border:1px solid var(--lqh-border);border-radius:8px;color:var(--lqh-title);font-size:13.5px;font-weight:600;cursor:pointer;transition:border-color .2s,box-shadow .2s}
+  .lqh__pill input:checked+span{border-color:var(--lqh-cta);box-shadow:0 0 0 1px var(--lqh-cta)}
+  .lqh__pill input:disabled+span{opacity:.4;text-decoration:line-through;cursor:not-allowed}
+  .lqh__cta{width:100%;padding:15px 18px;border:0;border-radius:var(--lqh-r,4px);font-size:15.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--lqh-ctatext);background:var(--lqh-cta);cursor:pointer;transition:filter .2s,transform .2s}
+  .lqh__cta:hover{filter:brightness(1.06);transform:translateY(-1px)}
+  .lqh__cta:disabled{opacity:.5;cursor:not-allowed;transform:none}
+  .lqh__pays{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:14px}
+  .lqh__pay{height:24px;width:auto}
+  .lqh__delivery{font-size:13px;color:var(--lqh-text);text-align:center;margin-top:12px}
+  .lqh__delivery b{color:var(--lqh-title)}
+  .lqh__reviewwrap{margin-top:18px}
+  .lqh__quote{font-size:14.5px;line-height:1.6;font-style:italic;color:var(--lqh-title);padding-bottom:13px;border-bottom:1px solid var(--lqh-border);overflow-wrap:break-word}
+  .lqh__reviewer{display:flex;align-items:center;gap:10px;margin-top:11px}
+  .lqh__rname{font-size:13px;color:var(--lqh-text)}
+  .lqh__trust{display:flex;flex-direction:column;gap:13px;margin-top:20px}
+  .lqh__trow{display:flex;align-items:center;gap:11px}
+  .lqh__ticon{flex:0 0 23px;width:23px;height:23px;color:var(--lqh-title)}
+  .lqh__ticon svg{width:100%;height:100%}
+  .lqh__ttext{font-size:14px;font-weight:600;color:var(--lqh-title);overflow-wrap:break-word;min-width:0}
+  @media (max-width:899px){
+    .lqh__grid{grid-template-columns:minmax(0,1fr);gap:20px}
+    .lqh__title{font-size:calc(var(--lqh-t,27px)*.85)}
+  }
+</style>
+
+<script>
+(function(){
+  var root=document.getElementById('lqh-{{ section.id }}');
+  if(!root)return;
+  var mains=root.querySelectorAll('.lqh__media');
+  var thumbs=root.querySelectorAll('.lqh__thumb');
+  thumbs.forEach(function(t){
+    t.addEventListener('click',function(){
+      var i=t.dataset.idx;
+      mains.forEach(function(m){
+        var on=m.dataset.idx===i;
+        m.classList.toggle('is-active',on);
+        var v=m.querySelector('video');
+        if(v&&!on)v.pause();
+      });
+      thumbs.forEach(function(x){x.classList.toggle('is-active',x===t);});
+    });
+  });
+  var strip=root.querySelector('.lqh__thumbs');
+  root.querySelectorAll('.lqh__arrow').forEach(function(a){
+    a.addEventListener('click',function(){
+      if(strip)strip.scrollBy({left:(parseInt(a.dataset.dir,10)||1)*180,behavior:'smooth'});
+    });
+  });
+  var pills=root.querySelectorAll('input[name="lqh-opt-{{ section.id }}"]');
+  var idInput=root.querySelector('input[name="id"]');
+  var priceEl=root.querySelector('[data-price]');
+  var cmpEl=root.querySelector('[data-compare]');
+  pills.forEach(function(p){
+    p.addEventListener('change',function(){
+      if(idInput)idInput.value=p.value;
+      if(priceEl)priceEl.textContent=p.dataset.price;
+      if(cmpEl){
+        if(p.dataset.compare){cmpEl.textContent=p.dataset.compare;cmpEl.hidden=false;}
+        else{cmpEl.hidden=true;}
+      }
+    });
+  });
+
+  var form=root.querySelector('form[action*="/cart/add"]');
+  var buyMode={{ section.settings.buy_redirect | json }};
+
+  /* --- Cart drawer (null-safe) ---
+     renderContents() cua theme se crash "Cannot set properties of null"
+     neu DOM thieu phan tu ma no can (vd header khong co #cart-icon-bubble).
+     Xu ly: boc try/catch → tu va nhung section nao TON TAI roi mo drawer
+     → van khong duoc thi fallback sang trang gio hang. */
+  function lqhApplySections(data,drawer){
+    if(!data||!data.sections||!drawer||typeof drawer.getSectionsToRender!=='function')return false;
+    var list=[];
+    try{list=drawer.getSectionsToRender();}catch(_e){return false;}
+    var applied=false;
+    list.forEach(function(sec){
+      var html=data.sections[sec.id];
+      if(!html)return;
+      var live=sec.selector?document.querySelector(sec.selector):document.getElementById(sec.id);
+      if(!live)return;
+      var doc=new DOMParser().parseFromString(html,'text/html');
+      var src=(sec.selector?doc.querySelector(sec.selector):doc.getElementById(sec.id))||doc.querySelector('.shopify-section')||doc.body;
+      if(!src)return;
+      live.innerHTML=src.innerHTML;
+      applied=true;
+    });
+    return applied;
+  }
+  function lqhOpenDrawer(drawer){
+    if(!drawer)return false;
+    try{
+      var ov=drawer.querySelector('#CartDrawer-Overlay');
+      if(ov&&typeof drawer.close==='function')ov.addEventListener('click',drawer.close.bind(drawer));
+      if(typeof drawer.open==='function'){drawer.open();}
+      else{drawer.classList.add('animate','active');document.body.classList.add('overflow-hidden');}
+      return true;
+    }catch(_e){return false;}
+  }
+
+  if(form&&buyMode==='drawer'){
+    form.addEventListener('submit',function(e){
+      e.preventDefault();
+      var btn=form.querySelector('.lqh__cta');
+      if(btn){btn.disabled=true;btn.style.opacity='.6';}
+      var fd=new FormData(form);
+      var drawer=document.querySelector('cart-notification')||document.querySelector('cart-drawer');
+      var ids=[];
+      if(drawer&&typeof drawer.getSectionsToRender==='function'){
+        try{ids=drawer.getSectionsToRender().map(function(s){return s.id;}).filter(Boolean);}catch(_e){ids=[];}
+      }
+      if(ids.length){
+        fd.append('sections',ids.join(','));
+        fd.append('sections_url',window.location.pathname);
+      }
+      if(drawer&&typeof drawer.setActiveElement==='function'){try{drawer.setActiveElement(document.activeElement);}catch(_e){}}
+      var rootPath=(window.Shopify&&Shopify.routes&&Shopify.routes.root)?Shopify.routes.root:'/';
+      fetch(rootPath+'cart/add.js',{method:'POST',body:fd,headers:{'X-Requested-With':'XMLHttpRequest'}})
+        .then(function(r){return r.json();})
+        .then(function(data){
+          if(data.status&&data.status!==200){throw new Error(data.description||'Add to cart failed');}
+          var done=false;
+          if(drawer&&typeof drawer.renderContents==='function'){
+            try{drawer.renderContents(data);done=true;}catch(err){done=false;}
+          }
+          if(!done&&lqhApplySections(data,drawer)){done=lqhOpenDrawer(drawer);}
+          if(!done){window.location.href=rootPath+'cart';}
+        })
+        .catch(function(err){alert(err&&err.message?err.message:'Something went wrong. Please try again.');})
+        .finally(function(){if(btn){btn.disabled=false;btn.style.opacity='';}});
+    });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Hero Light (buy box)",
+  "tag": "section",
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Ảnh sản phẩm"
+    },
+    {
+      "type": "select",
+      "id": "media_ratio",
+      "label": "Tỉ lệ khung ảnh chính",
+      "options": [
+        { "value": "1/1", "label": "1:1 vuông" },
+        { "value": "4/5", "label": "4:5 dọc (hợp ảnh sách, chai lọ)" },
+        { "value": "3/4", "label": "3:4 dọc" },
+        { "value": "4/3", "label": "4:3 ngang" }
+      ],
+      "default": "1/1"
+    },
+    {
+      "type": "select",
+      "id": "media_fit",
+      "label": "Kiểu hiển thị ảnh",
+      "options": [
+        { "value": "cover", "label": "Cover — phủ kín khung" },
+        { "value": "contain", "label": "Contain — thấy trọn ảnh" }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "header",
+      "content": "Rating bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Hiện rating bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "rating_value",
+      "label": "Điểm",
+      "default": "4.9"
+    },
+    {
+      "type": "text",
+      "id": "rating_text",
+      "label": "Chữ sau dấu |",
+      "default": "10,000+ Happy Customers"
+    },
+    {
+      "type": "header",
+      "content": "Nút mua & variant"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_variants",
+      "label": "Hiện phần chọn variant (pills)",
+      "default": true,
+      "info": "Tắt thì pills ẩn đi, khách bấm mua sẽ nhận variant mặc định (variant đầu tiên còn hàng)."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Chữ trên nút",
+      "default": "Add To Cart →"
+    },
+    {
+      "type": "select",
+      "id": "buy_redirect",
+      "label": "Sau khi bấm nút mua",
+      "options": [
+        { "value": "cart", "label": "Sang trang giỏ hàng" },
+        { "value": "drawer", "label": "Mở cart drawer (giỏ trượt)" },
+        { "value": "checkout", "label": "Sang thẳng trang thanh toán" }
+      ],
+      "default": "cart",
+      "info": "Cart drawer chạy với các theme gốc Dawn. Theme không tương thích sẽ tự chuyển sang trang giỏ hàng."
+    },
+    {
+      "type": "range",
+      "id": "cta_radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Bo góc nút",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payments",
+      "label": "Hiện payment icons (tự lấy theo cổng thanh toán store đang bật)",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Quote review"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_review",
+      "label": "Hiện quote review",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "review_quote",
+      "label": "Nội dung quote (không cần dấu ngoặc kép)",
+      "default": "Exceeded my expectations in every way. Great quality, fast shipping, and exactly what I was hoping for."
+    },
+    {
+      "type": "text",
+      "id": "review_author",
+      "label": "Tên người review",
+      "default": "Shannon T."
+    },
+    {
+      "type": "header",
+      "content": "Ngày giao hàng dự kiến (tự tính từ hôm nay)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_delivery",
+      "label": "Hiện dòng ngày giao",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "delivery_prefix",
+      "label": "Chữ trước ngày",
+      "default": "Get it between"
+    },
+    {
+      "type": "range",
+      "id": "delivery_min",
+      "min": 1,
+      "max": 45,
+      "step": 1,
+      "unit": "d",
+      "label": "Giao sớm nhất sau (ngày)",
+      "default": 7
+    },
+    {
+      "type": "range",
+      "id": "delivery_max",
+      "min": 1,
+      "max": 60,
+      "step": 1,
+      "unit": "d",
+      "label": "Giao muộn nhất sau (ngày)",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Màu sắc"
+    },
+    {
+      "type": "color",
+      "id": "section_bg",
+      "label": "Màu nền section",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Màu chữ chính",
+      "default": "#111213"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Màu chữ phụ",
+      "default": "#5c6066"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Màu sao",
+      "default": "#f5a623"
+    },
+    {
+      "type": "color",
+      "id": "cta_bg",
+      "label": "Màu nút mua",
+      "default": "#c9a353"
+    },
+    {
+      "type": "color",
+      "id": "cta_text_color",
+      "label": "Màu chữ nút mua",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Màu viền thumbnail đang chọn",
+      "default": "#c9a353"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Màu viền & đường kẻ",
+      "default": "#e4e4e8"
+    },
+    {
+      "type": "header",
+      "content": "Cỡ chữ & khoảng cách"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 18,
+      "max": 44,
+      "step": 1,
+      "unit": "px",
+      "label": "Cỡ chữ tên sản phẩm",
+      "default": 27
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding trên",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding dưới",
+      "default": 28
+    }
+  ],
+  "max_blocks": 6,
+  "blocks": [
+    {
+      "type": "trust",
+      "name": "Trust row",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "truck", "label": "Xe giao hàng" },
+            { "value": "chat", "label": "Chat hỗ trợ" },
+            { "value": "heart", "label": "Trái tim" },
+            { "value": "shield", "label": "Shield / bảo hành" },
+            { "value": "star", "label": "Ngôi sao" },
+            { "value": "box", "label": "Hộp / đóng gói" },
+            { "value": "clock", "label": "Đồng hồ" },
+            { "value": "check", "label": "Check tròn" }
+          ],
+          "default": "truck"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Nội dung",
+          "default": "Fast & Free Shipping"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Light (buy box)",
+      "blocks": [
+        { "type": "trust", "settings": { "icon": "truck", "text": "Fast & Free Shipping" } },
+        { "type": "trust", "settings": { "icon": "chat", "text": "24/7 Customer Support" } },
+        { "type": "trust", "settings": { "icon": "heart", "text": "100% Customer Satisfaction Guaranteed" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

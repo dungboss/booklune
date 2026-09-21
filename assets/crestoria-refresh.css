@@ -1,0 +1,119 @@
+/* Crestoria V11. White, black and blush-pink colourway.
+   Product imagery, real swatch colours, payment logos and app data are not recoloured. */
+body.crestoria-theme{background:var(--cr-bg);color:var(--cr-ink)}
+.crestoria-theme ::selection{background:var(--cr-pink);color:var(--cr-ink)}
+.crestoria-theme .pm-header{background:var(--cr-bg);border-bottom-color:var(--cr-line);box-shadow:0 2px 14px rgb(17 17 17 / .04)}
+.crestoria-theme .pm-announcement{background:var(--cr-pink);color:var(--cr-ink);letter-spacing:.015em}
+.crestoria-theme .pm-wordmark{color:var(--cr-ink)!important;letter-spacing:-1.7px;background:none;-webkit-text-fill-color:currentColor;text-shadow:none;max-width:100%;padding:8px 0;line-height:1.15}
+.crestoria-theme .pm-header-main{grid-template-columns:205px minmax(140px,1fr) auto;min-height:86px}
+.crestoria-theme .pm-search-form{background:#FFFFFF;border-color:var(--cr-ink)}
+.crestoria-theme .pm-search-submit{background:var(--cr-pink);color:var(--cr-ink)}
+.crestoria-theme .pm-search-submit:hover{background:var(--cr-blush)}
+.crestoria-theme .pm-counter{background:var(--cr-ink);color:var(--cr-bg)}
+/* V13: seasonal links use the same plain text treatment as the rest of the menu. */
+.crestoria-theme .pm-nav>.pm-season-link{background:transparent;border-radius:0;margin-block:0;padding:12px 0;color:var(--cr-ink)!important;font-weight:inherit}
+.crestoria-theme .pm-nav>.pm-season-link:hover{text-decoration:underline;text-underline-offset:4px}
+.crestoria-theme .pm-mobile-links{border-color:var(--cr-line)}
+.crestoria-theme .pm-button{background:var(--cr-ink);border-color:var(--cr-ink);color:var(--cr-bg)!important}
+.crestoria-theme .pm-button:hover{background:#333333;border-color:#333333}
+.crestoria-theme .pm-button-outline{background:transparent;color:var(--cr-ink)!important}
+.crestoria-theme .pm-button-outline:hover{background:var(--cr-soft)}
+.crestoria-theme .pm-kicker{color:var(--cr-accent)}
+/* Keep existing banner sizes, photos, arrows, dots and slide behaviour. */
+.crestoria-theme .pm-hero-campaign--pumpkin{background:linear-gradient(105deg,var(--cr-bg),var(--cr-blush))}
+.crestoria-theme .pm-hero-campaign--tree{background:linear-gradient(105deg,var(--cr-bg),var(--cr-soft))}
+.crestoria-theme .pm-hero-campaign--rings{background:linear-gradient(105deg,var(--cr-bg),var(--cr-tint))}
+.crestoria-theme .pm-hero-copy h1 span,.crestoria-theme .pm-hero-copy h2 span{color:var(--cr-ink)}
+.crestoria-theme .pm-hero-art-medallion{background:var(--cr-pink);border-color:transparent;color:var(--cr-ink);box-shadow:0 14px 32px rgb(17 17 17 / .08)}
+.crestoria-theme .pm-hero-art-orbit{border-color:var(--cr-accent)}
+.crestoria-theme .pm-hero-art-spark{color:var(--cr-accent)}
+.crestoria-theme .pm-hero .pm-hero-pagination{background:var(--cr-bg);border-color:var(--cr-line)}
+.crestoria-theme .pm-hero .pm-hero-arrow{background:var(--cr-bg);color:var(--cr-ink);border-color:var(--cr-line)}
+.crestoria-theme .pm-hero .pm-hero-arrow:hover{background:var(--cr-ink);color:var(--cr-bg)}
+/* Pastels belong to UI backgrounds, not to the products themselves. */
+.crestoria-theme .pm-discovery-grid>.pm-tile:nth-child(6n+1) .pm-tile-media{background:var(--cr-blush)}
+.crestoria-theme .pm-discovery-grid>.pm-tile:nth-child(6n+2) .pm-tile-media{background:var(--cr-soft)}
+.crestoria-theme .pm-discovery-grid>.pm-tile:nth-child(6n+3) .pm-tile-media{background:var(--cr-pink)}
+.crestoria-theme .pm-discovery-grid>.pm-tile:nth-child(6n+4) .pm-tile-media{background:var(--cr-tint)}
+.crestoria-theme .pm-discovery-grid>.pm-tile:nth-child(6n+5) .pm-tile-media{background:var(--cr-soft)}
+.crestoria-theme .pm-discovery-grid>.pm-tile:nth-child(6n+6) .pm-tile-media{background:var(--cr-blush)}
+.crestoria-theme .pm-card-media,.crestoria-theme .pm-card-info{background:#FFFFFF}
+.crestoria-theme .pm-card{border:1px solid var(--cr-line);border-radius:16px;overflow:hidden;background:#FFFFFF}
+.crestoria-theme .pm-card .pm-card-media{border-radius:0;border:0}
+.crestoria-theme .pm-card .pm-card-info{padding-left:10px;padding-right:10px}
+.crestoria-theme .pm-card-badge{background:var(--cr-pink);color:var(--cr-ink)}
+.crestoria-theme .pm-save{background:var(--cr-bg);color:var(--cr-ink)}
+.crestoria-theme .pm-save[aria-pressed=true]{background:var(--cr-pink);color:var(--cr-ink)}
+.crestoria-theme .pm-card-price,.crestoria-theme .pm-card-title{color:var(--cr-ink)}
+.crestoria-theme .cr-season--pumpkin{background:var(--cr-bg)}
+.crestoria-theme .cr-season--tree{background:var(--cr-soft)}
+.crestoria-theme .cr-season--rings{background:var(--cr-bg)}
+.crestoria-theme .pm-season-section .pm-season-empty{background:color-mix(in srgb,var(--cr-bg) 80%,white);border-color:var(--cr-line)}
+.crestoria-theme .pm-season-more .pm-button{border-radius:999px}
+.crestoria-theme .pm-season-view-all:hover{color:var(--cr-accent)}
+.crestoria-theme .pm-trust-section{background:var(--cr-soft);border-top:0}
+.crestoria-theme .pm-trust-card{background:var(--cr-bg);border-color:var(--cr-line)}
+.crestoria-theme .pm-trust-icon{color:var(--cr-accent)}
+/* Flat, high-contrast footer. Deliberately no wave or cloud decoration. */
+.crestoria-theme .pm-footer-host{background:var(--cr-soft)}
+.crestoria-theme .pm-footer.pm-footer-v9{
+ --pm-ink:var(--cr-ink);--pm-muted:var(--cr-muted);--pm-accent:var(--cr-accent);--pm-cta:var(--cr-ink);
+ background:var(--cr-soft);color:var(--cr-ink);border:0;background-image:none;
+}
+.crestoria-theme .pm-footer-v9 .pm-footer-signup{padding-top:48px;padding-bottom:40px}
+.crestoria-theme .pm-footer-v9 .pm-footer-directory{padding-top:46px;padding-bottom:48px}
+.crestoria-theme .pm-footer-v9 .pm-footer-signup::after,.crestoria-theme .pm-footer-v9 .pm-footer-directory::after{background:rgb(23 23 23 / .12)}
+.crestoria-theme .pm-footer-v9 .pm-wordmark{color:var(--cr-ink)!important}
+.crestoria-theme .pm-footer-v9 h2{color:var(--cr-ink)}
+.crestoria-theme .pm-footer-v9 a:hover,.crestoria-theme .pm-footer-v9 .pm-footer-help-link:hover{color:var(--cr-accent)}
+.crestoria-theme .pm-footer-v9 .pm-footer-signup-control{background:var(--cr-bg);border:1px solid var(--cr-line);border-radius:999px;padding:4px}
+.crestoria-theme .pm-footer-v9 .pm-footer-signup-control input{background:transparent;color:var(--cr-ink);padding-left:17px;border-radius:999px}
+.crestoria-theme .pm-footer-v9 .pm-footer-signup-control input::placeholder{color:var(--cr-muted);opacity:1}
+.crestoria-theme .pm-footer-v9 .pm-footer-signup-control button{background:var(--cr-ink);color:var(--cr-bg);border:0;border-radius:999px;font-weight:800}
+.crestoria-theme .pm-footer-v9 .pm-footer-signup-control button:hover{background:#333333}
+.crestoria-theme .pm-footer-v9 .pm-footer-ticket{border-color:rgb(23 23 23 / .6);color:var(--cr-ink);border-radius:999px}
+.crestoria-theme .pm-footer-v9 .pm-footer-ticket:hover{background:var(--cr-ink);color:var(--cr-bg)}
+.crestoria-theme .pm-footer-v9 .pm-footer-socials a{border-color:rgb(23 23 23 / .25)}
+.crestoria-theme .pm-footer-v9 .pm-footer-column{border-color:rgb(23 23 23 / .12)}
+.crestoria-theme .pm-footer-v9 .pm-footer-signup-control :focus-visible{outline:2px solid var(--cr-ink);outline-offset:-3px}
+#PMContactSupport .pm-contact-form{padding:20px;margin-top:18px;background:var(--cr-bg);border-color:var(--cr-line)}
+/* Longer new wordmark has its own tablet/mobile room. No edge clipping. */
+@media(min-width:990px) and (max-width:1200px){
+ .crestoria-theme .pm-header-main{grid-template-columns:188px minmax(150px,1fr) auto;gap:14px}
+ .crestoria-theme .pm-wordmark{font-size:41px}
+ .crestoria-theme .pm-nav{gap:10px;font-size:11.5px}
+}
+@media(min-width:750px) and (max-width:989px){
+ .crestoria-theme .pm-header-main{grid-template-columns:40px 165px minmax(100px,1fr) auto;gap:12px;min-height:78px}
+ .crestoria-theme .pm-wordmark{font-size:38px;letter-spacing:-1.4px}
+}
+@media(max-width:749px){
+ .crestoria-theme .pm-header-main{grid-template-columns:42px minmax(0,1fr) auto;min-height:0}
+ .crestoria-theme .pm-header-main>.pm-wordmark{font-size:34px;letter-spacing:-1.2px;padding:6px 0}
+ .crestoria-theme .pm-drawer .pm-wordmark{font-size:35px}
+ .crestoria-theme .pm-card .pm-card-info{padding-left:8px;padding-right:8px}
+ .crestoria-theme .pm-footer-v9 .pm-footer-signup{padding-top:34px;padding-bottom:30px}
+ .crestoria-theme .pm-footer-v9 .pm-footer-directory{padding-top:32px;padding-bottom:32px}
+ .crestoria-theme .pm-footer-v9 .pm-footer-signature .pm-wordmark{font-size:36px;padding:0}
+}
+@media(max-width:359px){
+ .crestoria-theme .pm-header-main>.pm-wordmark{font-size:30px;letter-spacing:-1.1px}
+ .crestoria-theme .pm-header-main{grid-template-columns:34px minmax(0,1fr) auto;column-gap:5px}
+ .crestoria-theme .pm-footer-signup-control input{min-width:0}
+}
+@media(prefers-reduced-motion:reduce){.crestoria-theme .pm-button{transition:none}}
+
+/* Contrast and selection states use colour only; product swatch fills stay real. */
+.crestoria-theme .pm-nav>a[aria-current="page"]{color:var(--cr-ink)}
+.crestoria-theme .pm-season-tab[aria-selected="true"]::after{background:var(--cr-accent)}
+.crestoria-theme .pm-season-view-all{color:var(--cr-ink)}
+.crestoria-theme .pm-footer-signup{background:var(--cr-blush);box-shadow:0 0 0 100vmax var(--cr-blush);clip-path:inset(0 -100vmax)}
+.crestoria-theme .pm-footer-directory,.crestoria-theme .pm-footer-base{background:var(--cr-soft)}
+.crestoria-theme .pm-footer-v9 .pm-footer-signup-copy p,
+.crestoria-theme .pm-footer-v9 .pm-footer-support>p,
+.crestoria-theme .pm-footer-v9 .pm-footer-signup-note{color:var(--cr-muted)}
+.crestoria-theme .pm-header :focus-visible,.crestoria-theme .pm-section :focus-visible,
+.crestoria-theme .pm-footer :focus-visible,.crestoria-theme .pm-dialog :focus-visible{outline-color:var(--cr-accent)}
+.crestoria-theme .pm-footer-signup-control button:focus-visible{outline-color:var(--cr-pink)}
+.crestoria-theme .announcement-bar,.crestoria-theme .announcement-bar-section{background:var(--cr-blush)!important;color:var(--cr-ink)!important}
+.crestoria-theme .announcement-bar__message{color:var(--cr-ink)!important}

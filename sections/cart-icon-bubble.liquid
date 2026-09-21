@@ -1,0 +1,4 @@
+{% comment %}AJAX cart fragment: preserve the Market header icon and counter after Shopify cart updates.{% endcomment %}
+{% render 'pb-market-icon', icon: 'cart' %}
+<span class="pm-sr">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
+<span class="pm-counter" data-pm-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>{{ cart.item_count }}</span>

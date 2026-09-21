@@ -1,0 +1,2 @@
+{% comment %}Preserve a safe route to product options for legacy multicolumn promotions.{% endcomment %}
+{% if product != blank %}<a href="{{ product.url }}" class="button button--primary">{{ label | default: 'Choose options' | escape }}</a>{% endif %}

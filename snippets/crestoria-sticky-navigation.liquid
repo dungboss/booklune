@@ -1,0 +1,76 @@
+{%- liquid
+  assign is_home = false
+  assign is_collection = false
+  assign is_contact = false
+
+  if request.page_type == 'index'
+    assign is_home = true
+  endif
+
+  if request.page_type == 'collection' or request.page_type == 'list-collections'
+    assign is_collection = true
+  endif
+
+  if request.path contains '/pages/contact'
+    assign is_contact = true
+  endif
+-%}
+
+<nav class="pb-global-nav" aria-label="Main navigation">
+  <div class="pb-global-nav__inner page-width">
+    <details class="pb-global-nav__mobile">
+      <summary class="pb-global-nav__mobile-toggle" aria-label="Open navigation menu">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </summary>
+      <div class="pb-global-nav__mobile-panel">
+        <ul class="pb-global-nav__mobile-menu" role="list">
+          <li><a href="{{ routes.root_url }}" class="pb-global-nav__link{% if is_home %} is-active{% endif %}"{% if is_home %} aria-current="page"{% endif %}>Home</a></li>
+          <li><a href="/collections/all" class="pb-global-nav__link{% if is_collection %} is-active{% endif %}"{% if is_collection %} aria-current="page"{% endif %}>Collection</a></li>
+          <li><a href="/pages/contact" class="pb-global-nav__link{% if is_contact %} is-active{% endif %}"{% if is_contact %} aria-current="page"{% endif %}>Contact</a></li>
+        </ul>
+      </div>
+    </details>
+
+    <a class="pb-global-nav__brand" href="{{ routes.root_url }}" aria-label="Crestoria home">
+      <span class="pb-global-nav__wordmark" aria-label="Crestoria"><span class="pb-global-nav__wordmark-initial">C</span>restoria</span>
+    </a>
+
+    <ul class="pb-global-nav__menu pb-global-nav__desktop-menu" role="list">
+      <li><a href="{{ routes.root_url }}" class="pb-global-nav__link{% if is_home %} is-active{% endif %}"{% if is_home %} aria-current="page"{% endif %}>Home</a></li>
+      <li><a href="/collections/all" class="pb-global-nav__link{% if is_collection %} is-active{% endif %}"{% if is_collection %} aria-current="page"{% endif %}>Collection</a></li>
+      <li><a href="/pages/contact" class="pb-global-nav__link{% if is_contact %} is-active{% endif %}"{% if is_contact %} aria-current="page"{% endif %}>Contact</a></li>
+    </ul>
+
+    <div class="pb-global-nav__actions">
+      <a class="pb-global-nav__icon-link pb-global-nav__search" href="{{ routes.search_url }}" aria-label="Search">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="1.8"/>
+          <path d="m16 16 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </a>
+
+      {%- if shop.customer_accounts_enabled -%}
+        <a class="pb-global-nav__icon-link pb-global-nav__account" href="{{ routes.account_url }}" aria-label="Account">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M5.5 20c.6-4 3-6 6.5-6s5.9 2 6.5 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+        </a>
+      {%- endif -%}
+
+      <a class="pb-global-nav__icon-link" href="{{ routes.cart_url }}" aria-label="Cart">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M3.5 5h2l1.5 9h10.5l1.7-6.5H6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="9" cy="18.5" r="1.2" fill="currentColor"/>
+          <circle cx="17" cy="18.5" r="1.2" fill="currentColor"/>
+        </svg>
+        {%- if cart.item_count > 0 -%}
+          <span class="pb-global-nav__cart-count" aria-hidden="true">{{ cart.item_count }}</span>
+          <span class="visually-hidden">{{ cart.item_count }} items</span>
+        {%- endif -%}
+      </a>
+    </div>
+  </div>
+</nav>

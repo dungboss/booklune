@@ -1,0 +1,11 @@
+{%- comment -%}Resolve pipe-separated candidate handles against this shop. Output: handle only.{%- endcomment -%}
+{%- liquid
+  assign candidate_handles = handles | default: '' | split: '|'
+  for candidate in candidate_handles
+    assign candidate_key = candidate | strip
+    if candidate_key != blank and collections[candidate_key] != blank
+      echo collections[candidate_key].handle
+      break
+    endif
+  endfor
+-%}

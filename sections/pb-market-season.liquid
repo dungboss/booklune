@@ -1,0 +1,307 @@
+{% comment %}
+  Crestoria V8: three independent seasonal departments.
+  Each instance has its own banner, tabs, collections, product lists and View More links.
+  All prices, photos and ratings are taken from the store. No competitor inventory.
+  Empty departments remain visible; no unrelated product or placeholder-shirt fallback.
+{% endcomment %}
+{% liquid
+  assign season_anchor = section.settings.anchor | handleize
+  if season_anchor == blank
+    assign season_anchor = 'pb-season-' | append: section.id
+  endif
+  assign season_collection = section.settings.collection
+  if season_collection == blank
+    capture season_handle
+      render 'pb-season-handle', handles: section.settings.collection_handles
+    endcapture
+    assign season_handle = season_handle | strip
+    assign season_collection = collections[season_handle]
+  endif
+  assign season_url = section.settings.view_all_link
+  if season_url == blank and season_collection != blank
+    assign season_url = season_collection.url
+  endif
+  if season_url == blank
+    assign season_query = section.settings.title | url_encode
+    assign season_url = routes.search_url | append: '?type=product&q=' | append: season_query
+  endif
+%}
+<section id="{{ season_anchor }}" class="pm-section pm-season-section cr-season--{{ section.settings.icon }}" data-pm-season data-initial-tab="{{ section.settings.initial_tab }}" aria-labelledby="PMSeasonTitle-{{ section.id }}">
+  <div class="pm-shell">
+    {% if section.settings.banner != blank %}
+      <div class="pm-season-banner">
+        <picture>
+          {% if section.settings.banner_mobile != blank %}<source media="(max-width: 749px)" srcset="{{ section.settings.banner_mobile | image_url: width: 900 }}">{% endif %}
+          {{ section.settings.banner | image_url: width: 2200 | image_tag: loading: 'lazy', widths: '750, 1100, 1500, 1800, 2200', sizes: '(min-width: 1440px) 1376px, 100vw', alt: section.settings.title }}
+        </picture>
+      </div>
+    {% endif %}
+    <div class="pm-season-heading{% if section.settings.show_view_all %} pm-season-heading--with-link{% endif %}">
+      <div class="pm-season-title-row">
+        <h2 id="PMSeasonTitle-{{ section.id }}">{{ section.settings.title | escape }}</h2>
+        {% if section.settings.show_view_all %}<a class="pm-view-all pm-season-view-all" href="{{ season_url }}" aria-label="{{ section.settings.view_all_label | escape }} {{ section.settings.title | escape }} products">{{ section.settings.view_all_label | escape }} {% render 'pb-market-icon', icon: 'chevron' %}</a>{% endif %}
+      </div>
+      {% if section.settings.text != blank %}<p>{{ section.settings.text | escape }}</p>{% endif %}
+    </div>
+    {% if section.blocks.size > 0 %}
+      <nav class="pm-season-tabs" data-pm-season-tabs aria-label="{{ section.settings.title | escape }} categories">
+        {% for block in section.blocks %}
+          <a id="PMSeasonTab-{{ section.id }}-{{ block.id }}" class="pm-season-tab" href="#PMSeasonPanel-{{ section.id }}-{{ block.id }}" data-pm-season-tab data-block-id="{{ block.id }}">{{ block.settings.title | escape }}</a>
+        {% endfor %}
+      </nav>
+      <div class="pm-season-panels">
+        {% for block in section.blocks %}
+          {% liquid
+            assign tab_collection = block.settings.collection
+            if tab_collection == blank
+              capture tab_handle
+                render 'pb-season-handle', handles: block.settings.collection_handles
+              endcapture
+              assign tab_handle = tab_handle | strip
+              assign tab_collection = collections[tab_handle]
+            endif
+            if tab_collection == blank and block.settings.use_parent_collection
+              assign tab_collection = season_collection
+            endif
+            assign tab_products = block.settings.products
+            if tab_products == blank and tab_collection != blank
+              assign tab_products = tab_collection.products
+            endif
+            assign tab_url = block.settings.link
+            if tab_url == blank and tab_collection != blank
+              assign tab_url = tab_collection.url
+            endif
+            if tab_url == blank
+              assign tab_query = block.settings.search_query | default: block.settings.title
+              assign tab_query = tab_query | url_encode
+              assign tab_url = routes.search_url | append: '?type=product&q=' | append: tab_query
+            endif
+            assign products_shown = tab_products.size | default: 0
+          %}
+          <div id="PMSeasonPanel-{{ section.id }}-{{ block.id }}" class="pm-season-panel" data-pm-season-panel data-block-id="{{ block.id }}" data-product-count="{{ products_shown }}" aria-labelledby="PMSeasonTab-{{ section.id }}-{{ block.id }}" {{ block.shopify_attributes }}>
+            <h3 class="pm-season-panel-title">{{ block.settings.title | escape }}</h3>
+            {% if products_shown > 0 %}
+              <div class="pm-season-carousel" data-pm-carousel>
+                <div class="pm-product-rail" data-pm-rail style="--pm-product-columns:{{ section.settings.columns }};">
+                  {% for item in tab_products limit: section.settings.limit %}{% render 'pb-market-card', item: item %}{% endfor %}
+                </div>
+                <div class="pm-carousel-controls">
+                  <button type="button" class="pm-icon-button pm-prev" data-pm-prev aria-label="Previous {{ block.settings.title | escape }} products">{% render 'pb-market-icon', icon: 'chevron' %}</button>
+                  <span data-pm-page aria-live="polite"></span>
+                  <button type="button" class="pm-icon-button" data-pm-next aria-label="Next {{ block.settings.title | escape }} products">{% render 'pb-market-icon', icon: 'chevron' %}</button>
+                </div>
+              </div>
+            {% else %}
+              <div class="pm-season-empty">
+                <span class="pm-season-empty-icon">{% render 'pb-market-icon', icon: section.settings.icon %}</span>
+                <p>{{ block.settings.title | escape }}</p>
+                <a href="{{ tab_url }}" class="pm-view-all">{{ section.settings.browse_label | escape }} {% render 'pb-market-icon', icon: 'arrow' %}</a>
+              </div>
+              {% if request.design_mode %}
+                <div class="pm-season-editor-note">{{ section.settings.title | escape }} / {{ block.settings.title | escape }}: select a collection or specific products in this block. No sample products or products from other departments are shown to customers.</div>
+              {% endif %}
+            {% endif %}
+            {% if products_shown > 0 %}<div class="pm-season-more"><a class="pm-button pm-button-outline" href="{{ tab_url }}">{{ section.settings.view_more_label | escape }} {% render 'pb-market-icon', icon: 'arrow' %}</a></div>{% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% elsif request.design_mode %}<p class="pm-season-editor-note">Add a category block to this department.</p>{% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Crestoria Seasonal Shop",
+  "tag": "section",
+  "class": "pm-section-host",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Department heading",
+      "default": "Halloween"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Menu anchor",
+      "default": "pb-halloween",
+      "info": "Use a unique value for each department, such as pb-halloween, pb-christmas or pb-wedding."
+    },
+    {
+      "type": "image_picker",
+      "id": "banner",
+      "label": "Optional wide banner"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_mobile",
+      "label": "Optional mobile banner"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Main collection"
+    },
+    {
+      "type": "text",
+      "id": "collection_handles",
+      "label": "Auto-detect collection handles",
+      "info": "Separate candidate handles with |. Only existing collections are used."
+    },
+    {
+      "type": "select",
+      "id": "icon",
+      "label": "Empty-state icon",
+      "options": [
+        {
+          "value": "pumpkin",
+          "label": "Halloween"
+        },
+        {
+          "value": "tree",
+          "label": "Christmas"
+        },
+        {
+          "value": "rings",
+          "label": "Wedding"
+        },
+        {
+          "value": "gift",
+          "label": "Gift"
+        }
+      ],
+      "default": "gift"
+    },
+    {
+      "type": "select",
+      "id": "initial_tab",
+      "label": "Initially selected category",
+      "options": [
+        {
+          "value": "first_available",
+          "label": "First category containing products"
+        },
+        {
+          "value": "first",
+          "label": "First category"
+        }
+      ],
+      "default": "first_available"
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "label": "Products per category",
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Desktop product columns",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show View All beside heading",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "Heading link label",
+      "default": "View All"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View All link override",
+      "info": "Default: main department collection, otherwise a product search for the department. Independent of the selected category tab."
+    },
+    {
+      "type": "text",
+      "id": "view_more_label",
+      "label": "View more button",
+      "default": "View More"
+    },
+    {
+      "type": "text",
+      "id": "browse_label",
+      "label": "Empty-category link",
+      "default": "Explore collection"
+    }
+  ],
+  "max_blocks": 8,
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Category name",
+          "default": "Home Decor"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "collection_handles",
+          "label": "Auto-detect collection handles",
+          "info": "Existing collection handles separated with |. Does not create collections."
+        },
+        {
+          "type": "product_list",
+          "id": "products",
+          "label": "Specific products (optional)",
+          "limit": 24
+        },
+        {
+          "type": "checkbox",
+          "id": "use_parent_collection",
+          "label": "Use main collection if no category collection",
+          "default": false,
+          "info": "Enable only when all products in the department fit this category."
+        },
+        {
+          "type": "text",
+          "id": "search_query",
+          "label": "Search when collection is missing",
+          "default": "Halloween"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "View more link override"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Crestoria Seasonal Shop",
+      "blocks": [
+        {
+          "type": "category"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
