@@ -11,14 +11,195 @@
   "sections": {
     "main": {
       "type": "bookcounter",
-      "settings": {}
+      "blocks": {
+        "manual_review_CjmAfk": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_bgPBbw": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_tkhqtn": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_EqaNFH": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_z66jAz": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_gmTTjc": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_DJcJyz": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_X8dgJn": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_yTNmDX": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        },
+        "manual_review_qzJUwx": {
+          "type": "manual_review",
+          "settings": {
+            "author": "Customer",
+            "rating": 5,
+            "date": "",
+            "verified": false,
+            "title": "",
+            "body": ""
+          }
+        }
+      },
+      "block_order": [
+        "manual_review_CjmAfk",
+        "manual_review_bgPBbw",
+        "manual_review_tkhqtn",
+        "manual_review_EqaNFH",
+        "manual_review_z66jAz",
+        "manual_review_gmTTjc",
+        "manual_review_DJcJyz",
+        "manual_review_X8dgJn",
+        "manual_review_yTNmDX",
+        "manual_review_qzJUwx"
+      ],
+      "settings": {
+        "color_scheme": "",
+        "sticky_gallery": true,
+        "sticky_top": 90,
+        "show_style_option": true,
+        "show_size_option": true,
+        "show_save_badge": false,
+        "show_personalization": true,
+        "personalization_heading": "Personalized",
+        "personalization_field_label": "Enter Your Text",
+        "personalization_helper": "Press Space On The Keyboard If You Don't Want To Include Text",
+        "personalization_placeholder": "Enter your custom text",
+        "personalization_required": false,
+        "personalization_max": 10,
+        "show_preview_button": true,
+        "preview_button_text": "Preview",
+        "quantity_label": "Quantity",
+        "customization_summary_heading": "Your customization",
+        "customization_summary_empty": "Add your text above",
+        "default_color_label": "Selected color",
+        "personalized_add_to_cart_text": "PERSONALIZE & ADD TO CART",
+        "add_to_cart_text": "Add to Cart",
+        "sold_out_text": "Sold out",
+        "trust_1": "Full refund for faulty production. No question asked",
+        "trust_2": "Made to order with secure checkout",
+        "show_size_chart": true,
+        "description_heading": "Description",
+        "description_body": "<p>Make every moment a little more meaningful with a gift that feels truly personal. Our products are thoughtfully designed to bring together creativity, personalization, and a unique touch—making them perfect for celebrating the people and moments that matter most.</p><p>Whether you're looking for a special gift for family, friends, couples, or someone you love, each piece is made to feel one-of-a-kind. Personalized details help turn an everyday item into a memorable keepsake that can be treasured for years to come.</p><p>Perfect for birthdays, holidays, anniversaries, weddings, housewarmings, or simply “just because,” our unique designs are created to make gifting more personal, thoughtful, and unforgettable.</p>",
+        "open_description": false,
+        "shipping_heading": "Shipping & Returns",
+        "shipping_text": "<p>Each item is made to order to help reduce waste and ensure careful attention to detail. Please allow <strong>7–9 business days </strong>for processing and production, as every piece is individually crafted and requires time to achieve the best quality. Once your order is ready and shipped, delivery typically takes <strong>3–7 business days</strong>, depending on your location and the shipping carrier.</p>",
+        "personalization_info_heading": "Personalization",
+        "personalization_info": "<p>Please complete all required personalization fields, such as&nbsp;<strong>Name, Color, Style, or other available options</strong>, and double-check your selections carefully before placing your order.</p><p>For personalized text, please use&nbsp;<strong>standard English letters and numbers only</strong>. Avoid special characters or emojis unless otherwise stated, as they may not display clearly on the finished product.</p><p>Please note that actual product colors may vary slightly from the images shown on our website due to lighting conditions during photography, screen settings, and differences between digital displays and the physical product.</p>",
+        "show_reviews": true,
+        "reviews_heading": "Customer Reviews",
+        "show_newsletter": true,
+        "newsletter_heading": "Unlock Your 10% OFF!",
+        "newsletter_subtext": "Join us for gift inspiration, extra savings, and alerts on our latest drops.",
+        "newsletter_placeholder": "Enter your email",
+        "newsletter_button": "Subscribe",
+        "newsletter_success": "Thanks for subscribing!",
+        "padding_top": 24,
+        "padding_bottom": 28,
+        "show_more_items": true,
+        "more_items_heading": "More Items to Consider",
+        "more_items_collection": "",
+        "more_items_limit": 4
+      }
     },
     "related": {
       "type": "related-products",
       "settings": {
         "heading": "You may also like",
+        "heading_size": "h1",
         "products_to_show": 4,
-        "columns_desktop": 4
+        "columns_desktop": 4,
+        "color_scheme": "",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "columns_mobile": "2",
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     }
   },
