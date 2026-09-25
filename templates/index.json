@@ -188,7 +188,7 @@
           "type": "category",
           "settings": {
             "title": "Balaclava Mask",
-            "collection": "",
+            "collection": "halloween",
             "collection_handles": "halloween-balaclava-mask|balaclava-mask",
             "products": [],
             "use_parent_collection": false,
@@ -200,7 +200,7 @@
           "type": "category",
           "settings": {
             "title": "Basket With LED Light",
-            "collection": "",
+            "collection": "halloween",
             "collection_handles": "halloween-basket-with-led-light|halloween-baskets|halloween-basket",
             "products": [],
             "use_parent_collection": false,
@@ -212,7 +212,7 @@
           "type": "category",
           "settings": {
             "title": "Halloween Mugs",
-            "collection": "",
+            "collection": "halloween",
             "collection_handles": "halloween-mug|halloween-mugs",
             "products": [],
             "use_parent_collection": false,
@@ -275,7 +275,7 @@
           "type": "category",
           "settings": {
             "title": "Christmas Doormat",
-            "collection": "",
+            "collection": "christmas",
             "collection_handles": "christmas-doormat|christmas-doormats",
             "products": [],
             "use_parent_collection": false,
@@ -287,7 +287,7 @@
           "type": "category",
           "settings": {
             "title": "Runner Rug",
-            "collection": "",
+            "collection": "christmas",
             "collection_handles": "christmas-runner-rug|christmas-runner-rugs|runner-rug",
             "products": [],
             "use_parent_collection": false,
@@ -299,7 +299,7 @@
           "type": "category",
           "settings": {
             "title": "Table Runner",
-            "collection": "",
+            "collection": "christmas",
             "collection_handles": "christmas-table-runner|christmas-table-runners|table-runner",
             "products": [],
             "use_parent_collection": false,
@@ -525,8 +525,8 @@
         "b1": {
           "type": "category",
           "settings": {
-            "title": "Halloween",
-            "collection": "",
+            "title": "Back To School",
+            "collection": "back-to-school",
             "link": "",
             "icon": "pumpkin",
             "collection_handles": "halloween|halloween-decor|frontpage",
@@ -536,7 +536,7 @@
         "b2": {
           "type": "category",
           "settings": {
-            "title": "Early Xmas",
+            "title": "Birthday",
             "collection": "",
             "link": "",
             "icon": "tree",
@@ -554,60 +554,12 @@
             "collection_handles": "fall|fall-decor|autumn",
             "search_query": "fall"
           }
-        },
-        "b4": {
-          "type": "category",
-          "settings": {
-            "title": "Just Because",
-            "collection": "",
-            "link": "",
-            "icon": "gift",
-            "collection_handles": "just-because|just-because-gifts",
-            "search_query": "gift"
-          }
-        },
-        "b5": {
-          "type": "category",
-          "settings": {
-            "title": "Memorial",
-            "collection": "",
-            "link": "",
-            "icon": "candle",
-            "collection_handles": "memorial|memorial-gifts",
-            "search_query": "memorial"
-          }
-        },
-        "b6": {
-          "type": "category",
-          "settings": {
-            "title": "Birthday",
-            "collection": "",
-            "link": "",
-            "icon": "cake",
-            "collection_handles": "birthday|birthday-gifts",
-            "search_query": "birthday"
-          }
-        },
-        "b7": {
-          "type": "category",
-          "settings": {
-            "title": "Anniversary",
-            "collection": "",
-            "link": "",
-            "icon": "rings",
-            "collection_handles": "anniversary|anniversary-gifts",
-            "search_query": "anniversary"
-          }
         }
       },
       "block_order": [
         "b1",
         "b2",
-        "b3",
-        "b4",
-        "b5",
-        "b6",
-        "b7"
+        "b3"
       ],
       "settings": {
         "title": "Shop By Occasions",
