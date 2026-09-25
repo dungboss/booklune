@@ -79,7 +79,7 @@
           "type": "category",
           "settings": {
             "title": "T-shirt",
-            "collection": "",
+            "collection": "frontpage",
             "image": "shopify://shop_images/il_794xN.6654401810_92e4.webp",
             "link": "",
             "icon": "rings",
@@ -90,9 +90,9 @@
         "b2": {
           "type": "category",
           "settings": {
-            "title": "Sweatshirt & Hoodie",
-            "collection": "",
-            "image": "shopify://shop_images/il_794xN.6132468753_23gc.webp",
+            "title": "Sports Jersey",
+            "collection": "sports-jersey",
+            "image": "shopify://shop_images/turtle-8dcc2303-1fa8-42b7-ab30-06a3fa0e9a9c-5.jpg",
             "link": "",
             "icon": "paw",
             "collection_handles": "pet-lovers|pet-gifts|pets",
@@ -103,7 +103,7 @@
           "type": "category",
           "settings": {
             "title": "Door Sign & Wall Sign",
-            "collection": "",
+            "collection": "door-sign-wall-sign",
             "image": "shopify://shop_images/il_794xN.8178820183_djof.webp",
             "link": "",
             "icon": "user",
@@ -115,7 +115,7 @@
           "type": "category",
           "settings": {
             "title": "Ornament",
-            "collection": "",
+            "collection": "ornament",
             "image": "shopify://shop_images/il_794xN.8407961448_clyz.webp",
             "link": "",
             "icon": "heart",
@@ -139,7 +139,7 @@
           "type": "category",
           "settings": {
             "title": "Hawaiian & Button-Up Shirt",
-            "collection": "",
+            "collection": "hawaian-and-button-up-shirt",
             "image": "shopify://shop_images/il_794xN.7548612949_s337.webp",
             "link": "",
             "icon": "cup",
