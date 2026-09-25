@@ -26,25 +26,18 @@
       <a id="cart-icon-bubble" class="pm-icon-button pm-cart-link" href="{{ routes.cart_url }}" aria-label="Cart, {{ cart.item_count }} items">{% render 'pb-market-icon', icon: 'cart' %}<span class="pm-counter" data-pm-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>{{ cart.item_count }}</span></a>
     </div>
   </div>
-  <nav class="pm-shell pm-nav" aria-label="Main navigation">
+  <nav class="pm-shell pm-nav pm-nav--compact" aria-label="Main navigation">
     <a href="{{ routes.root_url }}" {% if request.page_type == 'index' %}aria-current="page"{% endif %}>Home</a>
     <details class="pm-menu"><summary>Collection {% render 'pb-market-icon', icon: 'down' %}</summary><div class="pm-mega">{% render 'pb-market-mega', menu_kind: 'collections' %}</div></details>
     <a class="pm-season-link" href="{{ routes.root_url }}#pb-halloween">Halloween</a>
     <a class="pm-season-link" href="{{ routes.root_url }}#pb-christmas">Christmas</a>
     <a class="pm-season-link" href="{{ routes.root_url }}#pb-wedding">Wedding</a>
-    <details class="pm-menu"><summary>Gifts {% render 'pb-market-icon', icon: 'down' %}</summary><div class="pm-mega">{% render 'pb-market-mega', menu_kind: 'gifts' %}</div></details>
-    <details class="pm-menu"><summary>Home &amp; Living {% render 'pb-market-icon', icon: 'down' %}</summary><div class="pm-mega">{% render 'pb-market-mega', menu_kind: 'home' %}</div></details>
-    <a href="{% render 'pb-market-link', handle: 'can-holder', query: 'can cooler' %}">Drink &amp; Barware</a>
-    {% if section.settings.show_apparel %}<a href="{{ routes.search_url }}?type=product&amp;q=apparel">Apparel</a>{% endif %}
-    <a href="{{ routes.search_url }}?type=product&amp;q=accessories">Accessories</a>
-    <button class="pm-text-button" type="button" data-pm-open="PMGiftFinder">Gift Finder</button>
-    {% render 'crestoria-support-link', label: 'Contact', prefer_form: true %}
   </nav>
-  <nav class="pm-mobile-links" aria-label="Quick navigation"><a href="{{ routes.root_url }}">Home</a><a href="{{ routes.all_products_collection_url }}">Collection</a>{% render 'crestoria-support-link', label: 'Contact', prefer_form: true %}<button class="pm-text-button" type="button" data-pm-open="PMGiftFinder">Gift Finder</button></nav>
+  <nav class="pm-mobile-links pm-mobile-links--compact" aria-label="Quick navigation"><a href="{{ routes.root_url }}">Home</a><a href="{{ routes.all_products_collection_url }}">Collection</a><a href="{{ routes.root_url }}#pb-halloween">Halloween</a><a href="{{ routes.root_url }}#pb-christmas">Christmas</a><a href="{{ routes.root_url }}#pb-wedding">Wedding</a></nav>
 </div>
 <dialog id="PMMobileMenu" class="pm-dialog pm-drawer" aria-labelledby="PMMenuTitle">
  <div class="pm-dialog-head"><span id="PMMenuTitle" class="pm-wordmark">Crestoria</span><button class="pm-icon-button" type="button" data-pm-close aria-label="Close menu">{% render 'pb-market-icon', icon: 'close' %}</button></div>
- <div class="pm-dialog-body"><nav class="pm-mobile-nav" aria-label="Mobile navigation"><a href="{{ routes.root_url }}">Home</a><a href="{{ routes.all_products_collection_url }}">All products</a><a href="{{ routes.root_url }}#pb-halloween">Halloween</a><a href="{{ routes.root_url }}#pb-christmas">Christmas</a><a href="{{ routes.root_url }}#pb-wedding">Wedding</a><details><summary>Collection {% render 'pb-market-icon', icon: 'down' %}</summary>{% render 'pb-market-mega', menu_kind: 'collections' %}</details><details><summary>Gifts {% render 'pb-market-icon', icon: 'down' %}</summary>{% render 'pb-market-mega', menu_kind: 'gifts' %}</details><details><summary>Home &amp; Living {% render 'pb-market-icon', icon: 'down' %}</summary>{% render 'pb-market-mega', menu_kind: 'home' %}</details><a href="{% render 'pb-market-link', handle: 'can-holder', query: 'can cooler' %}">Drink &amp; Barware</a>{% if section.settings.show_apparel %}<a href="{{ routes.search_url }}?type=product&amp;q=apparel">Apparel</a>{% endif %}<a href="{{ routes.search_url }}?type=product&amp;q=accessories">Accessories</a><button type="button" class="pm-text-button" data-pm-open="PMGiftFinder">Gift Finder</button>{% render 'crestoria-support-link', label: 'Contact', prefer_form: true %}</nav><div class="pm-mobile-support"><button class="pm-text-button" type="button" data-pm-open="PMTrackOrder">Track Order</button>{% if shop.customer_accounts_enabled %}<a href="{{ routes.account_login_url }}">Sign In</a>{% endif %}{% render 'crestoria-support-link' %}</div></div>
+ <div class="pm-dialog-body"><nav class="pm-mobile-nav" aria-label="Mobile navigation"><a href="{{ routes.root_url }}">Home</a><details><summary>Collection {% render 'pb-market-icon', icon: 'down' %}</summary>{% render 'pb-market-mega', menu_kind: 'collections' %}</details><a href="{{ routes.root_url }}#pb-halloween">Halloween</a><a href="{{ routes.root_url }}#pb-christmas">Christmas</a><a href="{{ routes.root_url }}#pb-wedding">Wedding</a></nav><div class="pm-mobile-support"><button class="pm-text-button" type="button" data-pm-open="PMTrackOrder">Track Order</button>{% if shop.customer_accounts_enabled %}<a href="{{ routes.account_login_url }}">Sign In</a>{% endif %}{% render 'crestoria-support-link' %}</div></div>
 </dialog>
 <dialog id="PMWishlist" class="pm-dialog pm-wishlist-dialog" aria-labelledby="PMWishlistTitle"><div class="pm-dialog-head"><h2 id="PMWishlistTitle">Your saved gifts</h2><button class="pm-icon-button" type="button" data-pm-close aria-label="Close saved gifts">{% render 'pb-market-icon', icon: 'close' %}</button></div><div class="pm-dialog-body"><p class="pm-muted">Keep your favorites together on this browser.</p><div data-pm-wishlist-list></div></div></dialog>
 <dialog id="PMTrackOrder" class="pm-dialog" aria-labelledby="PMTrackTitle"><div class="pm-dialog-head"><h2 id="PMTrackTitle">Track your order</h2><button class="pm-icon-button" type="button" data-pm-close aria-label="Close order help">{% render 'pb-market-icon', icon: 'close' %}</button></div><div class="pm-dialog-body"><p>Open the order-status link in your confirmation or shipping email to see the latest information for your order.</p>{% if section.settings.tracking_url != blank %}<a class="pm-button" href="{{ section.settings.tracking_url }}">Open order tracking</a>{% elsif pages['track-order'] != blank %}<a class="pm-button" href="{{ pages['track-order'].url }}">Open order tracking</a>{% endif %}{% if shop.customer_accounts_enabled %}<a class="pm-button pm-button-outline" href="{{ routes.account_url }}">View my orders</a>{% endif %}<p class="pm-muted">Need help? Contact us: {% render 'crestoria-support-link' %} with your order number and the email used at checkout.</p></div></dialog>
@@ -67,12 +60,6 @@
       "id": "search_placeholder",
       "label": "Search placeholder",
       "default": "Find a gift made just for them"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_apparel",
-      "label": "Show Apparel in navigation",
-      "default": true
     },
     {
       "type": "url",
