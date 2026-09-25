@@ -406,119 +406,6 @@
         "browse_label": "Explore collection"
       }
     },
-    "recipients": {
-      "type": "pb-market-discovery",
-      "blocks": {
-        "b1": {
-          "type": "category",
-          "settings": {
-            "title": "Dad",
-            "collection": "",
-            "link": "",
-            "icon": "user",
-            "collection_handles": "dad|gifts-for-dad",
-            "search_query": "dad"
-          }
-        },
-        "b2": {
-          "type": "category",
-          "settings": {
-            "title": "Mom",
-            "collection": "",
-            "link": "",
-            "icon": "user",
-            "collection_handles": "mom|gifts-for-mom",
-            "search_query": "mom"
-          }
-        },
-        "b3": {
-          "type": "category",
-          "settings": {
-            "title": "Sister",
-            "collection": "",
-            "link": "",
-            "icon": "user",
-            "collection_handles": "sister|gifts-for-sister",
-            "search_query": "sister"
-          }
-        },
-        "b4": {
-          "type": "category",
-          "settings": {
-            "title": "For Her",
-            "collection": "",
-            "link": "",
-            "icon": "heart",
-            "collection_handles": "for-her|gifts-for-her",
-            "search_query": "her"
-          }
-        },
-        "b5": {
-          "type": "category",
-          "settings": {
-            "title": "For Him",
-            "collection": "",
-            "link": "",
-            "icon": "user",
-            "collection_handles": "for-him|gifts-for-him",
-            "search_query": "him"
-          }
-        },
-        "b6": {
-          "type": "category",
-          "settings": {
-            "title": "Friends",
-            "collection": "",
-            "link": "",
-            "icon": "gift",
-            "collection_handles": "friends|gifts-for-friends",
-            "search_query": "friend"
-          }
-        },
-        "b7": {
-          "type": "category",
-          "settings": {
-            "title": "Couple",
-            "collection": "",
-            "link": "",
-            "icon": "rings",
-            "collection_handles": "couples|couple|couple-gifts",
-            "search_query": "couple"
-          }
-        },
-        "b8": {
-          "type": "category",
-          "settings": {
-            "title": "Pet Lovers",
-            "collection": "",
-            "link": "",
-            "icon": "paw",
-            "collection_handles": "pet-lovers|pets|pet-gifts",
-            "search_query": "pet"
-          }
-        }
-      },
-      "block_order": [
-        "b1",
-        "b2",
-        "b3",
-        "b4",
-        "b5",
-        "b6",
-        "b7",
-        "b8"
-      ],
-      "settings": {
-        "title": "Who Are You Shopping For Today?",
-        "text": "Start with the person you have in mind.",
-        "is_main_heading": false,
-        "shape": "round",
-        "columns": 8,
-        "presentation": "chips",
-        "enable_marquee": false,
-        "marquee_speed": 28
-      }
-    },
     "occasions": {
       "type": "pb-market-discovery",
       "blocks": {
@@ -632,7 +519,6 @@
     "halloween",
     "christmas",
     "wedding",
-    "recipients",
     "occasions",
     "trust",
     "reviews"
