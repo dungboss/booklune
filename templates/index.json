@@ -263,7 +263,7 @@
           "type": "category",
           "settings": {
             "title": "Holiday Ornaments",
-            "collection": "",
+            "collection": "christmas",
             "collection_handles": "holiday-ornaments|christmas-ornaments|christmas-ornament",
             "products": [],
             "use_parent_collection": false,
@@ -547,8 +547,8 @@
         "b3": {
           "type": "category",
           "settings": {
-            "title": "Fall",
-            "collection": "",
+            "title": "Retirement",
+            "collection": "retirement",
             "link": "",
             "icon": "leaf",
             "collection_handles": "fall|fall-decor|autumn",
