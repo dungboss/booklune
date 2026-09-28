@@ -200,16 +200,55 @@
           "success_dismiss_btn_label": "Close this",
           "success_display_image": false
         }
+      },
+      "pb-market-header": {
+        "type": "pb-market-header",
+        "settings": {
+          "announcement": "",
+          "search_placeholder": "Find a gift made just for them",
+          "tracking_url": ""
+        }
+      },
+      "pb-market-footer": {
+        "type": "pb-market-footer",
+        "settings": {
+          "information_heading": "Information",
+          "information_menu": "",
+          "service_heading": "Customer Service",
+          "service_menu": "",
+          "policies_heading": "Policies",
+          "policies_menu": "",
+          "support_heading": "Help center",
+          "support_email": "",
+          "support_text": "Questions about a product or an order? We are here to help.",
+          "support_hours": "",
+          "ticket_label": "Submit a ticket",
+          "ticket_url": "",
+          "contact_url": "",
+          "help_url": "",
+          "show_social": true,
+          "show_payment": true,
+          "show_newsletter": true,
+          "newsletter_title": "A little inspiration, in your inbox.",
+          "newsletter_text": "Gift inspiration, new designs and seasonal favorites, straight from Crestoria.",
+          "subscribe_label": "Subscribe",
+          "newsletter_note": "Subscribe to receive Crestoria emails. Unsubscribe at any time.",
+          "brand_text": "Welcome to Crestoria, where meaningful moments become unforgettable keepsakes.\n\nWe create personalized gifts designed to celebrate the people, pets, memories, and special occasions that matter most. From birthdays and weddings to anniversaries, Christmas, memorials, and everyday milestones, every Crestoria piece is made to feel personal, thoughtful, and truly one of a kind.\n\nOur collection includes custom home décor, ornaments, keepsakes, accessories, drinkware, and unique gifts that can be personalized with names, photos, dates, messages, and meaningful details.\n\nAt Crestoria, we believe the best gifts are more than just products — they tell a story, preserve a memory, and create an emotional connection that lasts.\n\nMade Personal. Made Meaningful. Made for You.",
+          "about_url": "",
+          "reviews_url": "",
+          "accessibility_url": "",
+          "tracking_url": "",
+          "cancellation_url": "",
+          "refund_url": "",
+          "size_url": "",
+          "shipping_url": "",
+          "terms_url": "",
+          "privacy_url": "",
+          "disclaimer_url": ""
+        }
       }
     },
     "content_for_index": [],
-    "blocks": {
-      "15557474716127144420": {
-        "type": "shopify://apps/kaching-bundles/blocks/app-embed-block/6c637362-a106-4a32-94ac-94dcfd68cdb8",
-        "disabled": false,
-        "settings": {}
-      }
-    },
     "color_schemes": {
       "scheme-1": {
         "settings": {
