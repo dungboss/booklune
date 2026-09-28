@@ -350,7 +350,7 @@
           "type": "category",
           "settings": {
             "title": "Gifts For Brides",
-            "collection": "",
+            "collection": "wedding",
             "collection_handles": "gifts-for-brides|bride-gifts",
             "products": [],
             "use_parent_collection": false,
@@ -362,7 +362,7 @@
           "type": "category",
           "settings": {
             "title": "Gifts For Grooms",
-            "collection": "",
+            "collection": "wedding",
             "collection_handles": "gifts-for-grooms|groom-gifts",
             "products": [],
             "use_parent_collection": false,
@@ -374,7 +374,7 @@
           "type": "category",
           "settings": {
             "title": "Gifts For Bridesmaids",
-            "collection": "",
+            "collection": "wedding",
             "collection_handles": "gifts-for-bridesmaids|bridesmaid-gifts",
             "products": [],
             "use_parent_collection": false,
