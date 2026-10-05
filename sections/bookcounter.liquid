@@ -5360,7 +5360,138 @@
   #PBMac-{{ section.id }} .pbmac-fallback-color,
   #PBMac-{{ section.id }} [data-pbmac-custom-color-selected] {
     display: none !important;
+  }/* ===== FIX PRODUCT PAGE OVERFLOW ===== */
+
+#PBMac-{{ section.id }} {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+#PBMac-{{ section.id }} .pbmac__wrap {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+#PBMac-{{ section.id }} .pbmac__grid {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  grid-template-columns:
+    minmax(0, 1.08fr)
+    minmax(380px, .92fr);
+
+  box-sizing: border-box;
+}
+
+#PBMac-{{ section.id }} .pbmac-gallery,
+#PBMac-{{ section.id }} .pbmac-info {
+  min-width: 0 !important;
+  max-width: 100%;
+}
+
+#PBMac-{{ section.id }} .pbmac-gallery__main,
+#PBMac-{{ section.id }} .pbmac-gallery__image {
+  width: 100%;
+  max-width: 100%;
+}
+
+#PBMac-{{ section.id }} .pbmac-info *,
+#PBMac-{{ section.id }} .pbmac-form *,
+#PBMac-{{ section.id }} fieldset {
+  box-sizing: border-box;
+}
+
+#PBMac-{{ section.id }} .pbmac-title,
+#PBMac-{{ section.id }} .pbmac-accordion__content,
+#PBMac-{{ section.id }} .pbmac-customization-summary__content {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+#PBMac-{{ section.id }} .pbmac-pills,
+#PBMac-{{ section.id }} .pbmac-fallback-size-pills {
+  max-width: 100%;
+  flex-wrap: wrap !important;
+}
+
+#PBMac-{{ section.id }} .pbmac-personalization-card,
+#PBMac-{{ section.id }} .pbmac-personalization-card__input-wrap,
+#PBMac-{{ section.id }} .pbmac-input,
+#PBMac-{{ section.id }} .pbmac-customization-summary,
+#PBMac-{{ section.id }} .pbmac-buy-row--compact {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* TABLET */
+@media (max-width: 1100px) and (min-width: 750px) {
+  #PBMac-{{ section.id }} .pbmac__grid {
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(340px, .9fr);
+
+    gap: 28px;
   }
+}
+
+/* MOBILE */
+@media (max-width: 749px) {
+  #PBMac-{{ section.id }} {
+    overflow-x: hidden;
+  }
+
+  #PBMac-{{ section.id }} .pbmac__wrap {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    overflow: hidden;
+  }
+
+  #PBMac-{{ section.id }} .pbmac__grid {
+    display: block !important;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-gallery,
+  #PBMac-{{ section.id }} .pbmac-info {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0 !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-option__head,
+  #PBMac-{{ section.id }} .pbmac-fallback-option__head {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+
+    width: 100%;
+    max-width: 100%;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-sizechart-link {
+    white-space: nowrap;
+    justify-self: end;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-buy-row--compact {
+    grid-template-columns: 112px minmax(0, 1fr) !important;
+  }
+
+  #PBMac-{{ section.id }} .pbmac-atc--inline {
+    min-width: 0;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+
+    white-space: normal !important;
+    text-align: center;
+  }
+}
 
 </style>
 
